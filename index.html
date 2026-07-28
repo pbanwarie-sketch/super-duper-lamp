@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="nl" data-lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prashand Banwarie — Power BI Developer</title>
+<meta name="description" content="Portfolio van Prashand Arthur Banwarie — Power BI Developer & Data Professional, Den Haag.">
+<style>
+  :root{
+    --bg:#ffffff;
+    --bg-soft:#f8fafc;
+    --text:#1e293b;
+    --text-soft:#64748b;
+    --text-faint:#94a3b8;
+    --accent:#0f766e;
+    --accent-soft:#ccfbf1;
+    --border:#e2e8f0;
+    --radius:12px;
+    --maxw:880px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.65;
+    font-size:16.5px;
+    -webkit-font-smoothing:antialiased;
+  }
+  /* ---------- language toggle mechanics ---------- */
+  [data-lang="nl"] .lang-en{display:none !important}
+  [data-lang="en"] .lang-nl{display:none !important}
+
+  a{color:var(--accent);text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* ---------- header ---------- */
+  header{
+    position:sticky;top:0;z-index:10;
+    background:rgba(255,255,255,.92);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--border);
+  }
+  .nav{
+    max-width:var(--maxw);margin:0 auto;padding:14px 24px;
+    display:flex;align-items:center;justify-content:space-between;gap:16px;
+  }
+  .nav .brand{font-weight:700;font-size:1rem;color:var(--text);letter-spacing:-.01em}
+  .nav-links{display:flex;gap:20px;align-items:center;flex-wrap:wrap}
+  .nav-links a{color:var(--text-soft);font-size:.9rem}
+  .nav-links a:hover{color:var(--accent);text-decoration:none}
+  .lang-switch{
+    display:flex;border:1px solid var(--border);border-radius:999px;overflow:hidden;
+  }
+  .lang-switch button{
+    border:0;background:transparent;padding:5px 14px;font-size:.8rem;font-weight:600;
+    cursor:pointer;color:var(--text-soft);
+  }
+  .lang-switch button.active{background:var(--accent);color:#fff}
+
+  /* ---------- layout ---------- */
+  main{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+  section{padding:64px 0;border-bottom:1px solid var(--border)}
+  section:last-of-type{border-bottom:0}
+  h2{
+    font-size:1.35rem;letter-spacing:-.02em;margin-bottom:28px;
+    display:flex;align-items:center;gap:12px;
+  }
+  h2::before{content:"";display:block;width:26px;height:3px;background:var(--accent);border-radius:2px}
+
+  /* ---------- hero ---------- */
+  .hero{padding:88px 0 72px;border-bottom:1px solid var(--border)}
+  .hero .kicker{
+    display:inline-block;font-size:.8rem;font-weight:600;letter-spacing:.06em;
+    text-transform:uppercase;color:var(--accent);background:var(--accent-soft);
+    padding:4px 12px;border-radius:999px;margin-bottom:20px;
+  }
+  .hero h1{font-size:clamp(2.1rem,5.5vw,3.1rem);letter-spacing:-.03em;line-height:1.12;margin-bottom:14px}
+  .hero .subtitle{font-size:1.15rem;color:var(--text-soft);max-width:620px;margin-bottom:10px}
+  .hero .location{color:var(--text-faint);font-size:.95rem;margin-bottom:30px}
+  .hero .actions{display:flex;gap:12px;flex-wrap:wrap}
+  .btn{
+    display:inline-block;padding:10px 22px;border-radius:8px;font-weight:600;font-size:.92rem;
+  }
+  .btn-primary{background:var(--accent);color:#fff}
+  .btn-primary:hover{background:#0d635c;text-decoration:none}
+  .btn-ghost{border:1px solid var(--border);color:var(--text)}
+  .btn-ghost:hover{border-color:var(--accent);color:var(--accent);text-decoration:none}
+
+  /* ---------- about ---------- */
+  .about p{max-width:700px;color:var(--text);margin-bottom:14px}
+  .highlights{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:28px}
+  .highlight{
+    background:var(--bg-soft);border:1px solid var(--border);border-radius:var(--radius);
+    padding:18px 20px;font-size:.92rem;color:var(--text-soft);
+  }
+  .highlight strong{display:block;color:var(--text);font-size:1.05rem;margin-bottom:4px}
+
+  /* ---------- skills ---------- */
+  .skill-groups{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px}
+  .skill-group{background:var(--bg-soft);border:1px solid var(--border);border-radius:var(--radius);padding:22px}
+  .skill-group h3{font-size:.95rem;margin-bottom:12px;color:var(--text)}
+  .tags{display:flex;flex-wrap:wrap;gap:8px}
+  .tag{
+    font-size:.82rem;padding:4px 12px;border-radius:999px;
+    background:#fff;border:1px solid var(--border);color:var(--text-soft);
+  }
+  .certs{margin-top:26px}
+  .certs h3{font-size:.95rem;margin-bottom:12px}
+  .certs ul{list-style:none}
+  .certs li{
+    padding:9px 0 9px 26px;position:relative;color:var(--text-soft);font-size:.94rem;
+    border-bottom:1px dashed var(--border);
+  }
+  .certs li:last-child{border-bottom:0}
+  .certs li::before{content:"✓";position:absolute;left:2px;color:var(--accent);font-weight:700}
+
+  /* ---------- timeline ---------- */
+  .timeline{position:relative;padding-left:28px}
+  .timeline::before{
+    content:"";position:absolute;left:7px;top:6px;bottom:6px;width:2px;background:var(--border);
+  }
+  .job{position:relative;padding-bottom:40px}
+  .job:last-child{padding-bottom:0}
+  .job::before{
+    content:"";position:absolute;left:-27px;top:7px;width:12px;height:12px;border-radius:50%;
+    background:#fff;border:3px solid var(--accent);
+  }
+  .job .period{font-size:.82rem;font-weight:600;color:var(--accent);letter-spacing:.02em}
+  .job h3{font-size:1.08rem;margin:2px 0;letter-spacing:-.01em}
+  .job .org{color:var(--text-faint);font-size:.9rem;margin-bottom:10px}
+  .job p{color:var(--text-soft);font-size:.95rem;max-width:680px;margin-bottom:8px}
+  .job ul{list-style:none;margin-top:6px}
+  .job ul li{
+    color:var(--text-soft);font-size:.95rem;max-width:680px;
+    padding:3px 0 3px 18px;position:relative;
+  }
+  .job ul li::before{content:"—";position:absolute;left:0;color:var(--accent)}
+  .early-career{
+    margin-top:36px;background:var(--bg-soft);border:1px solid var(--border);
+    border-radius:var(--radius);padding:24px 26px;
+  }
+  .early-career h3{font-size:1rem;margin-bottom:10px}
+  .early-career p{color:var(--text-soft);font-size:.94rem}
+
+  /* ---------- education ---------- */
+  .edu-list{display:grid;gap:12px}
+  .edu{
+    display:flex;justify-content:space-between;gap:16px;align-items:baseline;
+    padding:14px 18px;border:1px solid var(--border);border-radius:10px;background:#fff;
+  }
+  .edu .what strong{display:block;font-size:.97rem}
+  .edu .what span{color:var(--text-soft);font-size:.88rem}
+  .edu .year{color:var(--text-faint);font-size:.85rem;white-space:nowrap}
+
+  /* ---------- contact / footer ---------- */
+  .contact p{max-width:620px;color:var(--text-soft);margin-bottom:24px}
+  footer{
+    border-top:1px solid var(--border);margin-top:0;padding:28px 24px;text-align:center;
+    color:var(--text-faint);font-size:.85rem;
+  }
+  @media(max-width:600px){
+    .nav-links a:not(.keep){display:none}
+    section{padding:48px 0}
+    .hero{padding:64px 0 52px}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav">
+    <div class="brand">Prashand Banwarie</div>
+    <nav class="nav-links">
+      <a href="#about"><span class="lang-nl">Over mij</span><span class="lang-en">About</span></a>
+      <a href="#skills"><span class="lang-nl">Vaardigheden</span><span class="lang-en">Skills</span></a>
+      <a href="#experience"><span class="lang-nl">Ervaring</span><span class="lang-en">Experience</span></a>
+      <a href="#contact">Contact</a>
+      <div class="lang-switch keep" role="group" aria-label="Language">
+        <button id="btn-nl" class="active" onclick="setLang('nl')">NL</button>
+        <button id="btn-en" onclick="setLang('en')">EN</button>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <!-- ================= HERO ================= -->
+  <div class="hero">
+    <span class="kicker"><span class="lang-nl">Power BI Developer · Data &amp; Analytics</span><span class="lang-en">Power BI Developer · Data &amp; Analytics</span></span>
+    <h1>Prashand Arthur Banwarie</h1>
+    <p class="subtitle">
+      <span class="lang-nl">Ik vertaal data naar inzichten die er toe doen — met Power BI, Azure Data Factory en een scherp oog voor het verhaal achter de cijfers.</span>
+      <span class="lang-en">I turn data into insights that matter — with Power BI, Azure Data Factory and a sharp eye for the story behind the numbers.</span>
+    </p>
+    <p class="location">📍 <span class="lang-nl">Den Haag, Nederland</span><span class="lang-en">The Hague, Netherlands</span></p>
+    <div class="actions">
+      <a class="btn btn-primary" href="https://www.linkedin.com/in/prashandarthur" target="_blank" rel="noopener">LinkedIn</a>
+      <a class="btn btn-ghost" href="mailto:pbanwarie@gmail.com">
+        <span class="lang-nl">Stuur een e-mail</span><span class="lang-en">Send an email</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- ================= ABOUT ================= -->
+  <section id="about" class="about">
+    <h2><span class="lang-nl">Over mij</span><span class="lang-en">About me</span></h2>
+    <div class="lang-nl">
+      <p>Ik ben een resultaatgerichte data-professional met ruim tien jaar ervaring in retail en telecom. Mijn focus ligt op procesverbetering en het creëren van inzichten door data-analyse.</p>
+      <p>Bij KPN begon ik in de backoffice van KPN ÉÉN MKB. Twee jaar later kreeg ik de kans om een analytics-team op te zetten: met Power BI bouwde ik inzichten voor operationele afdelingen en het management, en implementeerde ik KPI-tracking en root-cause-analyses om verbeteringen aan te jagen.</p>
+      <p>Met Lean Six Sigma en RPA-automatisering verhoog ik efficiëntie en klanttevredenheid. Ik ben gedreven om uitstekende resultaten te leveren en echt impact te maken.</p>
+    </div>
+    <div class="lang-en">
+      <p>I am a results-driven data professional with over ten years of experience in retail and telecom. My focus is on process improvement and creating insights through data analysis.</p>
+      <p>At KPN I started in the back office of KPN ÉÉN MKB. Two years later I got the chance to start an analytics team: using Power BI I built insights for operational departments and upper management, and implemented KPI tracking and root-cause analysis to drive improvements.</p>
+      <p>With Lean Six Sigma and RPA automation I raise efficiency and customer satisfaction. I am committed to delivering outstanding results and making a meaningful impact.</p>
+    </div>
+    <div class="highlights">
+      <div class="highlight"><strong>10+ <span class="lang-nl">jaar</span><span class="lang-en">years</span></strong><span class="lang-nl">ervaring, van retail tot data &amp; analytics</span><span class="lang-en">of experience, from retail to data &amp; analytics</span></div>
+      <div class="highlight"><strong>Power BI</strong><span class="lang-nl">van analytics-team opzetten tot enterprise HR-rapportages</span><span class="lang-en">from founding an analytics team to enterprise HR reporting</span></div>
+      <div class="highlight"><strong>Azure</strong><span class="lang-nl">Data Factory, DevOps &amp; Git in een agile omgeving</span><span class="lang-en">Data Factory, DevOps &amp; Git in an agile environment</span></div>
+    </div>
+  </section>
+
+  <!-- ================= SKILLS ================= -->
+  <section id="skills">
+    <h2><span class="lang-nl">Vaardigheden &amp; certificeringen</span><span class="lang-en">Skills &amp; certifications</span></h2>
+    <div class="skill-groups">
+      <div class="skill-group">
+        <h3>Data &amp; BI</h3>
+        <div class="tags">
+          <span class="tag">Power BI</span>
+          <span class="tag">DAX</span>
+          <span class="tag">Tabular Editor 3</span>
+          <span class="tag">ETL</span>
+          <span class="tag">OLAP Cubes</span>
+          <span class="tag">SQL (Teradata)</span>
+          <span class="tag">Oracle HCM</span>
+          <span class="tag">Data Storytelling</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <h3>Platform &amp; Engineering</h3>
+        <div class="tags">
+          <span class="tag">Azure Data Factory</span>
+          <span class="tag">Azure DevOps</span>
+          <span class="tag">Git</span>
+          <span class="tag">Dataflows</span>
+          <span class="tag">IAM Portal</span>
+          <span class="tag">RPA</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <h3><span class="lang-nl">Werkwijze</span><span class="lang-en">Ways of working</span></h3>
+        <div class="tags">
+          <span class="tag">Agile / Scrum</span>
+          <span class="tag">Lean Six Sigma</span>
+          <span class="tag">KPI Tracking</span>
+          <span class="tag">Root Cause Analysis</span>
+          <span class="tag">Self-Service BI</span>
+        </div>
+      </div>
+    </div>
+    <div class="certs">
+      <h3><span class="lang-nl">Certificeringen</span><span class="lang-en">Certifications</span></h3>
+      <ul>
+        <li>Microsoft <span class="lang-nl">Gecertificeerd</span><span class="lang-en">Certified</span>: Power BI Data <span class="lang-nl">Analist</span><span class="lang-en">Analyst</span> Associate</li>
+        <li>Data Modeling for Power BI</li>
+        <li><span class="lang-nl">Basistraining Adviesvaardigheden</span><span class="lang-en">Foundation Training in Advisory Skills</span></li>
+        <li><span class="lang-nl">Technische HIP Sessie Basis Broadsoft</span><span class="lang-en">Technical HIP Session — Broadsoft Basics</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ================= EXPERIENCE ================= -->
+  <section id="experience">
+    <h2><span class="lang-nl">Ervaring — KPN · 10+ jaar in data</span><span class="lang-en">Experience — KPN · 10+ years in data</span></h2>
+    <div class="timeline">
+
+      <div class="job">
+        <div class="period"><span class="lang-nl">juni 2025 – heden</span><span class="lang-en">June 2025 – present</span></div>
+        <h3><span class="lang-nl">BI-ontwikkelaar</span><span class="lang-en">BI Developer</span> · GBS CIA Insights</h3>
+        <div class="org">KPN — Rotterdam</div>
+        <ul>
+          <li><strong>HR People Metrics</strong> — <span class="lang-nl">dashboards die inzicht geven in personeelssamenstelling, diversiteit en organisatietrends.</span><span class="lang-en">dashboards providing visibility into workforce composition, diversity and organizational trends.</span></li>
+          <li><strong>BYOR (Build Your Own Report)</strong> — <span class="lang-nl">HR- en businessteams in staat stellen zelf inzichten te creëren: snel, flexibel en zonder IT-bottlenecks.</span><span class="lang-en">empowering HR and business teams to create their own insights — fast, flexible, and without IT bottlenecks.</span></li>
+          <li><strong>Pulse Survey Reporting</strong> — <span class="lang-nl">medewerkersfeedback vertaald naar bruikbare inzichten over betrokkenheid en welzijn.</span><span class="lang-en">translating employee feedback into actionable insights on engagement and well-being.</span></li>
+          <li><strong><span class="lang-nl">Automatisering</span><span class="lang-en">Automation</span></strong> — <span class="lang-nl">geautomatiseerde dataflows en DAX-query's op semantische modellen voor intuïtievere datatoegang.</span><span class="lang-en">automated dataflows and DAX queries on semantic models for more intuitive, accessible data views.</span></li>
+        </ul>
+      </div>
+
+      <div class="job">
+        <div class="period"><span class="lang-nl">september 2023 – juni 2025</span><span class="lang-en">September 2023 – June 2025</span></div>
+        <h3>Technical Designer · GBS FIA Dev Operations</h3>
+        <div class="org">KPN — Rotterdam</div>
+        <p>
+          <span class="lang-nl">Als DevOps Engineer in een SCRUM-team volledig ontwikkeld op Microsoft Azure, Azure Data Factory en Azure DevOps.</span>
+          <span class="lang-en">DevOps Engineer role in a SCRUM team, developing fully on Microsoft Azure, Azure Data Factory and Azure DevOps.</span>
+        </p>
+        <ul>
+          <li><span class="lang-nl">Power BI Workspaces en Apps ontwikkeld die complexe data omzetten in bruikbare inzichten.</span><span class="lang-en">Developed Power BI Workspaces and Apps that turn complex data into actionable insights.</span></li>
+          <li><span class="lang-nl">HR-rapportages gebouwd en beheerd met een compleet beeld van cruciale workforce-metrics.</span><span class="lang-en">Built and managed HR reports offering a comprehensive view of crucial workforce metrics.</span></li>
+          <li><span class="lang-nl">OLAP-cubes ingezet om verborgen patronen in datasets te ontsluiten.</span><span class="lang-en">Leveraged OLAP cubes to unlock hidden patterns within datasets.</span></li>
+          <li><span class="lang-nl">Bijgedragen aan zowel front-end als backend, met focus op betrouwbaarheid en performance.</span><span class="lang-en">Contributed to both front-end and backend, focusing on reliability and performance.</span></li>
+        </ul>
+      </div>
+
+      <div class="job">
+        <div class="period"><span class="lang-nl">april 2022 – september 2023</span><span class="lang-en">April 2022 – September 2023</span></div>
+        <h3>Technical Designer · CC HR Data &amp; Analytics</h3>
+        <div class="org">KPN — Rotterdam</div>
+        <p>
+          <span class="lang-nl">Power BI Developer in een team gericht op Managed HR-rapportages voor datagedreven besluitvorming. Verdieping in Tabular Editor, machine-learning-technieken en SQL binnen Teradata en Oracle HCM.</span>
+          <span class="lang-en">Power BI Developer on a team crafting Managed HR reports that empower data-driven decision-making. Deepened expertise in Tabular Editor, machine-learning techniques and SQL within Teradata and Oracle HCM.</span>
+        </p>
+      </div>
+
+      <div class="job">
+        <div class="period"><span class="lang-nl">januari 2022 – april 2022</span><span class="lang-en">January 2022 – April 2022</span></div>
+        <h3><span class="lang-nl">Informatie-analist</span><span class="lang-en">Information Analyst</span> · CC HR Data &amp; Analytics</h3>
+        <div class="org">KPN — Rotterdam</div>
+        <p>
+          <span class="lang-nl">Businessvragen van HR-collega's vertaald naar requirements, samengewerkt met developers aan dashboards en eindproducten gedemonstreerd aan de indieners.</span>
+          <span class="lang-en">Translated HR business questions into requirements, collaborated with developers on dashboards and demoed the end products to stakeholders.</span>
+        </p>
+      </div>
+
+      <div class="job">
+        <div class="period"><span class="lang-nl">december 2020 – januari 2022</span><span class="lang-en">December 2020 – January 2022</span></div>
+        <h3>Data Migration Bridge · CC HR Data &amp; Analytics</h3>
+        <div class="org">KPN — Rotterdam</div>
+        <p>
+          <span class="lang-nl">HR-datalead in het BRIDGE-transformatieprogramma: medeverantwoordelijk voor datamigratie, masterdata-management en rapportage. Project succesvol afgerond per 01-01-2022.</span>
+          <span class="lang-en">HR data lead in the BRIDGE transformation programme: co-responsible for data migration, master data management and reporting. Project successfully completed on 01-01-2022.</span>
+        </p>
+      </div>
+
+      <div class="job">
+        <div class="period"><span class="lang-nl">april 2018 – december 2020</span><span class="lang-en">April 2018 – December 2020</span></div>
+        <h3><span class="lang-nl">Specialist Informatie-analyse</span><span class="lang-en">Information Analysis Specialist</span> · CO KPN ÉÉN</h3>
+        <div class="org">KPN — Rotterdam</div>
+        <p>
+          <span class="lang-nl">Weapon of choice: Microsoft Power BI. Periodiek inzicht geleverd via kwantitatieve analyses (o.a. verschilanalyse), vertaald naar informatiemodellen, rapportages en adviezen voor managers, bestuurders en professionals.</span>
+          <span class="lang-en">Weapon of choice: Microsoft Power BI. Delivered recurring insights through quantitative analysis, translated into information models, reports and advice for managers, executives and professionals.</span>
+        </p>
+      </div>
+
+      <div class="job">
+        <div class="period"><span class="lang-nl">juni 2016 – april 2018</span><span class="lang-en">June 2016 – April 2018</span></div>
+        <h3><span class="lang-nl">Order Regisseur</span><span class="lang-en">Order Director</span> · KPN ÉÉN — S&amp;D MKB Service Operations</h3>
+        <div class="org">KPN — Rotterdam</div>
+        <p>
+          <span class="lang-nl">Regie over complexe klantorders (multi-site, maatwerk, KPN Zakelijk Mobiel). Vanaf 2017 aangesloten bij het Change Team als ketenmanager en het Data Team als BI-analist — de opstap naar mijn data-carrière.</span>
+          <span class="lang-en">Directed complex customer orders (multi-site, custom, KPN business mobile). From 2017 joined the Change Team as chain manager and the Data Team as BI analyst — the stepping stone into my data career.</span>
+        </p>
+      </div>
+
+    </div>
+
+    <div class="early-career">
+      <h3><span class="lang-nl">Daarvoor: 13 jaar retail &amp; sales (2003 – 2016)</span><span class="lang-en">Before that: 13 years of retail &amp; sales (2003 – 2016)</span></h3>
+      <p>
+        <span class="lang-nl">Van verkoopadviseur bij MyCom tot acht jaar filiaalmanager bij BelCompany / Vodafone Retail, shopmanager bij Vodafone en accountmanager bij Trends ICT Groep. Deze jaren aan de commerciële kant leerden mij coachen, klantgericht denken en KPI-gedreven sturen — vaardigheden die ik nu dagelijks inzet in data &amp; analytics.</span>
+        <span class="lang-en">From sales advisor at MyCom to eight years as branch manager at BelCompany / Vodafone Retail, shop manager at Vodafone and account manager at Trends ICT Groep. Those years on the commercial side taught me coaching, customer focus and KPI-driven management — skills I apply daily in data &amp; analytics.</span>
+      </p>
+    </div>
+  </section>
+
+  <!-- ================= EDUCATION ================= -->
+  <section id="education">
+    <h2><span class="lang-nl">Opleiding &amp; cursussen</span><span class="lang-en">Education &amp; courses</span></h2>
+    <div class="edu-list">
+      <div class="edu">
+        <div class="what">
+          <strong>Automation Anywhere University</strong>
+          <span><span class="lang-nl">Business / Office Automation, Technology &amp; Data Entry</span><span class="lang-en">Business / Office Automation, Technology &amp; Data Entry</span></span>
+        </div>
+        <div class="year">2017</div>
+      </div>
+      <div class="edu">
+        <div class="what">
+          <strong>RealCase — Cees Wiegel</strong>
+          <span><span class="lang-nl">Manager in Detail (cursus)</span><span class="lang-en">Manager in Detail (course)</span></span>
+        </div>
+        <div class="year">2012</div>
+      </div>
+      <div class="edu">
+        <div class="what">
+          <strong>Goal Trainingen</strong>
+          <span><span class="lang-nl">De Filiaalmanager als Opleider · Marketing / Commerciële economie, specialisatie marketingmanagement</span><span class="lang-en">Branch Manager as Trainer · Marketing / Commercial economics, marketing management specialisation</span></span>
+        </div>
+        <div class="year">2012</div>
+      </div>
+      <div class="edu">
+        <div class="what">
+          <strong>Retail Academy — BelCompany / Vodafone</strong>
+          <span><span class="lang-nl">Zakelijk Verkopen (cursus)</span><span class="lang-en">Business Sales (course)</span></span>
+        </div>
+        <div class="year">2012</div>
+      </div>
+      <div class="edu">
+        <div class="what">
+          <strong>Optima International</strong>
+          <span><span class="lang-nl">Verzuimmanagement</span><span class="lang-en">Absence Management</span></span>
+        </div>
+        <div class="year">2011</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= CONTACT ================= -->
+  <section id="contact" class="contact">
+    <h2>Contact</h2>
+    <p>
+      <span class="lang-nl">Benieuwd wat data voor jouw organisatie kan betekenen, of gewoon zin om te sparren over Power BI? Neem gerust contact op.</span>
+      <span class="lang-en">Curious what data can do for your organisation, or just want to talk Power BI? Feel free to reach out.</span>
+    </p>
+    <div class="actions" style="display:flex;gap:12px;flex-wrap:wrap">
+      <a class="btn btn-primary" href="mailto:pbanwarie@gmail.com">pbanwarie@gmail.com</a>
+      <a class="btn btn-ghost" href="https://www.linkedin.com/in/prashandarthur" target="_blank" rel="noopener">linkedin.com/in/prashandarthur</a>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <span class="lang-nl">© 2026 Prashand Arthur Banwarie · Den Haag</span>
+  <span class="lang-en">© 2026 Prashand Arthur Banwarie · The Hague, Netherlands</span>
+</footer>
+
+<script>
+  function setLang(lang){
+    document.documentElement.setAttribute('data-lang', lang);
+    document.documentElement.setAttribute('lang', lang);
+    document.getElementById('btn-nl').classList.toggle('active', lang === 'nl');
+    document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+  }
+</script>
+
+</body>
+</html>
