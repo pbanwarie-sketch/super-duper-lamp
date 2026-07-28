@@ -14,5 +14,6 @@ _icons.html
 _icons/
 
 # Machine-local editor settings. Worth keeping untracked on this repo in
-# particular: GitHub Pages serves every committed file over HTTP.
-.claude/settings.local.json
+# particular: GitHub Pages serves every committed file over HTTP, and the
+# permission rules in here quote local Windows paths and the account name.
+.claude/

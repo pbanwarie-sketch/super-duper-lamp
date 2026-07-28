@@ -1,9 +1,0 @@
-{
-  "permissions": {
-    "allow": [
-      "PowerShell($s='C:\\\\Users\\\\Uschi\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\c--Users-Uschi-Documents-GitHub-super-duper-lamp\\\\38dff8c8-59c9-47a9-a51e-0cd53014961e\\\\scratchpad\\\\en'; $c=Get-Content \"$s\\\\471ea7e5-e605-4d6a-ba8c-be44c6638c10.bin\" -Raw; foreach\\($t in @\\('style-hover','__resources','helmet','image-slot','x-dc','style-','@media','matchMedia','data-dc-script','text/x-dc','hover'\\)\\){ \"$t -> $\\(\\([regex]::Matches\\($c,[regex]::Escape\\($t\\)\\)\\).Count\\)\" })",
-      "PowerShell($s='C:\\\\Users\\\\Uschi\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\c--Users-Uschi-Documents-GitHub-super-duper-lamp\\\\38dff8c8-59c9-47a9-a51e-0cd53014961e\\\\scratchpad\\\\en'; Select-String -Path \"$s\\\\471ea7e5-e605-4d6a-ba8c-be44c6638c10.bin\" -Pattern 'style-hover|style-active|style-focus|style-print|// src/' | ForEach-Object { $l=$_.Line.Trim\\(\\); if\\($l.Length -gt 260\\){$l=$l.Substring\\(0,260\\)+'...'}; \"$\\($_.LineNumber\\): $l\" } | Select-Object -First 60)",
-      "PowerShell($s='C:\\\\Users\\\\Uschi\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\c--Users-Uschi-Documents-GitHub-super-duper-lamp\\\\38dff8c8-59c9-47a9-a51e-0cd53014961e\\\\scratchpad\\\\en'; \\(Get-Content \"$s\\\\471ea7e5-e605-4d6a-ba8c-be44c6638c10.bin\"\\)[1496..1600])"
-    ]
-  }
-}
