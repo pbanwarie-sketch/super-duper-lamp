@@ -64,6 +64,42 @@ What the build does, beyond unpacking:
 The build fails rather than emitting a broken page if any of its markup
 transforms stops matching — see the assertions near the end of `buildPage`.
 
+## Navigation
+
+Section links used to drop you in the wrong place, badly on desktop and worse on
+a phone. Three separate causes, all fixed:
+
+1. **No `scroll-padding-top`.** A fragment link puts the target's top edge at
+   y=0 — exactly where the sticky bar is. 57 px of every section was buried on
+   desktop; on mobile the bar wrapped to two rows at 83 px and the `#work` and
+   `#experience` headings landed at y=64, completely hidden. `html` now carries
+   `scroll-padding-top: calc(var(--nav-h) + 18px)`.
+2. **`position: sticky` never worked.** The page wrapper ships
+   `overflow-x: hidden` inline, which makes it the scroll container for its
+   sticky descendants — and it never scrolls, so the bar scrolled away with the
+   page instead of pinning. `.page-wrap` overrides it with `overflow-x: clip`,
+   which clips identically without creating a scroll container. Browsers that
+   don't know the keyword drop the declaration and keep the old behaviour.
+3. **The mobile bar wrapped.** Four section links plus brand plus language would
+   not fit one row.
+
+On top of that:
+
+- **Bottom tab bar under 900 px.** The four sections move out of the top bar into
+  a fixed bar in the thumb zone; the top bar keeps brand and language in one
+  49 px row, down from 83 px. Tab labels are read out of the page's own nav, so
+  the Dutch build gets Dutch tabs with no second copy of the translations.
+- **Active section** is tracked on scroll and marked with `.is-active` plus
+  `aria-current="true"` on both the desktop links and the tabs.
+- **Scroll progress** hairline across the top of the viewport.
+- **Focus follows the jump:** after a fragment navigation the target section
+  takes focus (`tabindex="-1"`, `preventScroll`), so keyboard and screen-reader
+  users continue from the section rather than from the top of the document.
+
+`--nav-h` has a CSS fallback per breakpoint, but `site.js` measures the real bar
+on load and on resize and overwrites it — a wrapped bar or a late-loading font
+can't quietly reintroduce the overlap.
+
 ## Brand assets
 
 The LinkedIn and Proton Mail links carry each company's own mark. Both are used

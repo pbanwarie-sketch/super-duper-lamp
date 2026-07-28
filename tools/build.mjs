@@ -36,6 +36,8 @@ const PAGES = [
     ogLocale: 'en_GB',
     roles: ['Power BI dashboards', 'self-service analytics', 'data people trust'],
     skipLink: 'Skip to main content',
+    navLabel: 'Main',
+    sectionsLabel: 'Sections',
     prevLabel: 'Previous phrase',
     nextLabel: 'Next phrase',
     imgAlt: {
@@ -54,6 +56,8 @@ const PAGES = [
     ogLocale: 'nl_NL',
     roles: ['Power BI-dashboards', 'self-service analytics', 'data die klopt'],
     skipLink: 'Naar de hoofdinhoud',
+    navLabel: 'Hoofdmenu',
+    sectionsLabel: 'Secties',
     prevLabel: 'Vorige zin',
     nextLabel: 'Volgende zin',
     imgAlt: {
@@ -225,6 +229,67 @@ function mark(which, px = MARK_PX) {
   );
 }
 
+// ────────────────────────────────────────────────────────────── navigation CSS
+
+/**
+ * --nav-h is the height of the sticky bar. scroll-padding-top on the scrolling
+ * element is what makes a fragment link stop short of it instead of sliding the
+ * section underneath; without it the browser puts the section's top edge at
+ * y=0, which is precisely where the bar is. The values here are the fallback —
+ * site.js measures the real bar and overwrites the variable, so a wrapped bar
+ * or a different font metric can't reintroduce the overlap.
+ */
+const NAV_CSS = `
+:root{--nav-h:57px;--tabbar-h:54px}
+html{scroll-padding-top:calc(var(--nav-h) + 18px)}
+
+/* Sticky lives on the landmark, not on the <nav> it wraps — see build.mjs. */
+.site-header{position:sticky;top:0;z-index:50}
+
+/* The page wrapper ships overflow-x:hidden inline to contain the marquee. But
+   an element with overflow other than visible becomes the scroll container for
+   its sticky descendants, and this one never scrolls — so the bar could not
+   pin, and scrolled away with the page. overflow:clip clips exactly the same
+   way without creating a scroll container. Browsers too old to know the
+   keyword drop this declaration and keep today's behaviour. */
+.page-wrap{overflow-x:clip !important}
+
+.scroll-progress{position:fixed;top:0;left:0;right:0;height:2px;z-index:60;pointer-events:none}
+.scroll-progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,#2E7DFF,#63A2FF)}
+
+.nav-link{position:relative}
+.nav-link.is-active{color:#EDF1FA !important}
+.nav-link.is-active::after{content:"";position:absolute;left:0;right:0;bottom:-7px;height:2px;border-radius:2px;background:#2E7DFF}
+
+/* Desktop keeps the links in the top bar; the tab bar is a small-screen thing. */
+.tabbar{display:none}
+
+@media (max-width:900px){
+  :root{--nav-h:52px}
+  /* The four section links move to the bottom bar, which is what stops the top
+     bar wrapping to two rows and reclaims ~35px of every phone viewport. */
+  .site-nav .nav-link{display:none !important}
+  .tabbar{
+    display:grid;grid-auto-flow:column;grid-auto-columns:1fr;
+    position:fixed;left:0;right:0;bottom:0;z-index:60;
+    background:rgba(5,8,15,.93);backdrop-filter:blur(14px);
+    border-top:1px solid rgba(255,255,255,.08);
+    padding-bottom:env(safe-area-inset-bottom,0px);
+  }
+  .tab{
+    display:flex;align-items:center;justify-content:center;
+    min-height:var(--tabbar-h);padding:6px 4px;
+    border-top:2px solid transparent;
+    font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.08em;
+    line-height:1.2;text-align:center;text-transform:uppercase;color:#6E7994;
+  }
+  .tab.is-active{color:#63A2FF;border-top-color:#2E7DFF;background:rgba(46,125,255,.09)}
+  /* Nothing should end up permanently underneath the bar. */
+  .site-footer{padding-bottom:calc(24px + var(--tabbar-h) + env(safe-area-inset-bottom,0px)) !important}
+  html{scroll-padding-bottom:calc(var(--tabbar-h) + 12px)}
+}
+`.trim();
+
 const BRAND_CSS = `
 /* Official LinkedIn / Proton Mail marks. The generous left padding the pills
    already had doubles as the clear space both brands ask for. */
@@ -268,7 +333,10 @@ img{max-width:100%}
   /* The skills card is pinned at left:101px;top:535px on desktop — on a phone
      it has to rejoin the flow or it lands on top of the paragraph below it. */
   .skills-card{position:static !important;width:auto !important;max-width:none !important;margin-top:20px !important;left:auto !important;top:auto !important}
-  .site-footer{padding:24px 20px !important}
+  /* Longhands on purpose: the padding-bottom that keeps the footer clear of the
+     bottom tab bar lives in the navigation layer, and a shorthand here would
+     silently overwrite it. */
+  .site-footer{padding-top:24px !important;padding-left:20px !important;padding-right:20px !important}
   .role-nav{padding-top:10px !important}
   .hero-cta{flex-wrap:wrap !important}
   .wrap-label{white-space:normal !important}
@@ -344,6 +412,78 @@ const SITE_JS = `
     if (next) next.addEventListener('click', function () { jump(1); });
     if (!reduced) timer = setTimeout(tick, 1200);
   }
+
+  // ── section navigation ──────────────────────────────────────────────────
+  var nav = document.querySelector('.site-nav');
+  var navLinks = [].slice.call(document.querySelectorAll('[data-nav]'));
+  var bar = document.querySelector('.scroll-progress i');
+  var ids = [];
+  navLinks.forEach(function (a) {
+    var id = a.getAttribute('data-nav');
+    if (ids.indexOf(id) < 0 && document.getElementById(id)) ids.push(id);
+  });
+
+  // The CSS fallback for --nav-h is a guess; this is the measurement. Without
+  // it a wrapped bar or a slow font would put the bar back over the heading a
+  // fragment link just jumped to.
+  function measureNav() {
+    if (nav) {
+      document.documentElement.style.setProperty('--nav-h', Math.round(nav.offsetHeight) + 'px');
+    }
+  }
+
+  var queued = false;
+  function paintNav() {
+    queued = false;
+    var y = window.pageYOffset;
+    var doc = document.documentElement;
+
+    if (bar) {
+      var max = doc.scrollHeight - window.innerHeight;
+      bar.style.width = (max > 0 ? Math.min(100, Math.max(0, (y / max) * 100)) : 0) + '%';
+    }
+
+    // A section counts as current once its top passes just below the bar.
+    var line = y + (nav ? nav.offsetHeight : 0) + 24;
+    var current = null;
+    ids.forEach(function (id) {
+      var el = document.getElementById(id);
+      if (el && el.getBoundingClientRect().top + y <= line) current = id;
+    });
+    // The last section is usually too short to ever reach the line, so the
+    // bottom of the page claims it.
+    if (y + window.innerHeight >= doc.scrollHeight - 2 && ids.length) current = ids[ids.length - 1];
+
+    navLinks.forEach(function (a) {
+      var on = a.getAttribute('data-nav') === current;
+      a.classList.toggle('is-active', on);
+      if (on) a.setAttribute('aria-current', 'true');
+      else a.removeAttribute('aria-current');
+    });
+  }
+
+  function onScroll() {
+    if (!queued) { queued = true; window.requestAnimationFrame(paintNav); }
+  }
+
+  // After a fragment jump, hand focus to the section so keyboard and screen
+  // reader users carry on from there rather than from the top of the document.
+  // preventScroll keeps this from fighting the smooth scroll already running.
+  function focusSection() {
+    var id = location.hash.slice(1);
+    if (!id) return;
+    var el = document.getElementById(id);
+    if (!el) return;
+    if (!el.hasAttribute('tabindex')) el.setAttribute('tabindex', '-1');
+    try { el.focus({ preventScroll: true }); } catch (err) { el.focus(); }
+  }
+
+  measureNav();
+  paintNav();
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', function () { measureNav(); onScroll(); });
+  window.addEventListener('hashchange', function () { focusSection(); onScroll(); });
+  if (location.hash) setTimeout(focusSection, 0);
 
   // ── reveal on scroll ────────────────────────────────────────────────────
   var els = [].slice.call(document.querySelectorAll('[data-reveal]'));
@@ -533,6 +673,53 @@ function buildPage(page, cssParts) {
   );
   if (paired !== 2) throw new Error(`${page.out}: expected 2 marked contact rows, got ${paired}`);
 
+  // 8c. Section navigation. Two problems to solve: fragment links landed the
+  //     section's top edge at y=0, underneath a sticky bar that is 57 px on
+  //     desktop and 83 px on a phone (where the links wrapped to a second row),
+  //     so the heading you asked for was covered or entirely hidden; and that
+  //     wrapped bar ate 11% of a phone viewport. The links are tagged here so
+  //     the stylesheet and site.js can drive an active state, and the same set
+  //     is mirrored into a bottom tab bar for small screens.
+  // Scoped to the bar itself — the hero's "MY WORK" and "HOW I GOT HERE"
+  // buttons point at #work and #story too, and they are not navigation.
+  const navSlice = sliceElement(body, 'nav', 0);
+  if (!navSlice) throw new Error(`${page.out}: no <nav> to wire up`);
+  const navOpen = body.slice(navSlice.start, body.indexOf('>', navSlice.start) + 1);
+
+  const sections = [];
+  const navInner = navSlice.inner.replace(
+    /<a\b([^>]*)href="#(story|work|experience|contact)"([^>]*)>([^<]*)<\/a>/g,
+    (all, pre, id, post, text) => {
+      sections.push({ id, text });
+      return `${addClass(`<a${pre}href="#${id}"${post} data-nav="${id}">`, 'nav-link')}${text}</a>`;
+    }
+  );
+  if (sections.length !== 4) {
+    throw new Error(`${page.out}: expected 4 section links in the nav, found ${sections.length}`);
+  }
+  // Two <nav> landmarks now exist (this bar and the tab bar), so both get a
+  // name — otherwise a screen reader just announces "navigation" twice.
+  body =
+    body.slice(0, navSlice.start) +
+    navOpen.replace(/^<nav/, `<nav aria-label="${esc(page.navLabel)}"`) +
+    navInner +
+    '</nav>' +
+    body.slice(navSlice.end);
+
+  // Labels come from the nav that is already on the page, so the Dutch build
+  // gets Dutch tabs without a second copy of the translations.
+  const tabs = sections
+    .map(
+      (s) =>
+        `<a class="tab" href="#${s.id}" data-nav="${s.id}"><span>${s.text.trim()}</span></a>`
+    )
+    .join('');
+
+  body =
+    `<div class="scroll-progress" aria-hidden="true"><i></i></div>\n` +
+    body +
+    `\n<nav class="tabbar" aria-label="${esc(page.sectionsLabel)}">${tabs}</nav>`;
+
   // Hooks for the responsive layer, matched on the inline styles that make each
   // one a desktop-only measurement.
   body = body
@@ -563,6 +750,9 @@ function buildPage(page, cssParts) {
     .replace(/<div style="display:flex;align-items:center;gap:30px">/, (t) =>
       addClass(t, 'nav-links')
     )
+    .replace(/<div style="background:#05080F;min-height:100vh;overflow-x:hidden">/, (t) =>
+      addClass(t, 'page-wrap')
+    )
     // The hero's two call-to-action pills sit in a non-wrapping flex row and
     // run off the right edge below ~380px.
     .replace(/<div style="display:flex;gap:14px;padding-top:6px">/, (t) => addClass(t, 'hero-cta'))
@@ -587,6 +777,7 @@ function buildPage(page, cssParts) {
   for (const cls of [
     'site-nav', 'nav-links', 'hero', 'hero-copy', 'hero-media', 'hero-cta', 'hero-fade-x',
     'story-col', 'story-photo', 'skills-card', 'role-nav', 'wrap-label', 'site-footer',
+    'page-wrap',
   ]) {
     if (!body.includes(`class="${cls}`) && !new RegExp(`class="[^"]*\\b${cls}\\b`).test(body)) {
       throw new Error(`${page.out}: responsive hook "${cls}" matched nothing`);
@@ -598,9 +789,13 @@ function buildPage(page, cssParts) {
   // navigation has one big unlabelled region.
   const navEl = sliceElement(body, 'nav', 0);
   const footerAt = body.lastIndexOf('<footer');
+  // The header must carry the sticky positioning, not the nav inside it: a
+  // sticky element can only travel within its parent's box, and a <header> that
+  // wraps nothing but the nav is exactly as tall as the nav — so the bar would
+  // scroll away with the header instead of pinning to the top.
   body =
     body.slice(0, navEl.start) +
-    '<header>' +
+    '<header class="site-header">' +
     body.slice(navEl.start, navEl.end) +
     '</header>\n<main id="main">' +
     body.slice(navEl.end, footerAt) +
@@ -794,7 +989,7 @@ for (const m of Object.values(MARKS)) {
 
 fs.writeFileSync(
   path.join(ASSETS, 'site.css'),
-  `${uniqueCss[0]}\n\n${hoverSheet()}\n\n${BRAND_CSS}\n\n${RESPONSIVE_CSS}\n`
+  `${uniqueCss[0]}\n\n${hoverSheet()}\n\n${BRAND_CSS}\n\n${NAV_CSS}\n\n${RESPONSIVE_CSS}\n`
 );
 fs.writeFileSync(path.join(ASSETS, 'site.js'), `${SITE_JS}\n`);
 fs.writeFileSync(path.join(ASSETS, 'favicon.svg'), FAVICON);

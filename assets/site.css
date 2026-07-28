@@ -301,6 +301,55 @@
 .brand-link{display:inline-flex !important;align-items:center;gap:10px}
 .brand-pair{display:flex;align-items:center;gap:14px}
 
+:root{--nav-h:57px;--tabbar-h:54px}
+html{scroll-padding-top:calc(var(--nav-h) + 18px)}
+
+/* Sticky lives on the landmark, not on the <nav> it wraps — see build.mjs. */
+.site-header{position:sticky;top:0;z-index:50}
+
+/* The page wrapper ships overflow-x:hidden inline to contain the marquee. But
+   an element with overflow other than visible becomes the scroll container for
+   its sticky descendants, and this one never scrolls — so the bar could not
+   pin, and scrolled away with the page. overflow:clip clips exactly the same
+   way without creating a scroll container. Browsers too old to know the
+   keyword drop this declaration and keep today's behaviour. */
+.page-wrap{overflow-x:clip !important}
+
+.scroll-progress{position:fixed;top:0;left:0;right:0;height:2px;z-index:60;pointer-events:none}
+.scroll-progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,#2E7DFF,#63A2FF)}
+
+.nav-link{position:relative}
+.nav-link.is-active{color:#EDF1FA !important}
+.nav-link.is-active::after{content:"";position:absolute;left:0;right:0;bottom:-7px;height:2px;border-radius:2px;background:#2E7DFF}
+
+/* Desktop keeps the links in the top bar; the tab bar is a small-screen thing. */
+.tabbar{display:none}
+
+@media (max-width:900px){
+  :root{--nav-h:52px}
+  /* The four section links move to the bottom bar, which is what stops the top
+     bar wrapping to two rows and reclaims ~35px of every phone viewport. */
+  .site-nav .nav-link{display:none !important}
+  .tabbar{
+    display:grid;grid-auto-flow:column;grid-auto-columns:1fr;
+    position:fixed;left:0;right:0;bottom:0;z-index:60;
+    background:rgba(5,8,15,.93);backdrop-filter:blur(14px);
+    border-top:1px solid rgba(255,255,255,.08);
+    padding-bottom:env(safe-area-inset-bottom,0px);
+  }
+  .tab{
+    display:flex;align-items:center;justify-content:center;
+    min-height:var(--tabbar-h);padding:6px 4px;
+    border-top:2px solid transparent;
+    font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.08em;
+    line-height:1.2;text-align:center;text-transform:uppercase;color:#6E7994;
+  }
+  .tab.is-active{color:#63A2FF;border-top-color:#2E7DFF;background:rgba(46,125,255,.09)}
+  /* Nothing should end up permanently underneath the bar. */
+  .site-footer{padding-bottom:calc(24px + var(--tabbar-h) + env(safe-area-inset-bottom,0px)) !important}
+  html{scroll-padding-bottom:calc(var(--tabbar-h) + 12px)}
+}
+
 /* ── shared behaviour ─────────────────────────────────────────────────── */
 .skip-link{position:absolute;left:-9999px;top:0;z-index:100;padding:12px 20px;background:#2E7DFF;color:#fff;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.16em}
 .skip-link:focus{left:0}
@@ -326,7 +375,10 @@ img{max-width:100%}
   /* The skills card is pinned at left:101px;top:535px on desktop — on a phone
      it has to rejoin the flow or it lands on top of the paragraph below it. */
   .skills-card{position:static !important;width:auto !important;max-width:none !important;margin-top:20px !important;left:auto !important;top:auto !important}
-  .site-footer{padding:24px 20px !important}
+  /* Longhands on purpose: the padding-bottom that keeps the footer clear of the
+     bottom tab bar lives in the navigation layer, and a shorthand here would
+     silently overwrite it. */
+  .site-footer{padding-top:24px !important;padding-left:20px !important;padding-right:20px !important}
   .role-nav{padding-top:10px !important}
   .hero-cta{flex-wrap:wrap !important}
   .wrap-label{white-space:normal !important}
