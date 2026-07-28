@@ -44,6 +44,21 @@ const PAGES = [
       'hero-portrait': 'Prashand Banwarie',
       'about-photo': 'Prashand Banwarie at work on a Power BI report',
     },
+    ai: {
+      badgeAlt: 'AI generated',
+      caption: 'Illustration generated with AI',
+      summary: 'How AI was used on this site',
+      intro: 'Parts of this site were made with AI, and parts were not.',
+      items: [
+        ['Photographs', 'real photographs of me — not AI-generated and not AI-retouched.'],
+        ['Pixel-art illustration', 'generated with AI.'],
+        ['Written text', 'drafted with AI, then edited and approved by me.'],
+        ['Design and layout', 'produced with an AI design tool.'],
+      ],
+      note:
+        'Labelled with the EU icons for labelling AI-generated content, published by the European Commission. Their use is voluntary.',
+      noteLink: 'About the EU icons',
+    },
   },
   {
     bundle: 'nl.html',
@@ -64,8 +79,27 @@ const PAGES = [
       'hero-portrait': 'Prashand Banwarie',
       'about-photo': 'Prashand Banwarie aan het werk aan een Power BI-rapport',
     },
+    ai: {
+      badgeAlt: 'AI generated',
+      caption: 'Illustratie gegenereerd met AI',
+      summary: 'Hoe AI op deze site is gebruikt',
+      intro: 'Delen van deze site zijn met AI gemaakt, andere delen niet.',
+      items: [
+        ["Foto's", 'echte foto’s van mij — niet door AI gegenereerd en niet door AI bewerkt.'],
+        ['Pixelart-illustratie', 'gegenereerd met AI.'],
+        ['Tekst', 'opgesteld met AI en daarna door mij geredigeerd en goedgekeurd.'],
+        ['Ontwerp en opmaak', 'gemaakt met een AI-ontwerptool.'],
+      ],
+      note:
+        'Gelabeld met de EU-iconen voor het labelen van door AI gegenereerde content, gepubliceerd door de Europese Commissie. Het gebruik ervan is vrijwillig.',
+      noteLink: 'Over de EU-iconen',
+    },
   },
 ];
+
+/** Where the EU icon set and its guidance are published. */
+const EU_ICONS_URL =
+  'https://digital-strategy.ec.europa.eu/en/policies/eu-icons-labelling-ai-generated-content';
 
 // ─────────────────────────────────────────────────────────────── bundle reader
 
@@ -290,6 +324,69 @@ html{scroll-padding-top:calc(var(--nav-h) + 18px)}
 }
 `.trim();
 
+// ───────────────────────────────────────────────── EU AI-content labelling
+
+/**
+ * The European Commission's icons for labelling AI-generated content:
+ * https://digital-strategy.ec.europa.eu/en/policies/eu-icons-labelling-ai-generated-content
+ * Published for anyone to use freely, no attribution required, and used here
+ * unmodified (white variants, for a dark page).
+ *
+ * Nothing on this site falls inside Article 50's *mandatory* scope — the
+ * photographs are real, the illustration is evidently an illustration rather
+ * than a deepfake, and the text carries human editorial responsibility. The
+ * icons are voluntary, so this is a transparency choice. It is deliberately
+ * applied only to what is genuinely AI-made: labelling the real photographs
+ * would be its own kind of misinformation.
+ *
+ * What the guidance asks of a label, and where each is handled:
+ *  - perceivable at first exposure, embedded in the content, nothing overlaying
+ *    it  -> the badge sits on the illustration itself, above the dot-grid
+ *  - accompanied by a plain-language text label  -> the caption under it
+ *  - alt text / readable by assistive technology  -> alt on the badge image
+ *  - a navigable secondary information layer  -> the <details> disclosure that
+ *    the caption links to, which itemises every asset either way
+ */
+const EU_AI_ICONS = {
+  generated: { src: 'assets/eu-ai/ai-generated-white.svg', w: 1789.84, h: 566.93 },
+  basic: { src: 'assets/eu-ai/ai-white.svg', w: 566.93, h: 566.93 },
+};
+
+function euIcon(which, px, alt) {
+  const i = EU_AI_ICONS[which];
+  return (
+    `<img src="${i.src}" alt="${esc(alt)}" width="${Math.round(i.w)}" height="${Math.round(i.h)}" ` +
+    `style="height:${px}px;width:auto;flex:none;display:block">`
+  );
+}
+
+const EU_AI_CSS = `
+/* Sits on the illustration, over the dot-grid but under nothing. */
+.ai-badge{position:absolute;top:16px;right:16px;z-index:3}
+.ai-caption{display:flex;align-items:center;flex-wrap:wrap;gap:8px 12px;margin-top:14px;position:relative;
+  font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#8B94AA}
+.ai-caption a{color:#63A2FF;text-decoration:underline;text-underline-offset:3px}
+
+.ai-disclosure{padding:26px 72px 30px;background:#05080F;border-top:1px solid rgba(255,255,255,.06)}
+.ai-disclosure-inner{display:flex;align-items:flex-start;gap:16px;max-width:1280px;margin:0 auto}
+.ai-disclosure summary{cursor:pointer;list-style:none;
+  font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#EDF1FA}
+.ai-disclosure summary::-webkit-details-marker{display:none}
+.ai-disclosure summary::after{content:" ▾";color:#2E7DFF}
+.ai-disclosure details[open] summary::after{content:" ▴"}
+.ai-disclosure p{margin:10px 0 0;font-size:14px;line-height:1.6;color:#98A1B6;max-width:70ch}
+.ai-disclosure ul{margin:12px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.ai-disclosure li{font-size:14px;line-height:1.6;color:#98A1B6;max-width:70ch}
+.ai-disclosure li b{color:#EDF1FA;font-weight:600}
+.ai-disclosure .ai-source{margin-top:14px;font-size:12px;line-height:1.6;color:#6E7994;max-width:70ch}
+.ai-disclosure .ai-source a{color:#63A2FF}
+
+@media (max-width:900px){
+  .ai-disclosure{padding:22px 20px 26px}
+  .ai-badge{top:10px;right:10px}
+}
+`.trim();
+
 const BRAND_CSS = `
 /* Official LinkedIn / Proton Mail marks. The generous left padding the pills
    already had doubles as the clear space both brands ask for. */
@@ -478,11 +575,20 @@ const SITE_JS = `
     try { el.focus({ preventScroll: true }); } catch (err) { el.focus(); }
   }
 
+  // Following the illustration's label to the disclosure should reveal it, not
+  // drop you next to a collapsed summary you then have to find and click.
+  function openIfTargeted() {
+    if (location.hash !== '#ai-disclosure') return;
+    var box = document.querySelector('#ai-disclosure details');
+    if (box) box.open = true;
+  }
+
   measureNav();
+  openIfTargeted();
   paintNav();
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', function () { measureNav(); onScroll(); });
-  window.addEventListener('hashchange', function () { focusSection(); onScroll(); });
+  window.addEventListener('hashchange', function () { openIfTargeted(); focusSection(); onScroll(); });
   if (location.hash) setTimeout(focusSection, 0);
 
   // ── reveal on scroll ────────────────────────────────────────────────────
@@ -802,6 +908,11 @@ function buildPage(page, cssParts) {
     '</main>\n' +
     body.slice(footerAt);
 
+  // 8d. EU labelling of the AI-generated illustration, plus the disclosure it
+  //     points at. Inserted after the landmark pass so the disclosure lands
+  //     between </main> and the footer, where site-level meta belongs.
+  body = labelAiContent(body, page);
+
   // 9. Drop everything the runtime used to consume.
   body = body
     .replace(/<script\s+type="text\/x-dc"[\s\S]*?<\/script>/g, '')
@@ -818,6 +929,57 @@ function buildPage(page, cssParts) {
   }
 
   return renderPage(page, body);
+}
+
+/**
+ * Puts the EU "AI generated" label on the one thing here that is AI-generated
+ * imagery — the pixel-art scene — and appends the disclosure that explains, for
+ * every asset, whether AI was involved.
+ */
+function labelAiContent(body, page) {
+  const ai = page.ai;
+
+  // The illustration's panel: position:relative, so the badge can sit on the
+  // artwork rather than float somewhere near it.
+  const marker = '<div data-reveal="1" style="position:relative;margin-top:56px;';
+  const at = body.indexOf(marker);
+  if (at < 0) throw new Error(`${page.out}: could not find the illustration panel to label`);
+  const panel = sliceElement(body, 'div', at);
+  const openEnd = body.indexOf('>', panel.start) + 1;
+  const closeAt = panel.end - '</div>'.length;
+
+  // 28px keeps the word "GENERATED" legible; the guidance asks for a size at
+  // which the label is actually perceivable, not merely present.
+  const badge = `<span class="ai-badge">${euIcon('generated', 28, ai.badgeAlt)}</span>`;
+  const caption =
+    `<div class="ai-caption"><span>${esc(ai.caption)}</span>` +
+    `<a href="#ai-disclosure">${esc(ai.summary)}</a></div>`;
+
+  body =
+    body.slice(0, openEnd) +
+    badge +
+    body.slice(openEnd, closeAt) +
+    caption +
+    body.slice(closeAt);
+
+  // The secondary information layer. Collapsed by default so it stays a
+  // footnote, but it is real markup in the page — not fetched, not behind JS.
+  const items = ai.items
+    .map(([term, rest]) => `<li><b>${esc(term)}</b> — ${esc(rest)}</li>`)
+    .join('');
+  const disclosure =
+    `<section class="ai-disclosure" id="ai-disclosure">` +
+    `<div class="ai-disclosure-inner">` +
+    euIcon('basic', 22, '') +
+    `<details><summary>${esc(ai.summary)}</summary>` +
+    `<p>${esc(ai.intro)}</p><ul>${items}</ul>` +
+    `<p class="ai-source">${esc(ai.note)} ` +
+    `<a href="${EU_ICONS_URL}" target="_blank" rel="noopener noreferrer">${esc(ai.noteLink)}</a></p>` +
+    `</details></div></section>\n`;
+
+  const footerAt = body.lastIndexOf('<footer');
+  if (footerAt < 0) throw new Error(`${page.out}: no footer to put the AI disclosure above`);
+  return body.slice(0, footerAt) + disclosure + body.slice(footerAt);
 }
 
 function jpegSize(buf) {
@@ -981,15 +1143,15 @@ fs.mkdirSync(ASSETS, { recursive: true });
 // The brand artwork is committed rather than generated — it comes from
 // LinkedIn's and Proton's download pages, not from the design bundles — so the
 // build only checks that it is still there.
-for (const m of Object.values(MARKS)) {
+for (const m of [...Object.values(MARKS), ...Object.values(EU_AI_ICONS)]) {
   if (!fs.existsSync(path.join(ROOT, m.src))) {
-    throw new Error(`missing brand asset ${m.src} — see the Brand assets section of README.md`);
+    throw new Error(`missing third-party asset ${m.src} — see README.md`);
   }
 }
 
 fs.writeFileSync(
   path.join(ASSETS, 'site.css'),
-  `${uniqueCss[0]}\n\n${hoverSheet()}\n\n${BRAND_CSS}\n\n${NAV_CSS}\n\n${RESPONSIVE_CSS}\n`
+  `${uniqueCss[0]}\n\n${hoverSheet()}\n\n${BRAND_CSS}\n\n${EU_AI_CSS}\n\n${NAV_CSS}\n\n${RESPONSIVE_CSS}\n`
 );
 fs.writeFileSync(path.join(ASSETS, 'site.js'), `${SITE_JS}\n`);
 fs.writeFileSync(path.join(ASSETS, 'favicon.svg'), FAVICON);

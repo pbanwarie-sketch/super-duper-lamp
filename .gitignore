@@ -8,6 +8,10 @@ Personal page redesign.zip
 # Local preview / diagnostics
 _frame.html
 _diag.html
+_preview.html
+_navprobe.html
+_icons.html
+_icons/
 
 # Machine-local editor settings. Worth keeping untracked on this repo in
 # particular: GitHub Pages serves every committed file over HTTP.

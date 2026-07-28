@@ -114,11 +114,20 @@
     try { el.focus({ preventScroll: true }); } catch (err) { el.focus(); }
   }
 
+  // Following the illustration's label to the disclosure should reveal it, not
+  // drop you next to a collapsed summary you then have to find and click.
+  function openIfTargeted() {
+    if (location.hash !== '#ai-disclosure') return;
+    var box = document.querySelector('#ai-disclosure details');
+    if (box) box.open = true;
+  }
+
   measureNav();
+  openIfTargeted();
   paintNav();
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', function () { measureNav(); onScroll(); });
-  window.addEventListener('hashchange', function () { focusSection(); onScroll(); });
+  window.addEventListener('hashchange', function () { openIfTargeted(); focusSection(); onScroll(); });
   if (location.hash) setTimeout(focusSection, 0);
 
   // ── reveal on scroll ────────────────────────────────────────────────────
