@@ -189,6 +189,49 @@ function hoverSheet() {
     .join('\n');
 }
 
+// ───────────────────────────────────────────────────────────────── brand marks
+
+/**
+ * Official LinkedIn and Proton Mail artwork, used unmodified.
+ *
+ *   [in] bug   https://brand.linkedin.com/downloads  (in-logo.zip -> LI-In-Bug.png)
+ *   Proton Mail badge
+ *              https://proton.me/media/kit -> the same badge Proton serves on
+ *              proton.me, mail-badge.svg
+ *
+ * The rules that shape the markup below:
+ *  - LinkedIn requires the [in] bug to be at least 21 px tall on screen and
+ *    forbids changing its colour or shape. So the mark is never recoloured, and
+ *    display size is set with height + width:auto rather than by writing a
+ *    rounded width into the attributes, which would squash it by ~1%.
+ *  - The width/height attributes carry the artwork's true pixel ratio purely so
+ *    the browser can reserve the right box before the image loads.
+ *  - The marks sit next to a text label that already names the destination, so
+ *    they are decorative: alt="" keeps a screen reader from saying "LinkedIn"
+ *    twice.
+ */
+const MARK_PX = 21; // LinkedIn's stated on-screen minimum for the [in] bug
+
+const MARKS = {
+  linkedin: { src: 'assets/brand/linkedin-bug.png', w: 635, h: 540 },
+  proton: { src: 'assets/brand/proton-mail-badge.svg', w: 36, h: 36 },
+};
+
+function mark(which, px = MARK_PX) {
+  const m = MARKS[which];
+  return (
+    `<img src="${m.src}" alt="" width="${m.w}" height="${m.h}" ` +
+    `style="height:${px}px;width:auto;flex:none">`
+  );
+}
+
+const BRAND_CSS = `
+/* Official LinkedIn / Proton Mail marks. The generous left padding the pills
+   already had doubles as the clear space both brands ask for. */
+.brand-link{display:inline-flex !important;align-items:center;gap:10px}
+.brand-pair{display:flex;align-items:center;gap:14px}
+`.trim();
+
 // ──────────────────────────────────────────────────────── responsive + a11y CSS
 
 /**
@@ -444,6 +487,52 @@ function buildPage(page, cssParts) {
     .replace(/<footer\b[^>]*>/, (t) => addClass(t, 'site-footer'))
     .replace(/<section\b[^>]*>/g, (t) => addClass(t, 'sec'));
 
+  // 8b. Put the official LinkedIn and Proton Mail marks on the links that point
+  //     at them. Buttons carry the mark inside the link, before their existing
+  //     label.
+  const isOurs = (href) =>
+    href === 'mailto:mailprashand@pm.me'
+      ? 'proton'
+      : /^https:\/\/www\.linkedin\.com\/in\/prashandarthur$/.test(href)
+        ? 'linkedin'
+        : null;
+
+  let marked = 0;
+  body = body.replace(/<a\b[^>]*>[^<]*<\/a>/g, (all) => {
+    const href = (all.match(/href="([^"]*)"/) || [])[1] || '';
+    const which = isOurs(href);
+    if (!which) return all;
+    const open = all.match(/^<a\b[^>]*>/)[0];
+    const text = all.slice(open.length, -4);
+    // The contact-details block shows the address itself as the link text; its
+    // mark goes beside the whole pair below, not inside the link.
+    if (/^(mailprashand@pm\.me|in\/prashandarthur)$/.test(text.trim())) return all;
+    marked++;
+    return `${addClass(open, 'brand-link')}${mark(which)}${text}</a>`;
+  });
+  if (marked !== 4) throw new Error(`${page.out}: expected 4 marked buttons, marked ${marked}`);
+
+  // In the contact-details block the mark sits to the left of the label/value
+  // pair, where it is isolated from any wording.
+  let paired = 0;
+  body = body.replace(
+    /<div style="(display:flex;flex-direction:column;gap:6px[^"]*)">\s*(<span\b[^>]*>[^<]*<\/span>)\s*(<a\b[^>]*href="([^"]*)"[^>]*>[^<]*<\/a>)\s*<\/div>/g,
+    (all, style, label, link, href) => {
+      const which = isOurs(href);
+      if (!which) return all;
+      paired++;
+      // padding-top belongs to the row, or the mark would sit above the text it
+      // labels rather than centred against it.
+      const pad = (style.match(/padding-top:\d+px/) || [''])[0];
+      const rest = style.replace(/;?padding-top:\d+px/, '');
+      return (
+        `<div class="brand-pair" style="${pad}">${mark(which, 26)}` +
+        `<div style="${rest}">${label}${link}</div></div>`
+      );
+    }
+  );
+  if (paired !== 2) throw new Error(`${page.out}: expected 2 marked contact rows, got ${paired}`);
+
   // Hooks for the responsive layer, matched on the inline styles that make each
   // one a desktop-only measurement.
   body = body
@@ -694,9 +783,18 @@ if (uniqueCss.length !== 1) {
 }
 
 fs.mkdirSync(ASSETS, { recursive: true });
+// The brand artwork is committed rather than generated — it comes from
+// LinkedIn's and Proton's download pages, not from the design bundles — so the
+// build only checks that it is still there.
+for (const m of Object.values(MARKS)) {
+  if (!fs.existsSync(path.join(ROOT, m.src))) {
+    throw new Error(`missing brand asset ${m.src} — see the Brand assets section of README.md`);
+  }
+}
+
 fs.writeFileSync(
   path.join(ASSETS, 'site.css'),
-  `${uniqueCss[0]}\n\n${hoverSheet()}\n\n${RESPONSIVE_CSS}\n`
+  `${uniqueCss[0]}\n\n${hoverSheet()}\n\n${BRAND_CSS}\n\n${RESPONSIVE_CSS}\n`
 );
 fs.writeFileSync(path.join(ASSETS, 'site.js'), `${SITE_JS}\n`);
 fs.writeFileSync(path.join(ASSETS, 'favicon.svg'), FAVICON);

@@ -296,6 +296,11 @@
 .x5:hover{border-color:#2E7DFF !important;color:#2E7DFF !important}
 .x6:hover{transform:translateY(-6px) !important;border-color:rgba(46,125,255,.5) !important}
 
+/* Official LinkedIn / Proton Mail marks. The generous left padding the pills
+   already had doubles as the clear space both brands ask for. */
+.brand-link{display:inline-flex !important;align-items:center;gap:10px}
+.brand-pair{display:flex;align-items:center;gap:14px}
+
 /* ── shared behaviour ─────────────────────────────────────────────────── */
 .skip-link{position:absolute;left:-9999px;top:0;z-index:100;padding:12px 20px;background:#2E7DFF;color:#fff;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.16em}
 .skip-link:focus{left:0}

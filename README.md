@@ -26,6 +26,7 @@ Portfolio site of **Prashand Arthur Banwarie** — Power BI Developer & Data Pro
 | `assets/site.css` | Fonts, design CSS, hover rules, responsive + reduced-motion layer |
 | `assets/site.js` | Rotating headline and reveal-on-scroll (progressive enhancement) |
 | `assets/fonts/`, `assets/img/` | Self-hosted JetBrains Mono + Space Grotesk subsets, photos |
+| `assets/brand/` | Official LinkedIn and Proton Mail marks — see below |
 | `robots.txt`, `sitemap.xml`, `.nojekyll` | Crawler and Pages plumbing |
 | `src-bundles/` | The design-tool exports the pages are built from |
 | `tools/build.mjs` | Build script |
@@ -62,6 +63,38 @@ What the build does, beyond unpacking:
 
 The build fails rather than emitting a broken page if any of its markup
 transforms stops matching — see the assertions near the end of `buildPage`.
+
+## Brand assets
+
+The LinkedIn and Proton Mail links carry each company's own mark. Both are used
+as supplied — never recoloured, redrawn or restretched. Unlike everything else
+under `assets/`, these are committed rather than generated; the build only
+checks they are still present.
+
+| File | Source | Terms |
+|---|---|---|
+| `assets/brand/linkedin-bug.png` | [brand.linkedin.com/downloads](https://brand.linkedin.com/downloads) → `in-logo.zip` → `LI-In-Bug.png` | [LinkedIn Brand Guidelines](https://brand.linkedin.com/in-logo) |
+| `assets/brand/linkedin-bug-white.png` | same pack, `InBug-White.png` — the reverse variant, kept for use on lighter or busier backgrounds | as above |
+| `assets/brand/proton-mail-badge.svg` | [proton.me/media/kit](https://proton.me/media/kit) → Proton Mail; identical to the `mail-badge.svg` Proton serves on proton.me | "may be freely used, provided the accompanying media refers back to [proton.me](https://proton.me)" |
+
+The rules that shaped the markup:
+
+- **Minimum size.** LinkedIn requires the [in] bug to be at least **21 px tall**
+  on screen. `MARK_PX` in `tools/build.mjs` is set to exactly that; the contact
+  details block uses 26 px. Do not go below 21.
+- **No distortion.** The `width`/`height` attributes carry the artwork's true
+  pixel ratio so the browser can reserve the right box; the display size comes
+  from `height` + `width:auto` in CSS. Writing a rounded pixel width into the
+  attributes would squash the mark by about 1%.
+- **Clear space.** LinkedIn asks for 2× the stroke width of the "I". The pills'
+  existing padding plus a 10 px gap covers it.
+- **Adjacent wording.** LinkedIn asks that the bug not be combined with other
+  words into a lockup. Here each mark sits inside a button beside a label that
+  names the destination, with clear space between — the conventional social-link
+  treatment rather than a composite mark. If you would rather be stricter, the
+  marks can stand alone with the label dropped and an `aria-label` on the link.
+- **Decorative.** Every mark has `alt=""`, because the adjacent text already
+  names the destination and a screen reader should not say "LinkedIn" twice.
 
 ### Changing the URL
 
