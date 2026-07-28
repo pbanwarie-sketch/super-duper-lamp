@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://pbanwarie-sketch.github.io/super-duper-lamp/sitemap.xml

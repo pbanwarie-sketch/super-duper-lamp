@@ -1,0 +1,14 @@
+# Design-tool export drops. The two bundles they contain are checked in under
+# src-bundles/ instead; keeping the originals out of the repo matters because
+# GitHub Pages publishes every tracked file, and these are ~2 MB each.
+Personal page redesign/
+Personal page redesign.zip
+*.zip
+
+# Local preview / diagnostics
+_frame.html
+_diag.html
+
+# Machine-local editor settings. Worth keeping untracked on this repo in
+# particular: GitHub Pages serves every committed file over HTTP.
+.claude/settings.local.json
