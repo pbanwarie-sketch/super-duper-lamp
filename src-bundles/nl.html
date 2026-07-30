@@ -300,25 +300,24 @@ document.addEventListener('DOMContentLoaded', async function() {
     // The manifest bytes are ours; SRI protects against CDN compromise, not this.
     template = template.replace(/\s+integrity="[^"]*"/gi, '').replace(/\s+crossorigin="[^"]*"/gi, '');
 
-    const resourceScript = '<script>window.__resources = ' +
-      JSON.stringify(resourceMap).replace(/<\//g, '<\\/') +
-      ';</' + 'script>';
-    // Inject after <head> so the DOCTYPE stays first; prepending the script
-    // would push the parser into quirks mode. DOMParser always emits a <head>
-    // (synthesizing one if the source HTML omitted it) but may carry
-    // attributes through, so match the full opening tag. slice() rather than
-    // replace() keeps us clear of $-pattern substitution in resourceScript.
-    const headOpen = template.match(/<head[^>]*>/i);
-    if (headOpen) {
-      const i = headOpen.index + headOpen[0].length;
-      template = template.slice(0, i) + resourceScript + template.slice(i);
-    }
-
     // Parse the template and swap the root element. Scripts inserted via
     // DOMParser/replaceWith are inert per spec — re-create each with
     // createElement so they execute, awaiting onload for src scripts to
     // preserve ordering (React before ReactDOM before Babel before text/babel).
     const doc = new DOMParser().parseFromString(template, 'text/html');
+
+    // The resource map rides in as a DOM node created AFTER the parse, not
+    // as markup spliced into the HTML string beforehand: script.textContent
+    // is never re-read as HTML, which removes both the closing-tag escaping
+    // dance and the manifest-text-to-markup flow the string splice had.
+    // Inserted first in <head> — the same slot the splice used — so the
+    // script re-creation pass below still executes it before anything that
+    // reads window.__resources.
+    const resourcesInit = doc.createElement('script');
+    resourcesInit.textContent = 'window.__resources = ' + JSON.stringify(resourceMap) + ';';
+    const docHead = doc.head || doc.documentElement;
+    docHead.insertBefore(resourcesInit, docHead.firstChild);
+
     document.documentElement.replaceWith(doc.documentElement);
 
     // Resolve page-frame markers: mint this document's own blob for each

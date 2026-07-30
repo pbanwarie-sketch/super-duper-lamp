@@ -157,20 +157,28 @@ light column and rebuild.
 
 ## Code scanning
 
-CodeQL runs on every push. Three hardening measures keep it at zero open
+CodeQL runs on every push. Four hardening measures keep it at zero open
 alerts, all chosen so the built pages stay byte-identical:
 
-- **`tools/build.mjs` strips the bundler's script tags to a fixpoint** rather
-  than in one pass. One pass over a multi-character pattern can splice two
-  halves of a marker back together (CodeQL's "incomplete multi-character
-  sanitization"); the loop closes that, and the leftovers assertion below it
-  then guards a property that actually holds.
+- **`tools/build.mjs` strips the bundler's script tags structurally**
+  (`dropRuntimeScripts`: walk elements, copy or skip) rather than with a
+  regex replace. Deleting a multi-character marker with `replace()` can
+  splice the surrounding text into a brand-new marker — CodeQL's "incomplete
+  multi-character sanitization", which it flags per call, so even a
+  replace-until-fixpoint loop stays flagged. A scan that copies or skips
+  whole elements has nothing to reassemble.
+- **The bundles' resource map becomes a DOM node after parsing**, not markup
+  spliced into the HTML string before it. The manifest-derived
+  `window.__resources` script is created with `createElement` +
+  `textContent` and inserted first in `<head>` — the same slot, so the
+  script re-creation pass executes it at the same point — but text set via
+  `textContent` is never re-read as HTML, which is the flow CodeQL flags as
+  "DOM text reinterpreted as HTML".
 - **The bundles' template ships as an executable assignment**
   (`window.__BUNDLER_TEMPLATE__ = "…"`) instead of a
   `<script type="__bundler/template">` data island. Identical payload, but
-  program text is in the same trust class as the runtime that consumes it,
-  where document text re-parsed into markup is CodeQL's "DOM text
-  reinterpreted as HTML".
+  program text sits in the same trust class as the runtime that consumes it,
+  rather than being document text re-parsed into markup.
 - **The bundles' nested-page relay never posts to `'*'`.** Where the document
   has a real origin it addresses that origin (as before); in opaque contexts
   the target is now `'/'` — same-origin-as-sender, which every legitimate hop
@@ -178,11 +186,18 @@ alerts, all chosen so the built pages stay byte-identical:
   (the build replaces the runtime), and these single-page bundles carry no
   nested pages, so nothing observable changes.
 
+One editing hazard the first pass here tripped over, preserved as a warning:
+the bundle runtime lives inside an inline `<script>` element, so nothing in
+it — not even a comment — may contain a literal script-closing tag. The HTML
+parser ends the element at the first one it sees, whatever the JavaScript
+context, and the truncated runtime then fails with "Unexpected end of input".
+
 **After replacing `src-bundles/` with a fresh design-tool export:** the build
 still works — `readBundle` accepts both template forms — but the export
 arrives with the unhardened runtime, so expect the `src-bundles/` alerts to
-reopen until the two runtime patches above are reapplied (search the previous
-bundle for `__BUNDLER_TEMPLATE__` and `OWN_TARGET` and mirror the edits).
+reopen until the three runtime patches above are reapplied (search the
+previous bundle for `__BUNDLER_TEMPLATE__`, `resourcesInit` and `OWN_TARGET`
+and mirror the edits).
 
 ## Labelling AI-generated content
 

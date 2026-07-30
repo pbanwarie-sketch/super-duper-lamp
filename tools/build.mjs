@@ -246,6 +246,36 @@ function addClass(tag, cls) {
   return tag.replace(/^<([a-zA-Z][\w-]*)/, `<$1 class="${cls}"`);
 }
 
+/**
+ * Drops the bundler's own <script> elements — the text/x-dc data islands and
+ * the empty uuid-src loaders — by walking elements and rebuilding the string,
+ * never by regex replacement. Deleting a multi-character marker with
+ * replace() can splice the surrounding text into a brand-new marker (CodeQL's
+ * js/incomplete-multi-character-sanitization, and a real property of
+ * replace-with-empty); a scan that copies or skips whole elements has nothing
+ * to reassemble. Like the HTML parser, each element ends at the first
+ * </script> after it opens.
+ */
+function dropRuntimeScripts(html) {
+  let out = '';
+  let i = 0;
+  for (;;) {
+    const at = html.indexOf('<script', i);
+    if (at < 0) return out + html.slice(i);
+    const openEnd = html.indexOf('>', at);
+    const closeAt = html.indexOf('</script>', at);
+    if (openEnd < 0 || closeAt < 0) return out + html.slice(i);
+    const open = html.slice(at, openEnd + 1);
+    const end = closeAt + '</script>'.length;
+    const ours =
+      /^<script\s+type="text\/x-dc"/.test(open) ||
+      (/^<script\s+src="[0-9a-f-]{36}">$/.test(open) && closeAt === openEnd + 1);
+    out += html.slice(i, at);
+    if (!ours) out += html.slice(at, end);
+    i = end;
+  }
+}
+
 // ──────────────────────────────────────── style-hover -> real stylesheet rules
 
 /**
@@ -1282,19 +1312,10 @@ function buildPage(page, cssParts) {
   //     between </main> and the footer, where site-level meta belongs.
   body = labelAiContent(body, page);
 
-  // 9. Drop everything the runtime used to consume. Looped to a fixpoint: a
-  //    single pass over multi-character patterns is the "incomplete
-  //    sanitization" CodeQL rightly flags — one strip can splice two halves
-  //    of a marker back together. The input is our own committed bundle, but
-  //    the loop costs nothing, and the leftovers assertion below then guards
-  //    a property that actually holds.
-  for (let before = ''; before !== body; ) {
-    before = body;
-    body = body
-      .replace(/<script\s+type="text\/x-dc"[\s\S]*?<\/script>/g, '')
-      .replace(/<script\s+src="[0-9a-f-]{36}"><\/script>/g, '');
-  }
-  body = body.trim();
+  // 9. Drop everything the runtime used to consume — structurally, see
+  //    dropRuntimeScripts. The leftovers assertion below then guards a
+  //    property that holds by construction.
+  body = dropRuntimeScripts(body).trim();
 
   const leftovers = body.match(
     /\{\{[^}]*\}\}|sc-if|sc-camel-[a-z-]+|<image-slot|style-[a-z]+="|<x-dc|<helmet|[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/g
