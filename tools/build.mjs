@@ -1175,8 +1175,13 @@ fs.writeFileSync(path.join(ROOT, '.nojekyll'), '');
 // GitHub Pages reads the custom domain from this file. The Pages UI writes it
 // for you, but generating it keeps it tied to SITE — so the domain can't drift
 // out of sync with the canonical tags, and it survives recreating the repo.
+//
+// Written with no trailing newline on purpose: that is byte-for-byte what the
+// Pages settings UI writes, and the UI rewrites this file every time the custom
+// domain is saved. Adding a newline here makes the two overwrite each other
+// forever, so `git status` reports CNAME modified after every single build.
 const host = new URL(SITE).hostname;
-fs.writeFileSync(path.join(ROOT, 'CNAME'), `${host}\n`);
+fs.writeFileSync(path.join(ROOT, 'CNAME'), host);
 
 const kb = (n) => `${(n / 1024).toFixed(1)} KB`;
 console.log('built:');
