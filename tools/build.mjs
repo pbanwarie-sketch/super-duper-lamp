@@ -1095,33 +1095,62 @@ function buildPage(page, cssParts) {
     if (!a) throw new Error(`image-slot ${id}: unknown src ${uuid}`);
     // The export carries the photos at editing quality (~680 KB for a photo
     // shown at 370 px) — the whole mobile LCP budget. tools/img-overrides/
-    // holds the same pictures recompressed (mozjpeg q80, identical pixels
-    // and dimensions — see "Performance" in README.md); when an override
-    // exists it ships instead. Dimensions must match: the og:image size and
-    // the intrinsic width/height attributes are derived from what ships.
-    const overridePath = path.join(ROOT, 'tools/img-overrides', `${id}.jpg`);
-    let bytes = a.bytes;
-    if (fs.existsSync(overridePath)) {
-      const override = fs.readFileSync(overridePath);
-      const od = jpegSize(override);
-      const bd = jpegSize(a.bytes);
-      if (od.w !== bd.w || od.h !== bd.h) {
+    // holds the same pictures recompressed by tools/make-overrides.mjs, and
+    // when an override exists it ships instead of the export's bytes.
+    //
+    // Two formats, because they do different jobs:
+    //   .avif  what almost every visitor downloads — 35-59% smaller than the
+    //          JPEG at a shade better measured quality (SSIM against the
+    //          original export)
+    //   .jpg   the <picture> fallback for the ~5% without AVIF, and the file
+    //          og:image points at, since social scrapers still expect JPEG
+    //
+    // Every dimension must match the export's: the intrinsic width/height
+    // attributes and the og:image size are derived from what ships, and a
+    // rescaled override would silently reintroduce layout shift.
+    const overrideBase = path.join(ROOT, 'tools/img-overrides', id);
+    const exportDim = jpegSize(a.bytes);
+    const sameSize = (d, what) => {
+      if (d.w !== exportDim.w || d.h !== exportDim.h) {
         throw new Error(
-          `image override ${id}: ${od.w}x${od.h} does not match the export's ${bd.w}x${bd.h}`
+          `image override ${what}: ${d.w}x${d.h} does not match ` +
+            `the export's ${exportDim.w}x${exportDim.h}`
         );
       }
+      return d;
+    };
+
+    let bytes = a.bytes;
+    if (fs.existsSync(`${overrideBase}.jpg`)) {
+      const override = fs.readFileSync(`${overrideBase}.jpg`);
+      sameSize(jpegSize(override), `${id}.jpg`);
       bytes = override;
     }
     const dim = jpegSize(bytes);
     const file = writeAsset(`assets/img/${id}.jpg`, bytes);
     assetPath.set(uuid, file);
+
+    let avif = null;
+    if (fs.existsSync(`${overrideBase}.avif`)) {
+      const override = fs.readFileSync(`${overrideBase}.avif`);
+      sameSize(avifSize(override), `${id}.avif`);
+      avif = writeAsset(`assets/img/${id}.avif`, override);
+    }
+
     const alt = page.imgAlt[id];
     if (!alt) throw new Error(`no alt text configured for image slot "${id}"`);
-    return (
+    const img =
       `<img src="${file}" alt="${esc(alt)}" width="${dim.w}" height="${dim.h}" ` +
       `${id === 'hero-portrait' ? 'fetchpriority="high"' : 'loading="lazy" decoding="async"'} ` +
-      `style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">`
-    );
+      `style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">`;
+    // display:contents keeps <picture> from generating a box of its own. The
+    // <img> is absolutely positioned against the container either way, so this
+    // changes nothing that renders — it just removes the empty inline the
+    // wrapper would otherwise contribute to the container's line boxes.
+    return avif
+      ? `<picture style="display:contents">` +
+          `<source type="image/avif" srcset="${avif}">${img}</picture>`
+      : img;
   });
 
   // 6. style-hover -> generated classes in the shared stylesheet.
@@ -1485,6 +1514,49 @@ function jpegSize(buf) {
     i += 2 + buf.readUInt16BE(i + 2);
   }
   throw new Error('not a JPEG');
+}
+
+/**
+ * AVIF is ISOBMFF, so the pixel dimensions are not at a fixed offset: they sit
+ * in an `ispe` (image spatial extents) property, nested meta > iprp > ipco.
+ * This walks the box tree rather than scanning for the four-character code,
+ * because `ispe` can occur by chance inside compressed image data and a scan
+ * would happily read four bytes of AV1 bitstream as a width.
+ */
+function avifSize(buf) {
+  // Boxes that contain other boxes, and how many bytes of their own they carry
+  // first (`meta` is a FullBox: version + flags before its children).
+  const CONTAINER = { meta: 4, iprp: 0, ipco: 0 };
+
+  const walk = (start, end) => {
+    let i = start;
+    while (i + 8 <= end) {
+      let size = buf.readUInt32BE(i);
+      const type = buf.toString('latin1', i + 4, i + 8);
+      let head = 8;
+      if (size === 1) {
+        size = Number(buf.readBigUInt64BE(i + 8));
+        head = 16;
+      } else if (size === 0) {
+        size = end - i; // "to the end of the file"
+      }
+      if (size < head || i + size > end) break;
+      // ispe is a FullBox too: version + flags, then two 32-bit extents.
+      if (type === 'ispe' && i + head + 12 <= end) {
+        return { w: buf.readUInt32BE(i + head + 4), h: buf.readUInt32BE(i + head + 8) };
+      }
+      if (type in CONTAINER) {
+        const found = walk(i + head + CONTAINER[type], i + size);
+        if (found) return found;
+      }
+      i += size;
+    }
+    return null;
+  };
+
+  const found = walk(0, buf.length);
+  if (!found) throw new Error('not an AVIF: no ispe box');
+  return found;
 }
 
 function renderPage(page, body) {

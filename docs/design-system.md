@@ -437,8 +437,10 @@ padding that clears the tab bar plus the safe-area inset.
   `stroke-width: 2`, round caps and joins, rendered at 16px. They inherit
   colour; they never carry a fill.
 - **Photography** is the two real portraits, shipped from
-  `tools/img-overrides/` at mozjpeg q80 with intrinsic `width`/`height`
-  attributes so nothing shifts. See [Performance](performance.md).
+  `tools/img-overrides/` as AVIF q58 inside a `<picture>` with a mozjpeg q80
+  JPEG fallback, always with intrinsic `width`/`height` attributes so nothing
+  shifts. Both are cropped with `object-fit: cover` against a positioned
+  container, never letterboxed. See [Performance](performance.md).
 - **Pixel art** uses `shape-rendering="crispEdges"` and literal `fill` values —
   deliberately outside the theme system. It carries `role="img"` and a real
   `aria-label`.

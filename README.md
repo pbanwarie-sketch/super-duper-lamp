@@ -45,7 +45,7 @@ Everything below follows from that one decision.
 | **No runtime dependencies** | React, ReactDOM and the design runtime (~276 KB) are replaced by 5 KB of vanilla JavaScript. The build itself has zero npm dependencies. |
 | **Bilingual** | English at `/`, Dutch at `/nl.html`, reciprocally `hreflang`-paired. One build, one set of shared assets. |
 | **Dark and light** | Every colour literal in the export is rewritten to a CSS custom property. Dark stays the default; light is AA-checked throughout. |
-| **Fast** | Lighthouse mobile 99 / 100 / 100 / 100, with photographs recompressed ~90% at build time. |
+| **Fast** | Lighthouse mobile 99 / 100 / 100 / 100. Photographs ship as AVIF with a JPEG fallback — ~96% off the export, 35–59% off even a well-tuned mozjpeg. |
 | **Accessible** | Landmarks, skip link, heading order, focus management on fragment jumps, `prefers-reduced-motion`, a thumb-zone tab bar under 900 px. |
 | **Clean scans** | CodeQL on every push: 0 open alerts. |
 | **Honest about AI** | The one AI-generated asset is labelled with the European Commission's EU icons. The photographs are real, and the disclosure says so. |
@@ -104,7 +104,8 @@ silent regression.
 ├── src-bundles/                      SOURCE — the design-tool exports
 ├── tools/
 │   ├── build.mjs                     SOURCE — the entire build
-│   └── img-overrides/                recompressed photographs
+│   ├── make-overrides.mjs            regenerates the photographs
+│   └── img-overrides/                recompressed photographs (avif + jpg)
 ├── docs/                             documentation + live styleguide
 ├── CNAME · robots.txt · sitemap.xml · .nojekyll
 ```
@@ -120,13 +121,15 @@ silent regression.
 | `assets/eu-ai/` | European Commission icons for labelling AI-generated content |
 | `src-bundles/` | The design-tool exports the pages are built from |
 | `tools/build.mjs` | The build |
-| `tools/img-overrides/` | mozjpeg-recompressed photographs the build ships in place of the export's |
+| `tools/make-overrides.mjs` | Regenerates the photographs from the export — run by hand, needs `sharp` |
+| `tools/img-overrides/` | The recompressed photographs the build ships in place of the export's: AVIF q58 plus a mozjpeg q80 fallback |
 
 ## Making a change
 
 | To change | Edit | Then |
 |---|---|---|
-| Copy, layout, artwork | re-export from the design tool into `src-bundles/` | [reapply the runtime patches](docs/security.md#after-a-fresh-export) and [regenerate the image overrides](docs/performance.md#photo-overrides) |
+| Copy, layout, artwork | re-export from the design tool into `src-bundles/` | [reapply the runtime patches](docs/security.md#after-a-fresh-export) and [regenerate the photographs](docs/performance.md#regenerating-the-photographs) |
+| The photographs | `src-bundles/` (they come from the export) | `npm i --no-save sharp && node tools/make-overrides.mjs --force`, then rebuild |
 | Title, description, social cards | the `PAGES` metadata in `tools/build.mjs` | rebuild |
 | The public URL | `SITE` in `tools/build.mjs` | rebuild — canonical, `hreflang`, Open Graph, sitemap, `robots.txt` and the 404 links all follow |
 | Colours, light/dark values | the `THEME` table in `tools/build.mjs` | rebuild, then check [`docs/styleguide.html`](docs/styleguide.html) in both themes |

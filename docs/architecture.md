@@ -23,6 +23,11 @@ Everything that a human writes lives in exactly two places:
 | `src-bundles/index.html`, `src-bundles/nl.html` | The design-tool export of each page — layout, copy, artwork |
 | `tools/build.mjs` | Metadata, the URL, the colour palette, the responsive layer, the site JavaScript, the AI-disclosure text |
 
+`tools/make-overrides.mjs` is the one other executable in the repo: it
+regenerates the recompressed photographs in `tools/img-overrides/` from the
+export. It is not part of the build and is run by hand — see
+[Performance](performance.md#regenerating-the-photographs).
+
 ## Source of truth
 
 The repository is the source of truth for the live site. GitHub Pages serves
@@ -61,7 +66,8 @@ Beyond unpacking the bundle, the build:
   without — see [Navigation and accessibility](navigation.md)
 - adds the light theme: every colour literal in the export becomes a CSS
   custom property, dark stays the default — see [Theming](theming.md)
-- swaps in the recompressed photographs and minifies the assets — see
+- swaps in the recompressed photographs, wraps each one in a `<picture>` with an
+  AVIF source and the JPEG as fallback, and minifies the assets — see
   [Performance](performance.md)
 
 ## Failing loudly
@@ -79,8 +85,9 @@ To publish a new design revision:
 1. Replace the files in `src-bundles/` with the fresh export.
 2. Reapply the three runtime patches, or the code-scanning alerts reopen —
    see [Code scanning](security.md#after-a-fresh-export).
-3. Regenerate the image overrides — see
-   [Performance](performance.md#photo-overrides).
+3. Regenerate the image overrides:
+   `npm i --no-save sharp && node tools/make-overrides.mjs --force` — see
+   [Performance](performance.md#regenerating-the-photographs).
 4. `node tools/build.mjs`, then review `git diff` before committing.
 
 ## Where to change what

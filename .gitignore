@@ -5,6 +5,11 @@ Personal page redesign/
 Personal page redesign.zip
 *.zip
 
+# sharp, installed on demand for tools/make-overrides.mjs and never committed:
+# the build itself has no dependencies and this repo has no package.json, so
+# node_modules/ should only ever exist while regenerating the photographs.
+node_modules/
+
 # Local preview / diagnostics
 _frame.html
 _diag.html
