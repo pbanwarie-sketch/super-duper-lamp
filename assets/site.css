@@ -301,6 +301,27 @@
 .brand-link{display:inline-flex !important;align-items:center;gap:10px}
 .brand-pair{display:flex;align-items:center;gap:14px}
 
+/* Microsoft certification, linked to the issuer's own credential page. */
+/* align-self keeps the card from being stretched to the full column width by
+   its flex-column parent, which turns it into a banner. */
+.cert-card{display:inline-flex;align-self:flex-start;align-items:center;gap:16px;
+  margin-top:14px;padding:14px 20px 14px 16px;
+  border:1px solid rgba(46,125,255,.28);border-radius:14px;background:rgba(46,125,255,.06);
+  max-width:100%;text-decoration:none}
+.cert-card:hover{border-color:rgba(46,125,255,.55);background:rgba(46,125,255,.1)}
+.cert-card img{height:56px;width:auto;flex:none;display:block}
+.cert-text{display:flex;flex-direction:column;gap:5px;min-width:0}
+.cert-kicker{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.2em;color:#6E7994;text-transform:uppercase}
+.cert-name{font-size:16px;font-weight:600;line-height:1.3;color:#F3F6FD;text-wrap:balance}
+.cert-verify{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;color:#63A2FF;text-transform:uppercase}
+.cert-card:hover .cert-verify{color:#A8C8FF}
+
+@media (max-width:900px){
+  .cert-card{gap:13px;padding:13px 16px}
+  .cert-card img{height:46px}
+  .cert-name{font-size:15px}
+}
+
 /* Sits on the illustration, over the dot-grid but under nothing. */
 .ai-badge{position:absolute;top:16px;right:16px;z-index:3}
 .ai-caption{display:flex;align-items:center;flex-wrap:wrap;gap:8px 12px;margin-top:14px;position:relative;

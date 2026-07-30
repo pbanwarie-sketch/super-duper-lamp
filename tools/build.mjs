@@ -52,6 +52,12 @@ const PAGES = [
       'hero-portrait': 'Prashand Banwarie',
       'about-photo': 'Prashand Banwarie at work on a Power BI report',
     },
+    cert: {
+      kicker: 'Microsoft Certified',
+      name: 'Power BI Data Analyst Associate',
+      verify: 'Verify at Microsoft',
+      alt: 'Microsoft Certified: Power BI Data Analyst Associate badge',
+    },
     ai: {
       badgeAlt: 'AI generated',
       caption: 'Illustration generated with AI',
@@ -87,6 +93,12 @@ const PAGES = [
       'hero-portrait': 'Prashand Banwarie',
       'about-photo': 'Prashand Banwarie aan het werk aan een Power BI-rapport',
     },
+    cert: {
+      kicker: 'Microsoft Gecertificeerd',
+      name: 'Power BI Gegevensanalist Associate',
+      verify: 'Verifieer bij Microsoft',
+      alt: 'Microsoft Gecertificeerd: Power BI Gegevensanalist Associate badge',
+    },
     ai: {
       badgeAlt: 'AI generated',
       caption: 'Illustratie gegenereerd met AI',
@@ -104,6 +116,24 @@ const PAGES = [
     },
   },
 ];
+
+/**
+ * The Microsoft Learn credential, referenced straight from the issuer rather
+ * than through a badge platform. Two reasons that matters here: the site keeps
+ * making zero third-party requests, and Microsoft's page reflects the
+ * credential's *live* status — so the site never hard-codes an issue or expiry
+ * date that can quietly go stale.
+ *
+ * The share link is locale-aware, so each language links to its own version.
+ * Badge artwork is Microsoft's official "Certified Associate" shield, self-hosted.
+ */
+const CERT = {
+  shareUrl: (locale) =>
+    `https://learn.microsoft.com/api/credentials/share/${locale}/BanwariePrashand-2093/` +
+    `EE55F1D6C38B2C99?sharingId=CE268806D33A9946`,
+  locale: { en: 'en-us', nl: 'nl-nl' },
+  badge: { src: 'assets/badges/microsoft-certified-associate.svg', w: 300, h: 300 },
+};
 
 /** Where the EU icon set and its guidance are published. */
 const EU_ICONS_URL =
@@ -367,6 +397,29 @@ function euIcon(which, px, alt) {
     `style="height:${px}px;width:auto;flex:none;display:block">`
   );
 }
+
+const CERT_CSS = `
+/* Microsoft certification, linked to the issuer's own credential page. */
+/* align-self keeps the card from being stretched to the full column width by
+   its flex-column parent, which turns it into a banner. */
+.cert-card{display:inline-flex;align-self:flex-start;align-items:center;gap:16px;
+  margin-top:14px;padding:14px 20px 14px 16px;
+  border:1px solid rgba(46,125,255,.28);border-radius:14px;background:rgba(46,125,255,.06);
+  max-width:100%;text-decoration:none}
+.cert-card:hover{border-color:rgba(46,125,255,.55);background:rgba(46,125,255,.1)}
+.cert-card img{height:56px;width:auto;flex:none;display:block}
+.cert-text{display:flex;flex-direction:column;gap:5px;min-width:0}
+.cert-kicker{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.2em;color:#6E7994;text-transform:uppercase}
+.cert-name{font-size:16px;font-weight:600;line-height:1.3;color:#F3F6FD;text-wrap:balance}
+.cert-verify{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;color:#63A2FF;text-transform:uppercase}
+.cert-card:hover .cert-verify{color:#A8C8FF}
+
+@media (max-width:900px){
+  .cert-card{gap:13px;padding:13px 16px}
+  .cert-card img{height:46px}
+  .cert-name{font-size:15px}
+}
+`.trim();
 
 const EU_AI_CSS = `
 /* Sits on the illustration, over the dot-grid but under nothing. */
@@ -916,6 +969,32 @@ function buildPage(page, cssParts) {
     '</main>\n' +
     body.slice(footerAt);
 
+  // 8c-bis. The Microsoft certification, referenced from the issuer. The flat
+  //     text pill that claimed it is replaced by the official badge plus a link
+  //     to Microsoft's own credential page, so the claim is verifiable in one
+  //     click instead of being an assertion the visitor has to take on trust.
+  const cert = page.cert;
+  const certCard =
+    `<a class="cert-card" href="${CERT.shareUrl(CERT.locale[page.lang])}" ` +
+    `target="_blank" rel="noopener noreferrer">` +
+    `<img src="${CERT.badge.src}" alt="${esc(cert.alt)}" ` +
+    `width="${CERT.badge.w}" height="${CERT.badge.h}" loading="lazy" decoding="async">` +
+    `<span class="cert-text">` +
+    `<span class="cert-kicker">${esc(cert.kicker)}</span>` +
+    `<span class="cert-name">${esc(cert.name)}</span>` +
+    `<span class="cert-verify">${esc(cert.verify)} <span aria-hidden="true">↗</span></span>` +
+    `</span></a>`;
+
+  const pillRow = '<div style="display:flex;flex-wrap:wrap;gap:10px;padding-top:8px">';
+  if (!body.includes(pillRow)) throw new Error(`${page.out}: certification pill row not found`);
+
+  // Drop the pill the card now supersedes; the other one stays.
+  const oldPill =
+    /<span style="padding:9px 15px;[^"]*">MICROSOFT CERTIFIED: POWER BI DATA ANALYST ASSOCIATE<\/span>\s*/;
+  if (!oldPill.test(body)) throw new Error(`${page.out}: certification pill not found`);
+  body = body.replace(oldPill, '');
+  body = body.replace(pillRow, `${certCard}\n${pillRow}`);
+
   // 8d. EU labelling of the AI-generated illustration, plus the disclosure it
   //     points at. Inserted after the landmark pass so the disclosure lands
   //     between </main> and the footer, where site-level meta belongs.
@@ -1159,7 +1238,7 @@ for (const m of [...Object.values(MARKS), ...Object.values(EU_AI_ICONS)]) {
 
 fs.writeFileSync(
   path.join(ASSETS, 'site.css'),
-  `${uniqueCss[0]}\n\n${hoverSheet()}\n\n${BRAND_CSS}\n\n${EU_AI_CSS}\n\n${NAV_CSS}\n\n${RESPONSIVE_CSS}\n`
+  `${uniqueCss[0]}\n\n${hoverSheet()}\n\n${BRAND_CSS}\n\n${CERT_CSS}\n\n${EU_AI_CSS}\n\n${NAV_CSS}\n\n${RESPONSIVE_CSS}\n`
 );
 fs.writeFileSync(path.join(ASSETS, 'site.js'), `${SITE_JS}\n`);
 fs.writeFileSync(path.join(ASSETS, 'favicon.svg'), FAVICON);
