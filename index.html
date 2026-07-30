@@ -6,6 +6,7 @@
 <title>Prashand Banwarie — Power BI Developer</title>
 <meta name="description" content="Prashand Arthur Banwarie — Power BI developer at KPN in The Hague. Ten years of turning HR and operational data into dashboards people actually open.">
 <meta name="author" content="Prashand Arthur Banwarie">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#FFFFFF">
 <meta name="theme-color" content="#05080F">
 <link rel="canonical" href="https://prashand.com/">
 <link rel="alternate" hreflang="en" href="https://prashand.com/">
@@ -29,6 +30,7 @@
 <link rel="preload" href="assets/fonts/jetbrains-mono-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="assets/site.css">
 <script>document.documentElement.className+=" js"</script>
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)}catch(e){}})()</script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -58,196 +60,196 @@
 <div class="scroll-progress" aria-hidden="true"><i></i></div>
 
 
-<div class="page-wrap" style="background:#05080F;min-height:100vh;overflow-x:hidden">
+<div class="page-wrap" style="background:var(--bg);min-height:100vh;overflow-x:hidden">
 
-  <header class="site-header"><nav aria-label="Main" class="site-nav" style="position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;gap:24px;padding:18px 40px;background:rgba(5,8,15,.82);backdrop-filter:blur(14px);border-bottom:1px solid rgba(255,255,255,.06)">
-    <a href="#top" style="font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700;letter-spacing:.28em;color:#2E7DFF;text-transform:uppercase;white-space:nowrap">PRASHAND</a>
+  <header class="site-header"><nav aria-label="Main" class="site-nav" style="position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;gap:24px;padding:18px 40px;background:var(--frost);backdrop-filter:blur(14px);border-bottom:1px solid var(--edge-06)">
+    <a href="#top" style="font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700;letter-spacing:.28em;color:var(--accent-text);text-transform:uppercase;white-space:nowrap">PRASHAND</a>
     <div class="nav-links" style="display:flex;align-items:center;gap:30px">
-      <a class="x0 nav-link" href="#story" style="font-size:14px;color:#9AA3B8" data-nav="story">Story</a>
-      <a class="x0 nav-link" href="#work" style="font-size:14px;color:#9AA3B8" data-nav="work">Work</a>
-      <a class="x0 nav-link" href="#experience" style="font-size:14px;color:#9AA3B8" data-nav="experience">Experience</a>
-      <a class="x0 nav-link" href="#contact" style="font-size:14px;color:#9AA3B8" data-nav="contact">Contact</a>
-      <div style="display:flex;align-items:center;gap:8px;padding-left:16px;border-left:1px solid rgba(255,255,255,.12);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.16em">
-        <span style="color:#2E7DFF">EN</span>
-        <span style="color:#3A4358">/</span>
-        <a class="x0" href="nl.html" style="color:#6E7994">NL</a>
+      <a class="x0 nav-link" href="#story" style="font-size:14px;color:var(--body)" data-nav="story">Story</a>
+      <a class="x0 nav-link" href="#work" style="font-size:14px;color:var(--body)" data-nav="work">Work</a>
+      <a class="x0 nav-link" href="#experience" style="font-size:14px;color:var(--body)" data-nav="experience">Experience</a>
+      <a class="x0 nav-link" href="#contact" style="font-size:14px;color:var(--body)" data-nav="contact">Contact</a>
+      <div style="display:flex;align-items:center;gap:8px;padding-left:16px;border-left:1px solid var(--edge-12);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.16em">
+        <span style="color:var(--accent-text)">EN</span>
+        <span style="color:var(--sep)">/</span>
+        <a class="x0" href="nl.html" style="color:var(--muted-2)">NL</a>
       </div>
-    </div>
+    <button type="button" class="theme-toggle" aria-label="Theme" data-to-light="Switch to the light theme" data-to-dark="Switch to the dark theme"><svg class="tt-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.5 4.5l2 2M17.5 17.5l2 2M19.5 4.5l-2 2M6.5 17.5l-2 2"/></svg><svg class="tt-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M20.4 14.2A8.5 8.5 0 0 1 9.8 3.6a8.5 8.5 0 1 0 10.6 10.6Z"/></svg></button></div>
   </nav></header>
 <main id="main">
 
-  <section class="sec hero" id="top" style="position:relative;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);min-height:calc(100vh - 63px);background:#070B14;border-bottom:1px solid rgba(255,255,255,.06)">
-    <div style="position:absolute;inset:0;background-image:radial-gradient(rgba(46,125,255,.5) 1px, transparent 1px);background-size:46px 46px;opacity:.22;pointer-events:none"></div>
+  <section class="sec hero" id="top" style="position:relative;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);min-height:calc(100vh - 63px);background:var(--bg-2);border-bottom:1px solid var(--edge-06)">
+    <div style="position:absolute;inset:0;background-image:radial-gradient(var(--tint-50) 1px, transparent 1px);background-size:46px 46px;opacity:.22;pointer-events:none"></div>
 
     <div class="hero-copy" style="position:relative;display:flex;flex-direction:column;justify-content:center;gap:26px;padding:80px 56px 80px 72px;max-width:660px">
-      <div style="display:flex;align-items:baseline;gap:14px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.24em;color:#6E7994;text-transform:uppercase">
-        <span style="flex:none;width:34px;height:1px;background:#2E7DFF;transform:translateY(-4px)"></span>
+      <div style="display:flex;align-items:baseline;gap:14px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.24em;color:var(--muted-2);text-transform:uppercase">
+        <span style="flex:none;width:34px;height:1px;background:var(--accent);transform:translateY(-4px)"></span>
         <span>Den Haag, NL — BI Developer at KPN</span>
       </div>
 
       <div style="display:flex;flex-wrap:wrap;gap:10px">
-        <a class="x1 brand-link" href="https://www.linkedin.com/in/prashandarthur" target="_blank" rel="noopener noreferrer" style="padding:8px 14px;border:1px solid rgba(46,125,255,.35);border-radius:999px;background:rgba(46,125,255,.08);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;white-space:nowrap;color:#63A2FF"><img src="assets/brand/linkedin-bug.png" alt="" width="635" height="540" style="height:21px;width:auto;flex:none">LINKEDIN</a>
-        <a class="x2 brand-link" href="mailto:mailprashand@pm.me" style="padding:8px 14px;border:1px solid rgba(255,255,255,.12);border-radius:999px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;white-space:nowrap;color:#9AA3B8"><img src="assets/brand/proton-mail-badge.svg" alt="" width="36" height="36" style="height:21px;width:auto;flex:none">EMAIL</a>
+        <a class="x1 brand-link" href="https://www.linkedin.com/in/prashandarthur" target="_blank" rel="noopener noreferrer" style="padding:8px 14px;border:1px solid var(--tint-35);border-radius:999px;background:var(--tint-08);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;white-space:nowrap;color:var(--link)"><img src="assets/brand/linkedin-bug.png" alt="" width="635" height="540" style="height:21px;width:auto;flex:none">LINKEDIN</a>
+        <a class="x2 brand-link" href="mailto:mailprashand@pm.me" style="padding:8px 14px;border:1px solid var(--edge-12);border-radius:999px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;white-space:nowrap;color:var(--body)"><img src="assets/brand/proton-mail-badge.svg" alt="" width="36" height="36" style="height:21px;width:auto;flex:none">EMAIL</a>
       </div>
 
-      <h1 style="margin:0;display:flex;flex-direction:column;align-items:flex-start;gap:14px;font-size:clamp(38px,4.4vw,68px);line-height:1.04;font-weight:700;letter-spacing:-.035em;color:#F3F6FD">
+      <h1 style="margin:0;display:flex;flex-direction:column;align-items:flex-start;gap:14px;font-size:clamp(38px,4.4vw,68px);line-height:1.04;font-weight:700;letter-spacing:-.035em;color:var(--ink)">
         <span>I build</span>
         <span style="position:relative;display:block;font-family:'JetBrains Mono',monospace;font-size:clamp(16px,1.7vw,26px);font-weight:500;letter-spacing:0;white-space:nowrap">
           <span aria-hidden="true" style="visibility:hidden">self-service analytics</span>
-          <span style="position:absolute;left:0;top:0"><span style="color:#2E7DFF;padding-right:5px;border-right:3px solid #2E7DFF;animation:blink 1.8s steps(1) infinite" id="typed" data-roles="[&quot;Power BI dashboards&quot;,&quot;self-service analytics&quot;,&quot;data people trust&quot;]">Power BI dashboards</span></span>
+          <span style="position:absolute;left:0;top:0"><span style="color:var(--accent-text);padding-right:5px;border-right:3px solid var(--accent);animation:blink 1.8s steps(1) infinite" id="typed" data-roles="[&quot;Power BI dashboards&quot;,&quot;self-service analytics&quot;,&quot;data people trust&quot;]">Power BI dashboards</span></span>
         </span>
       </h1>
 
-      <p style="margin:0;max-width:520px;font-size:17px;line-height:1.65;color:#98A1B6;text-wrap:pretty">
+      <p style="margin:0;max-width:520px;font-size:17px;line-height:1.65;color:var(--body-2);text-wrap:pretty">
         Self-taught, from a forgotten BI tool nobody could use into ten years of turning HR and operational data into dashboards people actually open. Power BI developer at KPN.
       </p>
 
       <div class="hero-cta" style="display:flex;gap:14px;padding-top:6px">
-        <a class="x3" href="#work" style="padding:15px 32px;border-radius:999px;background:#2E7DFF;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;letter-spacing:.16em;white-space:nowrap;color:#fff;box-shadow:0 12px 34px -12px rgba(46,125,255,.85)">MY WORK</a>
-        <a class="x4" href="#story" style="padding:15px 32px;border-radius:999px;border:1px solid #2E7DFF;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;letter-spacing:.16em;white-space:nowrap;color:#63A2FF">HOW I GOT HERE</a>
+        <a class="x3" href="#work" style="padding:15px 32px;border-radius:999px;background:var(--accent);font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;letter-spacing:.16em;white-space:nowrap;color:#fff;box-shadow:0 12px 34px -12px var(--tint-85)">MY WORK</a>
+        <a class="x4" href="#story" style="padding:15px 32px;border-radius:999px;border:1px solid var(--accent);font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;letter-spacing:.16em;white-space:nowrap;color:var(--link)">HOW I GOT HERE</a>
       </div>
 
       <div class="role-nav" style="display:flex;align-items:center;gap:16px;padding-top:22px">
-        <button class="x5" type="button" id="role-prev" aria-label="Previous phrase" style="width:34px;height:34px;display:flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,.14);border-radius:50%;background:transparent;color:#9AA3B8;cursor:pointer;font-size:14px">←</button>
-        <span style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.18em;color:#6E7994" id="role-counter">1 / 3</span>
-        <button class="x5" type="button" id="role-next" aria-label="Next phrase" style="width:34px;height:34px;display:flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,.14);border-radius:50%;background:transparent;color:#9AA3B8;cursor:pointer;font-size:14px">→</button>
+        <button class="x5" type="button" id="role-prev" aria-label="Previous phrase" style="width:34px;height:34px;display:flex;align-items:center;justify-content:center;border:1px solid var(--edge-14);border-radius:50%;background:transparent;color:var(--body);cursor:pointer;font-size:14px">←</button>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.18em;color:var(--muted-2)" id="role-counter">1 / 3</span>
+        <button class="x5" type="button" id="role-next" aria-label="Next phrase" style="width:34px;height:34px;display:flex;align-items:center;justify-content:center;border:1px solid var(--edge-14);border-radius:50%;background:transparent;color:var(--body);cursor:pointer;font-size:14px">→</button>
       </div>
     </div>
 
     
       <div class="hero-media" style="position:relative;min-height:520px">
         <img src="assets/img/hero-portrait.jpg" alt="Prashand Banwarie" width="1024" height="684" fetchpriority="high" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">
-        <div style="position:absolute;inset:0;background:#0B1B3A;mix-blend-mode:multiply;opacity:.62;pointer-events:none"></div>
-        <div class="hero-fade-x" style="position:absolute;inset:0;background:linear-gradient(90deg,#070B14 0%,rgba(7,11,20,.78) 24%,rgba(7,11,20,.05) 68%);pointer-events:none"></div>
-        <div style="position:absolute;inset:0;background:linear-gradient(0deg,#070B14 0%,rgba(7,11,20,0) 30%);pointer-events:none"></div>
+        <div style="position:absolute;inset:0;background:var(--chip);mix-blend-mode:multiply;opacity:.62;pointer-events:none"></div>
+        <div class="hero-fade-x" style="position:absolute;inset:0;background:linear-gradient(90deg,var(--bg-2) 0%,var(--scrim-78) 24%,var(--scrim-05) 68%);pointer-events:none"></div>
+        <div style="position:absolute;inset:0;background:linear-gradient(0deg,var(--bg-2) 0%,var(--scrim-0) 30%);pointer-events:none"></div>
       </div>
     
 
     
   </section>
 
-  <div style="display:flex;overflow:hidden;padding:20px 0;background:#0B1120;border-bottom:1px solid rgba(255,255,255,.06)">
-    <div style="display:flex;flex-shrink:0;gap:44px;padding-right:44px;animation:marquee 46s linear infinite;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.24em;color:#5D6883;white-space:nowrap;text-transform:uppercase">
-      <span>Power BI</span><span style="color:#2E7DFF">◆</span><span>DAX</span><span style="color:#2E7DFF">◆</span><span>Semantic modelling</span><span style="color:#2E7DFF">◆</span><span>Tabular Editor 3</span><span style="color:#2E7DFF">◆</span><span>Azure Data Factory</span><span style="color:#2E7DFF">◆</span><span>Azure DevOps</span><span style="color:#2E7DFF">◆</span><span>Git</span><span style="color:#2E7DFF">◆</span><span>SQL — Teradata &amp; Oracle HCM</span><span style="color:#2E7DFF">◆</span><span>Oracle OTBI</span><span style="color:#2E7DFF">◆</span><span>UX for BI</span><span style="color:#2E7DFF">◆</span><span>HR analytics</span><span style="color:#2E7DFF">◆</span><span>Agentic engineering</span><span style="color:#2E7DFF">◆</span>
-      <span>Power BI</span><span style="color:#2E7DFF">◆</span><span>DAX</span><span style="color:#2E7DFF">◆</span><span>Semantic modelling</span><span style="color:#2E7DFF">◆</span><span>Tabular Editor 3</span><span style="color:#2E7DFF">◆</span><span>Azure Data Factory</span><span style="color:#2E7DFF">◆</span><span>Azure DevOps</span><span style="color:#2E7DFF">◆</span><span>Git</span><span style="color:#2E7DFF">◆</span><span>SQL — Teradata &amp; Oracle HCM</span><span style="color:#2E7DFF">◆</span><span>Oracle OTBI</span><span style="color:#2E7DFF">◆</span><span>UX for BI</span><span style="color:#2E7DFF">◆</span><span>HR analytics</span><span style="color:#2E7DFF">◆</span><span>Agentic engineering</span><span style="color:#2E7DFF">◆</span>
+  <div style="display:flex;overflow:hidden;padding:20px 0;background:var(--card);border-bottom:1px solid var(--edge-06)">
+    <div style="display:flex;flex-shrink:0;gap:44px;padding-right:44px;animation:marquee 46s linear infinite;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.24em;color:var(--muted-3);white-space:nowrap;text-transform:uppercase">
+      <span>Power BI</span><span style="color:var(--accent-text)">◆</span><span>DAX</span><span style="color:var(--accent-text)">◆</span><span>Semantic modelling</span><span style="color:var(--accent-text)">◆</span><span>Tabular Editor 3</span><span style="color:var(--accent-text)">◆</span><span>Azure Data Factory</span><span style="color:var(--accent-text)">◆</span><span>Azure DevOps</span><span style="color:var(--accent-text)">◆</span><span>Git</span><span style="color:var(--accent-text)">◆</span><span>SQL — Teradata &amp; Oracle HCM</span><span style="color:var(--accent-text)">◆</span><span>Oracle OTBI</span><span style="color:var(--accent-text)">◆</span><span>UX for BI</span><span style="color:var(--accent-text)">◆</span><span>HR analytics</span><span style="color:var(--accent-text)">◆</span><span>Agentic engineering</span><span style="color:var(--accent-text)">◆</span>
+      <span>Power BI</span><span style="color:var(--accent-text)">◆</span><span>DAX</span><span style="color:var(--accent-text)">◆</span><span>Semantic modelling</span><span style="color:var(--accent-text)">◆</span><span>Tabular Editor 3</span><span style="color:var(--accent-text)">◆</span><span>Azure Data Factory</span><span style="color:var(--accent-text)">◆</span><span>Azure DevOps</span><span style="color:var(--accent-text)">◆</span><span>Git</span><span style="color:var(--accent-text)">◆</span><span>SQL — Teradata &amp; Oracle HCM</span><span style="color:var(--accent-text)">◆</span><span>Oracle OTBI</span><span style="color:var(--accent-text)">◆</span><span>UX for BI</span><span style="color:var(--accent-text)">◆</span><span>HR analytics</span><span style="color:var(--accent-text)">◆</span><span>Agentic engineering</span><span style="color:var(--accent-text)">◆</span>
     </div>
   </div>
 
-  <section class="sec" id="story" style="padding:120px 72px;background:#05080F">
+  <section class="sec" id="story" style="padding:120px 72px;background:var(--bg)">
     <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.08fr);gap:88px;max-width:1280px;margin:0 auto;align-items:start">
       <div class="story-col" data-reveal="1" style="position:relative;padding-bottom:120px">
-        <div class="story-photo" style="position:relative;height:520px;border:1px solid rgba(255,255,255,.08);border-radius:50%;overflow:hidden">
+        <div class="story-photo" style="position:relative;height:520px;border:1px solid var(--edge-08);border-radius:50%;overflow:hidden">
           <img src="assets/img/about-photo.jpg" alt="Prashand Banwarie at work on a Power BI report" width="856" height="856" loading="lazy" decoding="async" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">
-          <div style="position:absolute;inset:0;background:#0B1B3A;mix-blend-mode:multiply;opacity:.32;pointer-events:none"></div>
-          <div style="position: absolute; inset: 0; background: linear-gradient(0deg,rgba(5,8,15,.85) 0%,rgba(5,8,15,0) 42%); pointer-events: none; border-radius: 15px"></div>
+          <div style="position:absolute;inset:0;background:var(--chip);mix-blend-mode:multiply;opacity:.32;pointer-events:none"></div>
+          <div style="position: absolute; inset: 0; background: linear-gradient(0deg,var(--fade-85) 0%,var(--fade-0) 42%); pointer-events: none; border-radius: 15px"></div>
         </div>
-        <div class="skills-card" style="position: absolute; width: min(360px,100%); max-width: calc(100% - 30px); padding: 26px; background: #0B1120; border: 1px solid rgba(46,125,255,.3); box-shadow: 0 30px 70px -30px rgba(0,0,0,.9); left: 101px; top: 535px">
+        <div class="skills-card" style="position: absolute; width: min(360px,100%); max-width: calc(100% - 30px); padding: 26px; background: var(--card); border: 1px solid var(--tint-30); box-shadow: 0 30px 70px -30px var(--shadow); left: 101px; top: 535px">
           <div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px">
-            <span style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.24em;color:#EDF1FA;text-transform:uppercase">Skills</span>
-            <span style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.16em;color:#5D6883">HANDS-ON SINCE</span>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.24em;color:var(--text);text-transform:uppercase">Skills</span>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.16em;color:var(--muted-3)">HANDS-ON SINCE</span>
           </div>
           <div style="display:flex;flex-direction:column;margin-top:18px">
-            <div style="display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:11px 0;border-top:1px solid rgba(255,255,255,.08)">
-              <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;color:#EDF1FA">POWER BI</span>
-              <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;color:#63A2FF;white-space:nowrap">2017 · 9 YRS</span>
+            <div style="display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:11px 0;border-top:1px solid var(--edge-08)">
+              <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;color:var(--text)">POWER BI</span>
+              <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;color:var(--link);white-space:nowrap">2017 · 9 YRS</span>
             </div>
-            <div style="display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:11px 0;border-top:1px solid rgba(255,255,255,.08)">
-              <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;color:#EDF1FA">DAX &amp; SEMANTIC MODELS</span>
-              <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;color:#63A2FF;white-space:nowrap">2018 · 8 YRS</span>
+            <div style="display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:11px 0;border-top:1px solid var(--edge-08)">
+              <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;color:var(--text)">DAX &amp; SEMANTIC MODELS</span>
+              <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;color:var(--link);white-space:nowrap">2018 · 8 YRS</span>
             </div>
-            <div style="display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:11px 0;border-top:1px solid rgba(255,255,255,.08)">
-              <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;color:#EDF1FA">SQL — TERADATA, ORACLE HCM</span>
-              <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;color:#63A2FF;white-space:nowrap">2022 · 4 YRS</span>
+            <div style="display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:11px 0;border-top:1px solid var(--edge-08)">
+              <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;color:var(--text)">SQL — TERADATA, ORACLE HCM</span>
+              <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;color:var(--link);white-space:nowrap">2022 · 4 YRS</span>
             </div>
-            <div style="display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:11px 0;border-top:1px solid rgba(255,255,255,.08)">
-              <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;color:#EDF1FA">AZURE DATA FACTORY / DEVOPS</span>
-              <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;color:#63A2FF;white-space:nowrap">2023 · 3 YRS</span>
+            <div style="display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:11px 0;border-top:1px solid var(--edge-08)">
+              <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;color:var(--text)">AZURE DATA FACTORY / DEVOPS</span>
+              <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;color:var(--link);white-space:nowrap">2023 · 3 YRS</span>
             </div>
-            <div style="display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:11px 0;border-top:1px solid rgba(255,255,255,.08)">
-              <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;color:#EDF1FA">STAKEHOLDERS &amp; STORYTELLING</span>
-              <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;color:#63A2FF;white-space:nowrap">2003 · 20+ YRS</span>
+            <div style="display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:11px 0;border-top:1px solid var(--edge-08)">
+              <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;color:var(--text)">STAKEHOLDERS &amp; STORYTELLING</span>
+              <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;color:var(--link);white-space:nowrap">2003 · 20+ YRS</span>
             </div>
-            <div style="display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:11px 0;border-top:1px solid rgba(255,255,255,.08)">
-              <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;color:#EDF1FA">AGENTIC ENGINEERING</span>
-              <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;color:#63A2FF;white-space:nowrap">2025 · LEARNING</span>
+            <div style="display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:11px 0;border-top:1px solid var(--edge-08)">
+              <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;color:var(--text)">AGENTIC ENGINEERING</span>
+              <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;color:var(--link);white-space:nowrap">2025 · LEARNING</span>
             </div>
           </div>
         </div>
       </div>
 
       <div data-reveal="1" style="display:flex;flex-direction:column;gap:24px;padding-top:14px">
-        <div style="align-self:flex-start;position:relative;padding:13px 26px;border:1px solid rgba(255,255,255,.16)">
-          <span style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.24em;color:#EDF1FA;text-transform:uppercase">How I got here</span>
-          <span style="position:absolute;left:26px;bottom:-9px;width:16px;height:16px;background:#05080F;border-right:1px solid rgba(255,255,255,.16);border-bottom:1px solid rgba(255,255,255,.16);transform:rotate(45deg)"></span>
+        <div style="align-self:flex-start;position:relative;padding:13px 26px;border:1px solid var(--edge-16)">
+          <span style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.24em;color:var(--text);text-transform:uppercase">How I got here</span>
+          <span style="position:absolute;left:26px;bottom:-9px;width:16px;height:16px;background:var(--bg);border-right:1px solid var(--edge-16);border-bottom:1px solid var(--edge-16);transform:rotate(45deg)"></span>
         </div>
-        <p style="margin:0;font-size:17px;line-height:1.75;color:#98A1B6;text-wrap:pretty">
+        <p style="margin:0;font-size:17px;line-height:1.75;color:var(--body-2);text-wrap:pretty">
           I didn't study data. I walked into it. As order orchestrator at KPN ÉÉN I was the single point of contact for business customers — every delivery was mine to land, and our team needed operational insight nobody could give us. There was a forgotten BI tool sitting in the corner: Spotfire. Nobody knew how it worked. I said I'd try.
         </p>
-        <p style="margin:0;font-size:17px;line-height:1.75;color:#98A1B6;text-wrap:pretty">
+        <p style="margin:0;font-size:17px;line-height:1.75;color:var(--body-2);text-wrap:pretty">
           YouTube and stubbornness taught me the business logic, then how to change it, then how to rebuild the entire dashboard. That got me the analyst job — and with one colleague I built a full ETL and data model in Power BI. I didn't know Power BI either. Same method: figure it out, ship it, improve it.
         </p>
-        <p style="margin:0;font-size:17px;line-height:1.75;color:#98A1B6;text-wrap:pretty">
+        <p style="margin:0;font-size:17px;line-height:1.75;color:var(--body-2);text-wrap:pretty">
           The pattern repeated at HR. After the BRIDGE migration there was a hole in our reporting. Oracle gave us OTBI — and again, YouTube and I taught ourselves to build reports in it. OTBI wasn't great, so we built Power BI dashboards on top of it to fill the gaps.
         </p>
-        <p style="margin:0;font-size:17px;line-height:1.75;color:#98A1B6;text-wrap:pretty">
+        <p style="margin:0;font-size:17px;line-height:1.75;color:var(--body-2);text-wrap:pretty">
           Ten years later I'm a BI developer in a scrum team of five. GBS adopted our team from HR, so its main products are finance while I own the HR side. What I bring isn't only DAX: it's HR domain knowledge and a UX perspective most BI teams don't have.
         </p>
 
-        <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:22px;padding-top:16px;border-top:1px solid rgba(255,255,255,.07)">
+        <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:22px;padding-top:16px;border-top:1px solid var(--edge-07)">
           <div style="display:flex;flex-direction:column;gap:6px;padding-top:20px">
-            <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.2em;color:#2E7DFF">NAME</span>
-            <span style="font-size:15px;color:#EDF1FA">Prashand Arthur Banwarie</span>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.2em;color:var(--accent-text)">NAME</span>
+            <span style="font-size:15px;color:var(--text)">Prashand Arthur Banwarie</span>
           </div>
-          <div class="brand-pair" style="padding-top:20px"><img src="assets/brand/proton-mail-badge.svg" alt="" width="36" height="36" style="height:26px;width:auto;flex:none"><div style="display:flex;flex-direction:column;gap:6px"><span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.2em;color:#2E7DFF">EMAIL</span><a href="mailto:mailprashand@pm.me" style="font-size:15px">mailprashand@pm.me</a></div></div>
+          <div class="brand-pair" style="padding-top:20px"><img src="assets/brand/proton-mail-badge.svg" alt="" width="36" height="36" style="height:26px;width:auto;flex:none"><div style="display:flex;flex-direction:column;gap:6px"><span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.2em;color:var(--accent-text)">EMAIL</span><a href="mailto:mailprashand@pm.me" style="font-size:15px">mailprashand@pm.me</a></div></div>
           
-          <div class="brand-pair" style=""><img src="assets/brand/linkedin-bug.png" alt="" width="635" height="540" style="height:26px;width:auto;flex:none"><div style="display:flex;flex-direction:column;gap:6px"><span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.2em;color:#2E7DFF">LINKEDIN</span><a href="https://www.linkedin.com/in/prashandarthur" target="_blank" rel="noopener noreferrer" style="font-size:15px">in/prashandarthur</a></div></div>
+          <div class="brand-pair" style=""><img src="assets/brand/linkedin-bug.png" alt="" width="635" height="540" style="height:26px;width:auto;flex:none"><div style="display:flex;flex-direction:column;gap:6px"><span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.2em;color:var(--accent-text)">LINKEDIN</span><a href="https://www.linkedin.com/in/prashandarthur" target="_blank" rel="noopener noreferrer" style="font-size:15px">in/prashandarthur</a></div></div>
         </div>
 
         <a class="cert-card" href="https://learn.microsoft.com/api/credentials/share/en-us/BanwariePrashand-2093/EE55F1D6C38B2C99?sharingId=CE268806D33A9946" target="_blank" rel="noopener noreferrer"><img src="assets/badges/microsoft-certified-associate.svg" alt="Microsoft Certified: Power BI Data Analyst Associate badge" width="300" height="300" loading="lazy" decoding="async"><span class="cert-text"><span class="cert-kicker">Microsoft Certified</span><span class="cert-name">Power BI Data Analyst Associate</span><span class="cert-verify">Verify at Microsoft <span aria-hidden="true">↗</span></span></span></a>
 <div style="display:flex;flex-wrap:wrap;gap:10px;padding-top:8px">
-          <span style="padding:9px 15px;border:1px solid rgba(255,255,255,.1);border-radius:999px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;color:#8B94AA">DATA MODELING FOR POWER BI</span>
+          <span style="padding:9px 15px;border:1px solid var(--edge-10);border-radius:999px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;color:var(--muted)">DATA MODELING FOR POWER BI</span>
         </div>
       </div>
     </div>
 
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(262px,1fr));gap:20px;max-width:1280px;margin:96px auto 0">
-      <div data-reveal="1" style="display:flex;flex-direction:column;gap:12px;padding:28px 24px;background:#0B1120;border:1px solid rgba(255,255,255,.08)">
-        <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.2em;color:#2E7DFF">01 — WHAT I BRING</span>
-        <h3 style="margin:0;font-size:19px;font-weight:600;letter-spacing:-.02em;color:#F3F6FD">Hearing the decision, not the request</h3>
-        <p style="margin:0;font-size:14px;line-height:1.65;color:#8B94AA;text-wrap:pretty">Stakeholders ask for a report. I listen for the decision behind it. Eight years of retail conversations teach you the difference.</p>
+      <div data-reveal="1" style="display:flex;flex-direction:column;gap:12px;padding:28px 24px;background:var(--card);border:1px solid var(--edge-08)">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.2em;color:var(--accent-text)">01 — WHAT I BRING</span>
+        <h3 style="margin:0;font-size:19px;font-weight:600;letter-spacing:-.02em;color:var(--ink)">Hearing the decision, not the request</h3>
+        <p style="margin:0;font-size:14px;line-height:1.65;color:var(--muted);text-wrap:pretty">Stakeholders ask for a report. I listen for the decision behind it. Eight years of retail conversations teach you the difference.</p>
       </div>
-      <div data-reveal="1" style="display:flex;flex-direction:column;gap:12px;padding:28px 24px;background:#0B1120;border:1px solid rgba(255,255,255,.08)">
-        <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.2em;color:#2E7DFF">02 — WHAT I BRING</span>
-        <h3 style="margin:0;font-size:19px;font-weight:600;letter-spacing:-.02em;color:#F3F6FD">Numbers for non-numbers people</h3>
-        <p style="margin:0;font-size:14px;line-height:1.65;color:#8B94AA;text-wrap:pretty">I've explained targets to part-timers on a shop floor and models to directors. It's the same skill, and most BI work fails on it.</p>
+      <div data-reveal="1" style="display:flex;flex-direction:column;gap:12px;padding:28px 24px;background:var(--card);border:1px solid var(--edge-08)">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.2em;color:var(--accent-text)">02 — WHAT I BRING</span>
+        <h3 style="margin:0;font-size:19px;font-weight:600;letter-spacing:-.02em;color:var(--ink)">Numbers for non-numbers people</h3>
+        <p style="margin:0;font-size:14px;line-height:1.65;color:var(--muted);text-wrap:pretty">I've explained targets to part-timers on a shop floor and models to directors. It's the same skill, and most BI work fails on it.</p>
       </div>
-      <div data-reveal="1" style="display:flex;flex-direction:column;gap:12px;padding:28px 24px;background:#0B1120;border:1px solid rgba(255,255,255,.08)">
-        <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.2em;color:#2E7DFF">03 — WHAT I BRING</span>
-        <h3 style="margin:0;font-size:19px;font-weight:600;letter-spacing:-.02em;color:#F3F6FD">UX, inside BI</h3>
-        <p style="margin:0;font-size:14px;line-height:1.65;color:#8B94AA;text-wrap:pretty">A complex model makes a horrible pivot table. I design the way in — what users see first, what they never have to touch.</p>
+      <div data-reveal="1" style="display:flex;flex-direction:column;gap:12px;padding:28px 24px;background:var(--card);border:1px solid var(--edge-08)">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.2em;color:var(--accent-text)">03 — WHAT I BRING</span>
+        <h3 style="margin:0;font-size:19px;font-weight:600;letter-spacing:-.02em;color:var(--ink)">UX, inside BI</h3>
+        <p style="margin:0;font-size:14px;line-height:1.65;color:var(--muted);text-wrap:pretty">A complex model makes a horrible pivot table. I design the way in — what users see first, what they never have to touch.</p>
       </div>
-      <div data-reveal="1" style="display:flex;flex-direction:column;gap:12px;padding:28px 24px;background:#0B1120;border:1px solid rgba(255,255,255,.08)">
-        <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.2em;color:#2E7DFF">04 — WHAT I BRING</span>
-        <h3 style="margin:0;font-size:19px;font-weight:600;letter-spacing:-.02em;color:#F3F6FD">I've carried a target</h3>
-        <p style="margin:0;font-size:14px;line-height:1.65;color:#8B94AA;text-wrap:pretty">Manager of a team of four or five, measured monthly. I build for the person who has a number to hit and an escalation to handle.</p>
+      <div data-reveal="1" style="display:flex;flex-direction:column;gap:12px;padding:28px 24px;background:var(--card);border:1px solid var(--edge-08)">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.2em;color:var(--accent-text)">04 — WHAT I BRING</span>
+        <h3 style="margin:0;font-size:19px;font-weight:600;letter-spacing:-.02em;color:var(--ink)">I've carried a target</h3>
+        <p style="margin:0;font-size:14px;line-height:1.65;color:var(--muted);text-wrap:pretty">Manager of a team of four or five, measured monthly. I build for the person who has a number to hit and an escalation to handle.</p>
       </div>
     </div>
   </section>
 
-  <section class="sec" id="work" style="padding:120px 72px;background:#070B14;border-top:1px solid rgba(255,255,255,.06)">
+  <section class="sec" id="work" style="padding:120px 72px;background:var(--bg-2);border-top:1px solid var(--edge-06)">
     <div style="max-width:1280px;margin:0 auto">
       <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:40px;flex-wrap:wrap">
         <div style="display:flex;flex-direction:column;gap:18px">
-          <div style="display:flex;align-items:center;gap:14px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.24em;color:#6E7994;text-transform:uppercase">
-            <span style="width:34px;height:1px;background:#2E7DFF"></span><span>Selected work</span>
+          <div style="display:flex;align-items:center;gap:14px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.24em;color:var(--muted-2);text-transform:uppercase">
+            <span style="width:34px;height:1px;background:var(--accent)"></span><span>Selected work</span>
           </div>
-          <h2 style="margin:0;font-size:clamp(34px,3.4vw,50px);line-height:1.08;font-weight:700;letter-spacing:-.03em;color:#F3F6FD">Six things that changed<br>how a department decides</h2>
+          <h2 style="margin:0;font-size:clamp(34px,3.4vw,50px);line-height:1.08;font-weight:700;letter-spacing:-.03em;color:var(--ink)">Six things that changed<br>how a department decides</h2>
         </div>
-        <p style="margin:0;max-width:330px;font-size:15px;line-height:1.7;color:#8B94AA;text-wrap:pretty">All internal KPN products, so no screenshots — the outcome is the interesting part anyway.</p>
+        <p style="margin:0;max-width:330px;font-size:15px;line-height:1.7;color:var(--muted);text-wrap:pretty">All internal KPN products, so no screenshots — the outcome is the interesting part anyway.</p>
       </div>
 
-      <div data-reveal="1" style="position:relative;margin-top:56px;padding:36px 40px;background:#05080F;border:1px solid rgba(255,255,255,.08);overflow:hidden"><span class="ai-badge"><img src="assets/eu-ai/ai-generated-white.svg" alt="AI generated" width="1790" height="567" style="height:28px;width:auto;flex:none;display:block"></span>
-        <div style="position:absolute;inset:0;background-image:radial-gradient(rgba(46,125,255,.4) 1px, transparent 1px);background-size:24px 24px;opacity:.2;pointer-events:none"></div>
+      <div class="art-panel" data-reveal="1" style="position:relative;margin-top:56px;padding:36px 40px;background:var(--bg);border:1px solid var(--edge-08);overflow:hidden"><span class="ai-badge"><img src="assets/eu-ai/ai-generated-white.svg" alt="AI generated" width="1790" height="567" style="height:28px;width:auto;flex:none;display:block"></span>
+        <div style="position:absolute;inset:0;background-image:radial-gradient(var(--tint-40) 1px, transparent 1px);background-size:24px 24px;opacity:.2;pointer-events:none"></div>
         <svg viewBox="0 0 240 60" width="100%" style="position:relative;display:block;max-height:300px" shape-rendering="crispEdges" role="img" aria-label="Pixel-art scene of Prashand building a Power BI dashboard">
           <rect x="30" y="45" width="180" height="2" fill="#16203A"></rect><rect x="30" y="47" width="180" height="1" fill="#0C1424"></rect>
           <rect x="50" y="28" width="14" height="17" fill="#0C1424"></rect><rect x="48" y="45" width="20" height="1" fill="#121B2E"></rect>
@@ -282,169 +284,169 @@
           <rect x="123" y="11" width="74" height="1" fill="#2E7DFF" opacity=".08" style="animation:pxScan 6s linear infinite"></rect>
         </svg>
         <div style="position:relative;display:flex;align-items:center;gap:14px;margin-top:24px">
-          <span style="flex:none;width:34px;height:1px;background:#2E7DFF"></span>
-          <span class="wrap-label" style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;color:#6E7994;white-space:nowrap">SELF-TAUGHT, STILL SHIPPING — 2016 → NOW</span>
+          <span style="flex:none;width:34px;height:1px;background:var(--accent)"></span>
+          <span class="wrap-label" style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;color:var(--muted-2);white-space:nowrap">SELF-TAUGHT, STILL SHIPPING — 2016 → NOW</span>
         </div>
       <div class="ai-caption"><span>Illustration generated with AI</span><a href="#ai-disclosure">How AI was used on this site</a></div></div>
       <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:26px;margin-top:64px">
-        <div class="x6" data-reveal="1" style="display:flex;flex-direction:column;border:1px solid rgba(255,255,255,.08);background:#0B1120;transition:transform .4s cubic-bezier(.2,.7,.2,1),border-color .3s">
-          <div style="position:relative;display:flex;align-items:flex-end;justify-content:space-between;gap:12px;padding:22px 26px;background-image:radial-gradient(rgba(46,125,255,.45) 1px, transparent 1px);background-size:22px 22px;border-bottom:1px solid rgba(255,255,255,.08)">
-            <span style="font-size:38px;font-weight:700;letter-spacing:-.04em;color:#2E7DFF;line-height:1">01</span>
-            <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.16em;white-space:nowrap;color:#5D6883">KPN · 2025</span>
+        <div class="x6" data-reveal="1" style="display:flex;flex-direction:column;border:1px solid var(--edge-08);background:var(--card);transition:transform .4s cubic-bezier(.2,.7,.2,1),border-color .3s">
+          <div style="position:relative;display:flex;align-items:flex-end;justify-content:space-between;gap:12px;padding:22px 26px;background-image:radial-gradient(var(--tint-45) 1px, transparent 1px);background-size:22px 22px;border-bottom:1px solid var(--edge-08)">
+            <span style="font-size:38px;font-weight:700;letter-spacing:-.04em;color:var(--accent-text);line-height:1">01</span>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.16em;white-space:nowrap;color:var(--muted-3)">KPN · 2025</span>
           </div>
           <div style="display:flex;flex-direction:column;gap:12px;padding:26px">
-            <h3 style="margin:0;font-size:22px;font-weight:600;letter-spacing:-.02em;color:#F3F6FD">BYOR — Build Your Own Report</h3>
-            <p style="margin:0;font-size:14px;line-height:1.65;color:#8B94AA;text-wrap:pretty">Replaced 20–30 standing reports with one self-service model. HR and business teams now build their own insights every month instead of queueing behind an analyst — and nobody has to fight a pivot table over a very complex model again.</p>
-            <div style="display:flex;flex-wrap:wrap;gap:7px;padding-top:4px"><span style="padding:5px 10px;background:rgba(255,255,255,.05);font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;color:#8B94AA">SELF-SERVICE</span><span style="padding:5px 10px;background:rgba(255,255,255,.05);font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;color:#8B94AA">UX</span></div>
+            <h3 style="margin:0;font-size:22px;font-weight:600;letter-spacing:-.02em;color:var(--ink)">BYOR — Build Your Own Report</h3>
+            <p style="margin:0;font-size:14px;line-height:1.65;color:var(--muted);text-wrap:pretty">Replaced 20–30 standing reports with one self-service model. HR and business teams now build their own insights every month instead of queueing behind an analyst — and nobody has to fight a pivot table over a very complex model again.</p>
+            <div style="display:flex;flex-wrap:wrap;gap:7px;padding-top:4px"><span style="padding:5px 10px;background:var(--edge-05);font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;color:var(--muted)">SELF-SERVICE</span><span style="padding:5px 10px;background:var(--edge-05);font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;color:var(--muted)">UX</span></div>
           </div>
         </div>
 
-        <div class="x6" data-reveal="1" style="display:flex;flex-direction:column;border:1px solid rgba(255,255,255,.08);background:#0B1120;transition:transform .4s cubic-bezier(.2,.7,.2,1),border-color .3s">
-          <div style="position:relative;display:flex;align-items:flex-end;justify-content:space-between;gap:12px;padding:22px 26px;background-image:radial-gradient(rgba(46,125,255,.45) 1px, transparent 1px);background-size:22px 22px;border-bottom:1px solid rgba(255,255,255,.08)">
-            <span style="font-size:38px;font-weight:700;letter-spacing:-.04em;color:#2E7DFF;line-height:1">02</span>
-            <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.16em;white-space:nowrap;color:#5D6883">KPN · 2025</span>
+        <div class="x6" data-reveal="1" style="display:flex;flex-direction:column;border:1px solid var(--edge-08);background:var(--card);transition:transform .4s cubic-bezier(.2,.7,.2,1),border-color .3s">
+          <div style="position:relative;display:flex;align-items:flex-end;justify-content:space-between;gap:12px;padding:22px 26px;background-image:radial-gradient(var(--tint-45) 1px, transparent 1px);background-size:22px 22px;border-bottom:1px solid var(--edge-08)">
+            <span style="font-size:38px;font-weight:700;letter-spacing:-.04em;color:var(--accent-text);line-height:1">02</span>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.16em;white-space:nowrap;color:var(--muted-3)">KPN · 2025</span>
           </div>
           <div style="display:flex;flex-direction:column;gap:12px;padding:26px">
-            <h3 style="margin:0;font-size:22px;font-weight:600;letter-spacing:-.02em;color:#F3F6FD">HR People Metrics</h3>
-            <p style="margin:0;font-size:14px;line-height:1.65;color:#8B94AA;text-wrap:pretty">Dashboards that give HR and leadership standing visibility into workforce composition, diversity and organisational trends — built and maintained as a product, not a one-off request.</p>
-            <div style="display:flex;flex-wrap:wrap;gap:7px;padding-top:4px"><span style="padding:5px 10px;background:rgba(255,255,255,.05);font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;color:#8B94AA">POWER BI</span><span style="padding:5px 10px;background:rgba(255,255,255,.05);font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;color:#8B94AA">DAX</span></div>
+            <h3 style="margin:0;font-size:22px;font-weight:600;letter-spacing:-.02em;color:var(--ink)">HR People Metrics</h3>
+            <p style="margin:0;font-size:14px;line-height:1.65;color:var(--muted);text-wrap:pretty">Dashboards that give HR and leadership standing visibility into workforce composition, diversity and organisational trends — built and maintained as a product, not a one-off request.</p>
+            <div style="display:flex;flex-wrap:wrap;gap:7px;padding-top:4px"><span style="padding:5px 10px;background:var(--edge-05);font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;color:var(--muted)">POWER BI</span><span style="padding:5px 10px;background:var(--edge-05);font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;color:var(--muted)">DAX</span></div>
           </div>
         </div>
 
-        <div class="x6" data-reveal="1" style="display:flex;flex-direction:column;border:1px solid rgba(255,255,255,.08);background:#0B1120;transition:transform .4s cubic-bezier(.2,.7,.2,1),border-color .3s">
-          <div style="position:relative;display:flex;align-items:flex-end;justify-content:space-between;gap:12px;padding:22px 26px;background-image:radial-gradient(rgba(46,125,255,.45) 1px, transparent 1px);background-size:22px 22px;border-bottom:1px solid rgba(255,255,255,.08)">
-            <span style="font-size:38px;font-weight:700;letter-spacing:-.04em;color:#2E7DFF;line-height:1">03</span>
-            <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.16em;white-space:nowrap;color:#5D6883">KPN · 2025</span>
+        <div class="x6" data-reveal="1" style="display:flex;flex-direction:column;border:1px solid var(--edge-08);background:var(--card);transition:transform .4s cubic-bezier(.2,.7,.2,1),border-color .3s">
+          <div style="position:relative;display:flex;align-items:flex-end;justify-content:space-between;gap:12px;padding:22px 26px;background-image:radial-gradient(var(--tint-45) 1px, transparent 1px);background-size:22px 22px;border-bottom:1px solid var(--edge-08)">
+            <span style="font-size:38px;font-weight:700;letter-spacing:-.04em;color:var(--accent-text);line-height:1">03</span>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.16em;white-space:nowrap;color:var(--muted-3)">KPN · 2025</span>
           </div>
           <div style="display:flex;flex-direction:column;gap:12px;padding:26px">
-            <h3 style="margin:0;font-size:22px;font-weight:600;letter-spacing:-.02em;color:#F3F6FD">Pulse Survey Reporting</h3>
-            <p style="margin:0;font-size:14px;line-height:1.65;color:#8B94AA;text-wrap:pretty">Employee feedback turned into structured reporting on engagement and well-being, so the conversation starts from evidence instead of anecdote.</p>
-            <div style="display:flex;flex-wrap:wrap;gap:7px;padding-top:4px"><span style="padding:5px 10px;background:rgba(255,255,255,.05);font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;color:#8B94AA">SURVEY DATA</span><span style="padding:5px 10px;background:rgba(255,255,255,.05);font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;color:#8B94AA">STORYTELLING</span></div>
+            <h3 style="margin:0;font-size:22px;font-weight:600;letter-spacing:-.02em;color:var(--ink)">Pulse Survey Reporting</h3>
+            <p style="margin:0;font-size:14px;line-height:1.65;color:var(--muted);text-wrap:pretty">Employee feedback turned into structured reporting on engagement and well-being, so the conversation starts from evidence instead of anecdote.</p>
+            <div style="display:flex;flex-wrap:wrap;gap:7px;padding-top:4px"><span style="padding:5px 10px;background:var(--edge-05);font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;color:var(--muted)">SURVEY DATA</span><span style="padding:5px 10px;background:var(--edge-05);font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;color:var(--muted)">STORYTELLING</span></div>
           </div>
         </div>
 
-        <div class="x6" data-reveal="1" style="display:flex;flex-direction:column;border:1px solid rgba(255,255,255,.08);background:#0B1120;transition:transform .4s cubic-bezier(.2,.7,.2,1),border-color .3s">
-          <div style="position:relative;display:flex;align-items:flex-end;justify-content:space-between;gap:12px;padding:22px 26px;background-image:radial-gradient(rgba(46,125,255,.45) 1px, transparent 1px);background-size:22px 22px;border-bottom:1px solid rgba(255,255,255,.08)">
-            <span style="font-size:38px;font-weight:700;letter-spacing:-.04em;color:#2E7DFF;line-height:1">04</span>
-            <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.16em;white-space:nowrap;color:#5D6883">KPN · 2023—25</span>
+        <div class="x6" data-reveal="1" style="display:flex;flex-direction:column;border:1px solid var(--edge-08);background:var(--card);transition:transform .4s cubic-bezier(.2,.7,.2,1),border-color .3s">
+          <div style="position:relative;display:flex;align-items:flex-end;justify-content:space-between;gap:12px;padding:22px 26px;background-image:radial-gradient(var(--tint-45) 1px, transparent 1px);background-size:22px 22px;border-bottom:1px solid var(--edge-08)">
+            <span style="font-size:38px;font-weight:700;letter-spacing:-.04em;color:var(--accent-text);line-height:1">04</span>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.16em;white-space:nowrap;color:var(--muted-3)">KPN · 2023—25</span>
           </div>
           <div style="display:flex;flex-direction:column;gap:12px;padding:26px">
-            <h3 style="margin:0;font-size:22px;font-weight:600;letter-spacing:-.02em;color:#F3F6FD">Automated dataflows</h3>
-            <p style="margin:0;font-size:14px;line-height:1.65;color:#8B94AA;text-wrap:pretty">Built and monitored automated dataflows on Azure Data Factory, with DAX queries pulling structured insight out of semantic models for end users.</p>
-            <div style="display:flex;flex-wrap:wrap;gap:7px;padding-top:4px"><span style="padding:5px 10px;background:rgba(255,255,255,.05);font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;color:#8B94AA">AZURE DATA FACTORY</span><span style="padding:5px 10px;background:rgba(255,255,255,.05);font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;color:#8B94AA">DEVOPS</span></div>
+            <h3 style="margin:0;font-size:22px;font-weight:600;letter-spacing:-.02em;color:var(--ink)">Automated dataflows</h3>
+            <p style="margin:0;font-size:14px;line-height:1.65;color:var(--muted);text-wrap:pretty">Built and monitored automated dataflows on Azure Data Factory, with DAX queries pulling structured insight out of semantic models for end users.</p>
+            <div style="display:flex;flex-wrap:wrap;gap:7px;padding-top:4px"><span style="padding:5px 10px;background:var(--edge-05);font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;color:var(--muted)">AZURE DATA FACTORY</span><span style="padding:5px 10px;background:var(--edge-05);font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;color:var(--muted)">DEVOPS</span></div>
           </div>
         </div>
 
-        <div class="x6" data-reveal="1" style="display:flex;flex-direction:column;border:1px solid rgba(255,255,255,.08);background:#0B1120;transition:transform .4s cubic-bezier(.2,.7,.2,1),border-color .3s">
-          <div style="position:relative;display:flex;align-items:flex-end;justify-content:space-between;gap:12px;padding:22px 26px;background-image:radial-gradient(rgba(46,125,255,.45) 1px, transparent 1px);background-size:22px 22px;border-bottom:1px solid rgba(255,255,255,.08)">
-            <span style="font-size:38px;font-weight:700;letter-spacing:-.04em;color:#2E7DFF;line-height:1">05</span>
-            <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.16em;white-space:nowrap;color:#5D6883">2017—20</span>
+        <div class="x6" data-reveal="1" style="display:flex;flex-direction:column;border:1px solid var(--edge-08);background:var(--card);transition:transform .4s cubic-bezier(.2,.7,.2,1),border-color .3s">
+          <div style="position:relative;display:flex;align-items:flex-end;justify-content:space-between;gap:12px;padding:22px 26px;background-image:radial-gradient(var(--tint-45) 1px, transparent 1px);background-size:22px 22px;border-bottom:1px solid var(--edge-08)">
+            <span style="font-size:38px;font-weight:700;letter-spacing:-.04em;color:var(--accent-text);line-height:1">05</span>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.16em;white-space:nowrap;color:var(--muted-3)">2017—20</span>
           </div>
           <div style="display:flex;flex-direction:column;gap:12px;padding:26px">
-            <h3 style="margin:0;font-size:22px;font-weight:600;letter-spacing:-.02em;color:#F3F6FD">KPN ÉÉN operational &amp; management dashboards</h3>
-            <p style="margin:0;font-size:14px;line-height:1.65;color:#8B94AA;text-wrap:pretty">The ETL, model and dashboards my colleague and I built from nothing: workload and delivery insight for the floor, KPI steering on cancellations and fallout for management, and deep dives when a number looked wrong.</p>
-            <div style="display:flex;flex-wrap:wrap;gap:7px;padding-top:4px"><span style="padding:5px 10px;background:rgba(255,255,255,.05);font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;color:#8B94AA">ETL</span><span style="padding:5px 10px;background:rgba(255,255,255,.05);font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;color:#8B94AA">KPI STEERING</span></div>
+            <h3 style="margin:0;font-size:22px;font-weight:600;letter-spacing:-.02em;color:var(--ink)">KPN ÉÉN operational &amp; management dashboards</h3>
+            <p style="margin:0;font-size:14px;line-height:1.65;color:var(--muted);text-wrap:pretty">The ETL, model and dashboards my colleague and I built from nothing: workload and delivery insight for the floor, KPI steering on cancellations and fallout for management, and deep dives when a number looked wrong.</p>
+            <div style="display:flex;flex-wrap:wrap;gap:7px;padding-top:4px"><span style="padding:5px 10px;background:var(--edge-05);font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;color:var(--muted)">ETL</span><span style="padding:5px 10px;background:var(--edge-05);font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;color:var(--muted)">KPI STEERING</span></div>
           </div>
         </div>
 
-        <div class="x6" data-reveal="1" style="display:flex;flex-direction:column;border:1px solid rgba(255,255,255,.08);background:#0B1120;transition:transform .4s cubic-bezier(.2,.7,.2,1),border-color .3s">
-          <div style="position:relative;display:flex;align-items:flex-end;justify-content:space-between;gap:12px;padding:22px 26px;background-image:radial-gradient(rgba(46,125,255,.45) 1px, transparent 1px);background-size:22px 22px;border-bottom:1px solid rgba(255,255,255,.08)">
-            <span style="font-size:38px;font-weight:700;letter-spacing:-.04em;color:#2E7DFF;line-height:1">06</span>
-            <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.16em;white-space:nowrap;color:#5D6883">KPN · 2021—22</span>
+        <div class="x6" data-reveal="1" style="display:flex;flex-direction:column;border:1px solid var(--edge-08);background:var(--card);transition:transform .4s cubic-bezier(.2,.7,.2,1),border-color .3s">
+          <div style="position:relative;display:flex;align-items:flex-end;justify-content:space-between;gap:12px;padding:22px 26px;background-image:radial-gradient(var(--tint-45) 1px, transparent 1px);background-size:22px 22px;border-bottom:1px solid var(--edge-08)">
+            <span style="font-size:38px;font-weight:700;letter-spacing:-.04em;color:var(--accent-text);line-height:1">06</span>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.16em;white-space:nowrap;color:var(--muted-3)">KPN · 2021—22</span>
           </div>
           <div style="display:flex;flex-direction:column;gap:12px;padding:26px">
-            <h3 style="margin:0;font-size:22px;font-weight:600;letter-spacing:-.02em;color:#F3F6FD">BRIDGE — HR data migration</h3>
-            <p style="margin:0;font-size:14px;line-height:1.65;color:#8B94AA;text-wrap:pretty">HR data lead in KPN's BRIDGE transformation programme: co-responsible for migration, master data management and reporting. Delivered on schedule, January 2022.</p>
-            <div style="display:flex;flex-wrap:wrap;gap:7px;padding-top:4px"><span style="padding:5px 10px;background:rgba(255,255,255,.05);font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;color:#8B94AA">MASTER DATA</span><span style="padding:5px 10px;background:rgba(255,255,255,.05);font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;color:#8B94AA">MIGRATION</span></div>
+            <h3 style="margin:0;font-size:22px;font-weight:600;letter-spacing:-.02em;color:var(--ink)">BRIDGE — HR data migration</h3>
+            <p style="margin:0;font-size:14px;line-height:1.65;color:var(--muted);text-wrap:pretty">HR data lead in KPN's BRIDGE transformation programme: co-responsible for migration, master data management and reporting. Delivered on schedule, January 2022.</p>
+            <div style="display:flex;flex-wrap:wrap;gap:7px;padding-top:4px"><span style="padding:5px 10px;background:var(--edge-05);font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;color:var(--muted)">MASTER DATA</span><span style="padding:5px 10px;background:var(--edge-05);font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;color:var(--muted)">MIGRATION</span></div>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="sec" id="experience" style="padding:120px 72px;background:#070B14;border-top:1px solid rgba(255,255,255,.06)">
+  <section class="sec" id="experience" style="padding:120px 72px;background:var(--bg-2);border-top:1px solid var(--edge-06)">
     <div style="max-width:1080px;margin:0 auto">
       <div style="display:flex;flex-direction:column;gap:18px;margin-bottom:66px">
-        <div style="display:flex;align-items:center;gap:14px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.24em;color:#6E7994;text-transform:uppercase">
-          <span style="width:34px;height:1px;background:#2E7DFF"></span><span>Experience</span>
+        <div style="display:flex;align-items:center;gap:14px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.24em;color:var(--muted-2);text-transform:uppercase">
+          <span style="width:34px;height:1px;background:var(--accent)"></span><span>Experience</span>
         </div>
-        <h2 style="margin:0;font-size:clamp(34px,3.4vw,50px);line-height:1.08;font-weight:700;letter-spacing:-.03em;color:#F3F6FD">From the shop floor to the data platform</h2>
+        <h2 style="margin:0;font-size:clamp(34px,3.4vw,50px);line-height:1.08;font-weight:700;letter-spacing:-.03em;color:var(--ink)">From the shop floor to the data platform</h2>
       </div>
 
       <div style="display:flex;flex-direction:column">
-        <div data-reveal="1" style="display:grid;grid-template-columns:190px minmax(0,1fr);gap:40px;padding:30px 0;border-top:1px solid rgba(255,255,255,.08)">
-          <div style="display:flex;flex-direction:column;gap:8px"><span style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;color:#63A2FF">JUN 2025 — NOW</span><span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;color:#5D6883">ROTTERDAM</span></div>
+        <div data-reveal="1" style="display:grid;grid-template-columns:190px minmax(0,1fr);gap:40px;padding:30px 0;border-top:1px solid var(--edge-08)">
+          <div style="display:flex;flex-direction:column;gap:8px"><span style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;color:var(--link)">JUN 2025 — NOW</span><span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;color:var(--muted-3)">ROTTERDAM</span></div>
           <div style="display:flex;flex-direction:column;gap:8px">
-            <h3 style="margin:0;font-size:23px;font-weight:600;letter-spacing:-.02em;color:#F3F6FD">BI Developer — GBS CIA Insights, KPN</h3>
-            <p style="margin:0;font-size:15px;line-height:1.7;color:#8B94AA;text-wrap:pretty">Scrum team of five plus a PO, mostly finance products — I own the HR side. HR people metrics, BYOR self-service analytics, pulse survey reporting and automated dataflows.</p>
+            <h3 style="margin:0;font-size:23px;font-weight:600;letter-spacing:-.02em;color:var(--ink)">BI Developer — GBS CIA Insights, KPN</h3>
+            <p style="margin:0;font-size:15px;line-height:1.7;color:var(--muted);text-wrap:pretty">Scrum team of five plus a PO, mostly finance products — I own the HR side. HR people metrics, BYOR self-service analytics, pulse survey reporting and automated dataflows.</p>
           </div>
         </div>
-        <div data-reveal="1" style="display:grid;grid-template-columns:190px minmax(0,1fr);gap:40px;padding:30px 0;border-top:1px solid rgba(255,255,255,.08)">
-          <div style="display:flex;flex-direction:column;gap:8px"><span style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;color:#8B94AA">SEP 2023 — JUN 2025</span><span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;color:#5D6883">ROTTERDAM</span></div>
+        <div data-reveal="1" style="display:grid;grid-template-columns:190px minmax(0,1fr);gap:40px;padding:30px 0;border-top:1px solid var(--edge-08)">
+          <div style="display:flex;flex-direction:column;gap:8px"><span style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;color:var(--muted)">SEP 2023 — JUN 2025</span><span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;color:var(--muted-3)">ROTTERDAM</span></div>
           <div style="display:flex;flex-direction:column;gap:8px">
-            <h3 style="margin:0;font-size:23px;font-weight:600;letter-spacing:-.02em;color:#F3F6FD">Technical Designer — GBS FIA Dev Operations, KPN</h3>
-            <p style="margin:0;font-size:15px;line-height:1.7;color:#8B94AA;text-wrap:pretty">GBS adopted our HR reporting team and we joined a scrum team whose main products are finance. Development moved fully onto Azure, Azure Data Factory and Azure DevOps, while I kept building and managing the Power BI workspaces and apps for HR.</p>
+            <h3 style="margin:0;font-size:23px;font-weight:600;letter-spacing:-.02em;color:var(--ink)">Technical Designer — GBS FIA Dev Operations, KPN</h3>
+            <p style="margin:0;font-size:15px;line-height:1.7;color:var(--muted);text-wrap:pretty">GBS adopted our HR reporting team and we joined a scrum team whose main products are finance. Development moved fully onto Azure, Azure Data Factory and Azure DevOps, while I kept building and managing the Power BI workspaces and apps for HR.</p>
           </div>
         </div>
-        <div data-reveal="1" style="display:grid;grid-template-columns:190px minmax(0,1fr);gap:40px;padding:30px 0;border-top:1px solid rgba(255,255,255,.08)">
-          <div style="display:flex;flex-direction:column;gap:8px"><span style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;color:#8B94AA">APR 2022 — SEP 2023</span><span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;color:#5D6883">KPN</span></div>
+        <div data-reveal="1" style="display:grid;grid-template-columns:190px minmax(0,1fr);gap:40px;padding:30px 0;border-top:1px solid var(--edge-08)">
+          <div style="display:flex;flex-direction:column;gap:8px"><span style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;color:var(--muted)">APR 2022 — SEP 2023</span><span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;color:var(--muted-3)">KPN</span></div>
           <div style="display:flex;flex-direction:column;gap:8px">
-            <h3 style="margin:0;font-size:23px;font-weight:600;letter-spacing:-.02em;color:#F3F6FD">Technical Designer — CC HR Data &amp; Analytics</h3>
-            <p style="margin:0;font-size:15px;line-height:1.7;color:#8B94AA;text-wrap:pretty">Power BI developer on managed HR reports. After BRIDGE we filled the reporting gap ourselves: I taught myself Oracle OTBI, then built Power BI dashboards on top where OTBI fell short. Went deep on Tabular Editor and picked up SQL across Teradata and Oracle HCM.</p>
+            <h3 style="margin:0;font-size:23px;font-weight:600;letter-spacing:-.02em;color:var(--ink)">Technical Designer — CC HR Data &amp; Analytics</h3>
+            <p style="margin:0;font-size:15px;line-height:1.7;color:var(--muted);text-wrap:pretty">Power BI developer on managed HR reports. After BRIDGE we filled the reporting gap ourselves: I taught myself Oracle OTBI, then built Power BI dashboards on top where OTBI fell short. Went deep on Tabular Editor and picked up SQL across Teradata and Oracle HCM.</p>
           </div>
         </div>
-        <div data-reveal="1" style="display:grid;grid-template-columns:190px minmax(0,1fr);gap:40px;padding:30px 0;border-top:1px solid rgba(255,255,255,.08)">
-          <div style="display:flex;flex-direction:column;gap:8px"><span style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;color:#8B94AA">DEC 2020 — APR 2022</span><span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;color:#5D6883">KPN</span></div>
+        <div data-reveal="1" style="display:grid;grid-template-columns:190px minmax(0,1fr);gap:40px;padding:30px 0;border-top:1px solid var(--edge-08)">
+          <div style="display:flex;flex-direction:column;gap:8px"><span style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;color:var(--muted)">DEC 2020 — APR 2022</span><span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;color:var(--muted-3)">KPN</span></div>
           <div style="display:flex;flex-direction:column;gap:8px">
-            <h3 style="margin:0;font-size:23px;font-weight:600;letter-spacing:-.02em;color:#F3F6FD">HR Data Lead — BRIDGE programme, then Information Analyst</h3>
-            <p style="margin:0;font-size:15px;line-height:1.7;color:#8B94AA;text-wrap:pretty">Co-responsible for data migration, master data management and reporting in KPN's BRIDGE transformation. Then translating HR business questions into requirements and demoing the finished dashboards back.</p>
+            <h3 style="margin:0;font-size:23px;font-weight:600;letter-spacing:-.02em;color:var(--ink)">HR Data Lead — BRIDGE programme, then Information Analyst</h3>
+            <p style="margin:0;font-size:15px;line-height:1.7;color:var(--muted);text-wrap:pretty">Co-responsible for data migration, master data management and reporting in KPN's BRIDGE transformation. Then translating HR business questions into requirements and demoing the finished dashboards back.</p>
           </div>
         </div>
-        <div data-reveal="1" style="display:grid;grid-template-columns:190px minmax(0,1fr);gap:40px;padding:30px 0;border-top:1px solid rgba(255,255,255,.08)">
-          <div style="display:flex;flex-direction:column;gap:8px"><span style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;color:#8B94AA">APR 2018 — DEC 2020</span><span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;color:#5D6883">CO KPN ÉÉN</span></div>
+        <div data-reveal="1" style="display:grid;grid-template-columns:190px minmax(0,1fr);gap:40px;padding:30px 0;border-top:1px solid var(--edge-08)">
+          <div style="display:flex;flex-direction:column;gap:8px"><span style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;color:var(--muted)">APR 2018 — DEC 2020</span><span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;color:var(--muted-3)">CO KPN ÉÉN</span></div>
           <div style="display:flex;flex-direction:column;gap:8px">
-            <h3 style="margin:0;font-size:23px;font-weight:600;letter-spacing:-.02em;color:#F3F6FD">Specialist Information Analysis</h3>
-            <p style="margin:0;font-size:15px;line-height:1.7;color:#8B94AA;text-wrap:pretty">Weapon of choice: Power BI. Quantitative analysis for managers and directors — models, templates, reporting and the advice that goes with it.</p>
+            <h3 style="margin:0;font-size:23px;font-weight:600;letter-spacing:-.02em;color:var(--ink)">Specialist Information Analysis</h3>
+            <p style="margin:0;font-size:15px;line-height:1.7;color:var(--muted);text-wrap:pretty">Weapon of choice: Power BI. Quantitative analysis for managers and directors — models, templates, reporting and the advice that goes with it.</p>
           </div>
         </div>
-        <div data-reveal="1" style="display:grid;grid-template-columns:190px minmax(0,1fr);gap:40px;padding:30px 0;border-top:1px solid rgba(255,255,255,.08)">
-          <div style="display:flex;flex-direction:column;gap:8px"><span style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;color:#8B94AA">JUN 2016 — APR 2018</span><span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;color:#5D6883">KPN ÉÉN MKB</span></div>
+        <div data-reveal="1" style="display:grid;grid-template-columns:190px minmax(0,1fr);gap:40px;padding:30px 0;border-top:1px solid var(--edge-08)">
+          <div style="display:flex;flex-direction:column;gap:8px"><span style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;color:var(--muted)">JUN 2016 — APR 2018</span><span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;color:var(--muted-3)">KPN ÉÉN MKB</span></div>
           <div style="display:flex;flex-direction:column;gap:8px">
-            <h3 style="margin:0;font-size:23px;font-weight:600;letter-spacing:-.02em;color:#F3F6FD">Order Orchestrator → Chain Manager &amp; BI Analyst</h3>
-            <p style="margin:0;font-size:15px;line-height:1.7;color:#8B94AA;text-wrap:pretty">SPOC for business customers on complex, custom and multi-site orders. Taught myself the team's abandoned Spotfire dashboard, rebuilt it, and ended up in the Change and Data teams. This is where the career turned.</p>
+            <h3 style="margin:0;font-size:23px;font-weight:600;letter-spacing:-.02em;color:var(--ink)">Order Orchestrator → Chain Manager &amp; BI Analyst</h3>
+            <p style="margin:0;font-size:15px;line-height:1.7;color:var(--muted);text-wrap:pretty">SPOC for business customers on complex, custom and multi-site orders. Taught myself the team's abandoned Spotfire dashboard, rebuilt it, and ended up in the Change and Data teams. This is where the career turned.</p>
           </div>
         </div>
-        <div data-reveal="1" style="display:grid;grid-template-columns:190px minmax(0,1fr);gap:40px;padding:30px 0;border-top:1px solid rgba(255,255,255,.08);border-bottom:1px solid rgba(255,255,255,.08)">
-          <div style="display:flex;flex-direction:column;gap:8px"><span style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;color:#8B94AA">2003 — 2015</span><span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;color:#5D6883">RETAIL &amp; B2B</span></div>
+        <div data-reveal="1" style="display:grid;grid-template-columns:190px minmax(0,1fr);gap:40px;padding:30px 0;border-top:1px solid var(--edge-08);border-bottom:1px solid var(--edge-08)">
+          <div style="display:flex;flex-direction:column;gap:8px"><span style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;color:var(--muted)">2003 — 2015</span><span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;color:var(--muted-3)">RETAIL &amp; B2B</span></div>
           <div style="display:flex;flex-direction:column;gap:8px">
-            <h3 style="margin:0;font-size:23px;font-weight:600;letter-spacing:-.02em;color:#F3F6FD">Part-timer to store manager</h3>
-            <p style="margin:0;font-size:15px;line-height:1.7;color:#8B94AA;text-wrap:pretty">BelCompany / Vodafone Retail branch manager for eight years, shop manager at Vodafone, account management at Trends ICT Groep, selling components at MyCom. Teams of four to five, targets every month — the reason my dashboards speak business.</p>
+            <h3 style="margin:0;font-size:23px;font-weight:600;letter-spacing:-.02em;color:var(--ink)">Part-timer to store manager</h3>
+            <p style="margin:0;font-size:15px;line-height:1.7;color:var(--muted);text-wrap:pretty">BelCompany / Vodafone Retail branch manager for eight years, shop manager at Vodafone, account management at Trends ICT Groep, selling components at MyCom. Teams of four to five, targets every month — the reason my dashboards speak business.</p>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="sec" id="contact" style="position:relative;padding:130px 72px;background:#05080F;border-top:1px solid rgba(255,255,255,.06);overflow:hidden">
-    <div style="position:absolute;inset:0;background-image:radial-gradient(rgba(46,125,255,.5) 1px, transparent 1px);background-size:46px 46px;opacity:.18;pointer-events:none"></div>
+  <section class="sec" id="contact" style="position:relative;padding:130px 72px;background:var(--bg);border-top:1px solid var(--edge-06);overflow:hidden">
+    <div style="position:absolute;inset:0;background-image:radial-gradient(var(--tint-50) 1px, transparent 1px);background-size:46px 46px;opacity:.18;pointer-events:none"></div>
     <div style="position:relative;display:flex;flex-direction:column;align-items:center;gap:30px;max-width:820px;margin:0 auto;text-align:center">
-      <div style="display:flex;align-items:baseline;gap:14px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.24em;color:#6E7994;text-transform:uppercase">
-        <span style="flex:none;width:34px;height:1px;background:#2E7DFF;transform:translateY(-4px)"></span><span>Contact</span><span style="width:34px;height:1px;background:#2E7DFF"></span>
+      <div style="display:flex;align-items:baseline;gap:14px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.24em;color:var(--muted-2);text-transform:uppercase">
+        <span style="flex:none;width:34px;height:1px;background:var(--accent);transform:translateY(-4px)"></span><span>Contact</span><span style="width:34px;height:1px;background:var(--accent)"></span>
       </div>
-      <h2 style="margin:0;font-size:clamp(38px,4vw,60px);line-height:1.05;font-weight:700;letter-spacing:-.035em;color:#F3F6FD;text-wrap:balance">Not looking. Always talking.</h2>
-      <p style="margin:0;max-width:560px;font-size:17px;line-height:1.7;color:#98A1B6;text-wrap:pretty">Happy where I am at KPN. But if you want to argue about semantic models, self-service done right, or why BI needs UX — my inbox is open.</p>
+      <h2 style="margin:0;font-size:clamp(38px,4vw,60px);line-height:1.05;font-weight:700;letter-spacing:-.035em;color:var(--ink);text-wrap:balance">Not looking. Always talking.</h2>
+      <p style="margin:0;max-width:560px;font-size:17px;line-height:1.7;color:var(--body-2);text-wrap:pretty">Happy where I am at KPN. But if you want to argue about semantic models, self-service done right, or why BI needs UX — my inbox is open.</p>
       <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:14px;padding-top:8px">
-        <a class="x3 brand-link" href="mailto:mailprashand@pm.me" style="padding:16px 34px;border-radius:999px;background:#2E7DFF;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;letter-spacing:.16em;white-space:nowrap;color:#fff;box-shadow:0 12px 34px -12px rgba(46,125,255,.85)"><img src="assets/brand/proton-mail-badge.svg" alt="" width="36" height="36" style="height:21px;width:auto;flex:none">MAILPRASHAND@PM.ME</a>
-        <a class="x4 brand-link" href="https://www.linkedin.com/in/prashandarthur" target="_blank" rel="noopener noreferrer" style="padding:16px 34px;border-radius:999px;border:1px solid #2E7DFF;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;letter-spacing:.16em;white-space:nowrap;color:#63A2FF"><img src="assets/brand/linkedin-bug.png" alt="" width="635" height="540" style="height:21px;width:auto;flex:none">LINKEDIN</a>
+        <a class="x3 brand-link" href="mailto:mailprashand@pm.me" style="padding:16px 34px;border-radius:999px;background:var(--accent);font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;letter-spacing:.16em;white-space:nowrap;color:#fff;box-shadow:0 12px 34px -12px var(--tint-85)"><img src="assets/brand/proton-mail-badge.svg" alt="" width="36" height="36" style="height:21px;width:auto;flex:none">MAILPRASHAND@PM.ME</a>
+        <a class="x4 brand-link" href="https://www.linkedin.com/in/prashandarthur" target="_blank" rel="noopener noreferrer" style="padding:16px 34px;border-radius:999px;border:1px solid var(--accent);font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;letter-spacing:.16em;white-space:nowrap;color:var(--link)"><img src="assets/brand/linkedin-bug.png" alt="" width="635" height="540" style="height:21px;width:auto;flex:none">LINKEDIN</a>
       </div>
     </div>
   </section>
 
   </main>
 <section class="ai-disclosure" id="ai-disclosure"><div class="ai-disclosure-inner"><img src="assets/eu-ai/ai-white.svg" alt="" width="567" height="567" style="height:22px;width:auto;flex:none;display:block"><details><summary>How AI was used on this site</summary><p>Parts of this site were made with AI, and parts were not.</p><ul><li><b>Photographs</b> — real photographs of me — not AI-generated and not AI-retouched.</li><li><b>Pixel-art illustration</b> — generated with AI.</li><li><b>Written text</b> — drafted with AI, then edited and approved by me.</li><li><b>Design and layout</b> — produced with an AI design tool.</li></ul><p class="ai-source">Labelled with the EU icons for labelling AI-generated content, published by the European Commission. Their use is voluntary. <a href="https://digital-strategy.ec.europa.eu/en/policies/eu-icons-labelling-ai-generated-content" target="_blank" rel="noopener noreferrer">About the EU icons</a></p></details></div></section>
-<footer class="site-footer" style="display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;padding:30px 72px;background:#05080F;border-top:1px solid rgba(255,255,255,.06)">
-    <span style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.22em;color:#2E7DFF">PRASHAND A. BANWARIE</span>
-    <span style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;color:#5D6883">DEN HAAG, ZUID-HOLLAND</span>
+<footer class="site-footer" style="display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;padding:30px 72px;background:var(--bg);border-top:1px solid var(--edge-06)">
+    <span style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.22em;color:var(--accent-text)">PRASHAND A. BANWARIE</span>
+    <span style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;color:var(--muted-3)">DEN HAAG, ZUID-HOLLAND</span>
   </footer>
 </div>
 

@@ -58,6 +58,11 @@ const PAGES = [
       verify: 'Verify at Microsoft',
       alt: 'Microsoft Certified: Power BI Data Analyst Associate badge',
     },
+    theme: {
+      label: 'Theme',
+      toLight: 'Switch to the light theme',
+      toDark: 'Switch to the dark theme',
+    },
     ai: {
       badgeAlt: 'AI generated',
       caption: 'Illustration generated with AI',
@@ -98,6 +103,11 @@ const PAGES = [
       name: 'Power BI Gegevensanalist Associate',
       verify: 'Verifieer bij Microsoft',
       alt: 'Microsoft Gecertificeerd: Power BI Gegevensanalist Associate badge',
+    },
+    theme: {
+      label: 'Thema',
+      toLight: 'Naar het lichte thema',
+      toDark: 'Naar het donkere thema',
     },
     ai: {
       badgeAlt: 'AI generated',
@@ -455,6 +465,223 @@ const BRAND_CSS = `
 .brand-pair{display:flex;align-items:center;gap:14px}
 `.trim();
 
+// ─────────────────────────────────────────────── light theme (build-time layer)
+
+/**
+ * The design ships one hard-coded dark palette, written into hundreds of inline
+ * style attributes and every CSS block above. Theming it by hand would mean a
+ * second copy of the markup, so the build does it the same way it handles
+ * responsiveness: as a transform. Every colour literal below is rewritten to a
+ * CSS custom property whose default (`:root`) value is byte-identical to the
+ * literal it replaced — so the dark page renders exactly as before — and a
+ * light block swaps the values when the visitor prefers or picks light.
+ *
+ * Selection order: an explicit choice (`data-theme` on <html>, set by the nav
+ * toggle and remembered in localStorage, applied pre-paint by a two-line head
+ * script) wins; otherwise `prefers-color-scheme` decides; otherwise dark.
+ *
+ * Two deliberate exceptions:
+ *  - `.art-panel` (the pixel-art illustration) re-declares every token at its
+ *    dark value, unconditionally. The scene is AI-generated artwork drawn for a
+ *    dark backdrop, and its white EU "AI GENERATED" badge is the Commission's
+ *    white variant, correct only on dark — so the panel stays a dark island in
+ *    both themes, like a framed print on a gallery wall.
+ *  - the footer disclosure's small white EU icon sits on a dark chip in light
+ *    mode (see lightOnly() below): the official white artwork, unmodified, on
+ *    the dark background it is published for — just a local one.
+ *
+ * Contrast: every text token's light value clears WCAG AA (≥ 4.5:1) on the
+ * surfaces it appears against; `--accent-text` exists because #2E7DFF is only
+ * 3.7:1 on white, so wherever the accent is *text* (`color:`), light mode
+ * darkens it to the same-hue #1A5FD6 while buttons and hairlines keep the
+ * exact brand blue.
+ */
+const THEME = [
+  // [token, matched literal (null = via the color: split), dark, light]
+  ['accent-text', null, '#2E7DFF', '#1A5FD6'],
+  ['accent', '#2E7DFF', '#2E7DFF', '#2E7DFF'],
+  ['link', '#63A2FF', '#63A2FF', '#1A5FD6'],
+  ['link-hover', '#A8C8FF', '#A8C8FF', '#134DB8'],
+  ['accent-hi', '#4B90FF', '#4B90FF', '#1D66E0'],
+
+  // surfaces
+  ['bg', '#05080F', '#05080F', '#FFFFFF'],
+  ['bg-2', '#070B14', '#070B14', '#EEF2F8'],
+  ['card', '#0B1120', '#0B1120', '#F4F7FB'],
+  ['chip', '#0B1B3A', '#0B1B3A', '#DCE9FF'],
+  ['frost', 'rgba(5,8,15,.82)', 'rgba(5,8,15,.82)', 'rgba(255,255,255,.82)'],
+  ['frost-2', 'rgba(5,8,15,.93)', 'rgba(5,8,15,.93)', 'rgba(255,255,255,.93)'],
+  ['fade-85', 'rgba(5,8,15,.85)', 'rgba(5,8,15,.85)', 'rgba(238,242,248,.85)'],
+  ['fade-0', 'rgba(5,8,15,0)', 'rgba(5,8,15,0)', 'rgba(238,242,248,0)'],
+  ['scrim-78', 'rgba(7,11,20,.78)', 'rgba(7,11,20,.78)', 'rgba(238,242,248,.82)'],
+  ['scrim-05', 'rgba(7,11,20,.05)', 'rgba(7,11,20,.05)', 'rgba(238,242,248,.05)'],
+  ['scrim-0', 'rgba(7,11,20,0)', 'rgba(7,11,20,0)', 'rgba(238,242,248,0)'],
+
+  // text (dark page: light-on-dark tiers; light page: AA-checked navies)
+  ['ink', '#F3F6FD', '#F3F6FD', '#0B1526'],
+  ['text', '#EDF1FA', '#EDF1FA', '#16233A'],
+  ['body', '#9AA3B8', '#9AA3B8', '#3F4F6B'],
+  ['body-2', '#98A1B6', '#98A1B6', '#42526E'],
+  ['muted', '#8B94AA', '#8B94AA', '#4A5872'],
+  ['muted-2', '#6E7994', '#6E7994', '#56637D'],
+  ['muted-3', '#5D6883', '#5D6883', '#5D6A85'],
+  ['sep', '#3A4358', '#3A4358', '#B6C2D4'],
+
+  // hairlines and card strokes: white-alpha on dark, navy-alpha on light
+  ['edge-05', 'rgba(255,255,255,.05)', 'rgba(255,255,255,.05)', 'rgba(13,34,63,.07)'],
+  ['edge-06', 'rgba(255,255,255,.06)', 'rgba(255,255,255,.06)', 'rgba(13,34,63,.08)'],
+  ['edge-07', 'rgba(255,255,255,.07)', 'rgba(255,255,255,.07)', 'rgba(13,34,63,.09)'],
+  ['edge-08', 'rgba(255,255,255,.08)', 'rgba(255,255,255,.08)', 'rgba(13,34,63,.1)'],
+  ['edge-10', 'rgba(255,255,255,.1)', 'rgba(255,255,255,.1)', 'rgba(13,34,63,.13)'],
+  ['edge-12', 'rgba(255,255,255,.12)', 'rgba(255,255,255,.12)', 'rgba(13,34,63,.15)'],
+  ['edge-14', 'rgba(255,255,255,.14)', 'rgba(255,255,255,.14)', 'rgba(13,34,63,.17)'],
+  ['edge-16', 'rgba(255,255,255,.16)', 'rgba(255,255,255,.16)', 'rgba(13,34,63,.19)'],
+  ['edge-30', 'rgba(255,255,255,.3)', 'rgba(255,255,255,.3)', 'rgba(13,34,63,.34)'],
+  ['shadow', 'rgba(0,0,0,.9)', 'rgba(0,0,0,.9)', 'rgba(23,43,77,.2)'],
+
+  // brand-blue tints (glows, chip fills, borders): nudged up on white, where a
+  // tint reads weaker than on near-black
+  ['tint-06', 'rgba(46,125,255,.06)', 'rgba(46,125,255,.06)', 'rgba(46,125,255,.08)'],
+  ['tint-08', 'rgba(46,125,255,.08)', 'rgba(46,125,255,.08)', 'rgba(46,125,255,.1)'],
+  ['tint-09', 'rgba(46,125,255,.09)', 'rgba(46,125,255,.09)', 'rgba(46,125,255,.12)'],
+  ['tint-10', 'rgba(46,125,255,.1)', 'rgba(46,125,255,.1)', 'rgba(46,125,255,.13)'],
+  ['tint-14', 'rgba(46,125,255,.14)', 'rgba(46,125,255,.14)', 'rgba(46,125,255,.17)'],
+  ['tint-20', 'rgba(46,125,255,.2)', 'rgba(46,125,255,.2)', 'rgba(46,125,255,.22)'],
+  ['tint-28', 'rgba(46,125,255,.28)', 'rgba(46,125,255,.28)', 'rgba(46,125,255,.32)'],
+  ['tint-30', 'rgba(46,125,255,.3)', 'rgba(46,125,255,.3)', 'rgba(46,125,255,.34)'],
+  ['tint-35', 'rgba(46,125,255,.35)', 'rgba(46,125,255,.35)', 'rgba(46,125,255,.38)'],
+  ['tint-40', 'rgba(46,125,255,.4)', 'rgba(46,125,255,.4)', 'rgba(46,125,255,.42)'],
+  ['tint-45', 'rgba(46,125,255,.45)', 'rgba(46,125,255,.45)', 'rgba(46,125,255,.5)'],
+  ['tint-50', 'rgba(46,125,255,.5)', 'rgba(46,125,255,.5)', 'rgba(46,125,255,.55)'],
+  ['tint-55', 'rgba(46,125,255,.55)', 'rgba(46,125,255,.55)', 'rgba(46,125,255,.6)'],
+  ['tint-85', 'rgba(46,125,255,.85)', 'rgba(46,125,255,.85)', 'rgba(46,125,255,.85)'],
+];
+
+/** The two page backgrounds, for <meta name="theme-color"> and site.js. */
+const THEME_COLOR = { dark: '#05080F', light: '#FFFFFF' };
+
+const escRe = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+/**
+ * Rewrites every known colour literal in a CSS string to its var(). The
+ * `color:` split runs first, because `--accent-text` shares its dark literal
+ * with `--accent`: wherever #2E7DFF is the *text* colour it must become the
+ * token that darkens on light. The guard before "color" keeps
+ * `border-color:#2E7DFF` in the generic accent bucket.
+ */
+function themeifyCss(css) {
+  let out = css.replace(
+    /(^|[{;"'\s])color\s*:\s*#2E7DFF(?![0-9A-Fa-f])/gi,
+    '$1color:var(--accent-text)'
+  );
+  for (const [token, literal] of THEME) {
+    if (!literal) continue;
+    const re = literal.startsWith('#')
+      ? new RegExp(`${escRe(literal)}(?![0-9A-Fa-f])`, 'gi')
+      : new RegExp(escRe(literal), 'gi');
+    out = out.replace(re, `var(--${token})`);
+  }
+  return out;
+}
+
+/**
+ * Same rewrite for a page, but scoped to style="…" attributes. SVG presentation
+ * attributes (the pixel-art scene's fill="…") are deliberately left alone:
+ * fill attributes cannot carry var(), and the artwork's colours are content,
+ * not chrome — they should not follow the theme.
+ */
+function themeifyHtml(html) {
+  return html.replace(/style="([^"]*)"/g, (all, css) => `style="${themeifyCss(css)}"`);
+}
+
+/**
+ * The build's usual posture: fail loudly rather than ship a half-themed page.
+ * Any colour literal that survives the rewrite is one the THEME table doesn't
+ * know — a fresh design export with a new colour lands here, not in
+ * production. #fff is the one allowed literal: it only ever sits on the brand
+ * blue (buttons, ::selection, skip link), which is identical in both themes.
+ */
+function assertThemed(what, str) {
+  const raw = str.match(/#(?!fff\b)[0-9a-fA-F]{3,8}\b|rgba?\(/g);
+  if (raw) {
+    throw new Error(`${what}: unthemed colour literal(s): ${[...new Set(raw)].join(', ')}`);
+  }
+}
+
+function assertThemedHtml(what, html) {
+  for (const m of html.matchAll(/style="([^"]*)"/g)) assertThemed(what, m[1]);
+}
+
+/** Every token at its dark value — :root, and the .art-panel dark island. */
+const darkVars = THEME.map(([t, , d]) => `--${t}:${d}`).join(';');
+const lightVars = THEME.map(([t, , , l]) => `--${t}:${l}`).join(';');
+
+/**
+ * Light-mode-only rules, emitted under both selectors that can mean "light".
+ *  - the toggle shows the moon (i.e. "you are in light; click for dark")
+ *  - the EU 'AI' footer icon is the white variant, so light mode gives it the
+ *    dark chip it is designed for rather than swapping in artwork we don't have
+ */
+const lightOnly = (s) =>
+  `
+${s} .tt-sun{display:none}
+${s} .tt-moon{display:block}
+${s} .ai-disclosure-inner>img{background:#0B1B33;border-radius:7px;padding:4px}
+`.trim();
+
+const THEME_CSS = `
+:root{${darkVars}}
+html[data-theme="light"]{${lightVars}}
+${lightOnly('html[data-theme="light"]')}
+@media (prefers-color-scheme: light){
+  html:not([data-theme="dark"]){${lightVars}}
+${lightOnly('html:not([data-theme="dark"])')}
+}
+
+/* The pixel-art panel keeps the dark palette in both themes — see above. */
+.art-panel{${darkVars}}
+
+/* The sun/moon button, last in the nav's link row. Inert without JS. The
+   negative block margin keeps its 30px circle from setting the row's height:
+   the bar stays the 57px (52px on phones) it measured before the button
+   existed, so the theme layer moves nothing in the dark rendering. */
+.theme-toggle{display:inline-flex;align-items:center;justify-content:center;
+  width:30px;height:30px;margin:-6px 0;padding:0;flex:none;cursor:pointer;
+  border:1px solid var(--edge-12);border-radius:999px;background:none;color:var(--muted-2)}
+.theme-toggle:hover{color:var(--accent-text);border-color:var(--tint-45)}
+.theme-toggle .tt-sun{display:block}
+.theme-toggle .tt-moon{display:none}
+html:not(.js) .theme-toggle{display:none}
+`.trim();
+
+const TT_SUN =
+  '<svg class="tt-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" ' +
+  'stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">' +
+  '<circle cx="12" cy="12" r="4"/>' +
+  '<path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.5 4.5l2 2M17.5 17.5l2 2M19.5 4.5l-2 2M6.5 17.5l-2 2"/></svg>';
+const TT_MOON =
+  '<svg class="tt-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" ' +
+  'stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true">' +
+  '<path d="M20.4 14.2A8.5 8.5 0 0 1 9.8 3.6a8.5 8.5 0 1 0 10.6 10.6Z"/></svg>';
+
+function themeToggle(page) {
+  const th = page.theme;
+  return (
+    `<button type="button" class="theme-toggle" aria-label="${esc(th.label)}" ` +
+    `data-to-light="${esc(th.toLight)}" data-to-dark="${esc(th.toDark)}">` +
+    `${TT_SUN}${TT_MOON}</button>`
+  );
+}
+
+/**
+ * Applied before first paint so a remembered choice can't flash the other
+ * theme. Kept to one statement; a storage failure (private mode) just means
+ * the OS preference decides.
+ */
+const THEME_BOOT =
+  `<script>(function(){try{var t=localStorage.getItem('theme');` +
+  `if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)}catch(e){}})()</script>`;
+
 // ──────────────────────────────────────────────────────── responsive + a11y CSS
 
 /**
@@ -651,6 +878,44 @@ const SITE_JS = `
   window.addEventListener('resize', function () { measureNav(); onScroll(); });
   window.addEventListener('hashchange', function () { openIfTargeted(); focusSection(); onScroll(); });
   if (location.hash) setTimeout(focusSection, 0);
+
+  // ── theme toggle ────────────────────────────────────────────────────────
+  // The stylesheet already resolves the theme (explicit data-theme beats the
+  // OS preference, dark is the default); this only flips the attribute,
+  // remembers the choice, and keeps the theme-color metas and the button's
+  // label in step. The head script applied any stored choice before paint.
+  var themeBtn = document.querySelector('.theme-toggle');
+  var mqlLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)');
+  var THEME_BG = { dark: '${THEME_COLOR.dark}', light: '${THEME_COLOR.light}' };
+
+  function themeNow() {
+    var t = document.documentElement.getAttribute('data-theme');
+    if (t === 'light' || t === 'dark') return t;
+    return mqlLight && mqlLight.matches ? 'light' : 'dark';
+  }
+
+  function paintTheme() {
+    var t = themeNow();
+    var metas = document.querySelectorAll('meta[name="theme-color"]');
+    for (var m = 0; m < metas.length; m++) metas[m].setAttribute('content', THEME_BG[t]);
+    if (themeBtn) {
+      themeBtn.setAttribute(
+        'aria-label',
+        themeBtn.getAttribute(t === 'dark' ? 'data-to-light' : 'data-to-dark')
+      );
+    }
+  }
+
+  if (themeBtn) {
+    themeBtn.addEventListener('click', function () {
+      var next = themeNow() === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      try { localStorage.setItem('theme', next); } catch (err) {}
+      paintTheme();
+    });
+  }
+  if (mqlLight && mqlLight.addEventListener) mqlLight.addEventListener('change', paintTheme);
+  paintTheme();
 
   // ── reveal on scroll ────────────────────────────────────────────────────
   var els = [].slice.call(document.querySelectorAll('[data-reveal]'));
@@ -864,12 +1129,21 @@ function buildPage(page, cssParts) {
   if (sections.length !== 4) {
     throw new Error(`${page.out}: expected 4 section links in the nav, found ${sections.length}`);
   }
+
+  // The theme toggle goes in as the last child of the links row, after the
+  // language switch — so it survives to phone widths, where the section links
+  // leave the bar but this row stays. The row's last </div> is the row itself.
+  const togglePoint = navInner.lastIndexOf('</div>');
+  if (togglePoint < 0) throw new Error(`${page.out}: no links row to hold the theme toggle`);
+  const navInnerToggled =
+    navInner.slice(0, togglePoint) + themeToggle(page) + navInner.slice(togglePoint);
+
   // Two <nav> landmarks now exist (this bar and the tab bar), so both get a
   // name — otherwise a screen reader just announces "navigation" twice.
   body =
     body.slice(0, navSlice.start) +
     navOpen.replace(/^<nav/, `<nav aria-label="${esc(page.navLabel)}"`) +
-    navInner +
+    navInnerToggled +
     '</nav>' +
     body.slice(navSlice.end);
 
@@ -1042,8 +1316,12 @@ function labelAiContent(body, page) {
     `<div class="ai-caption"><span>${esc(ai.caption)}</span>` +
     `<a href="#ai-disclosure">${esc(ai.summary)}</a></div>`;
 
+  // art-panel pins the panel's custom properties to their dark values, keeping
+  // the artwork — and the white EU badge on it — on the backdrop it was made
+  // for in both themes.
   body =
-    body.slice(0, openEnd) +
+    body.slice(0, panel.start) +
+    addClass(body.slice(panel.start, openEnd), 'art-panel') +
     badge +
     body.slice(openEnd, closeAt) +
     caption +
@@ -1093,7 +1371,8 @@ function renderPage(page, body) {
 <title>${esc(page.title)}</title>
 <meta name="description" content="${esc(page.description)}">
 <meta name="author" content="Prashand Arthur Banwarie">
-<meta name="theme-color" content="#05080F">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="${THEME_COLOR.light}">
+<meta name="theme-color" content="${THEME_COLOR.dark}">
 <link rel="canonical" href="${canonical}">
 <link rel="alternate" hreflang="${page.lang}" href="${canonical}">
 <link rel="alternate" hreflang="${page.alt.lang}" href="${altUrl}">
@@ -1116,6 +1395,7 @@ function renderPage(page, body) {
 <link rel="preload" href="assets/fonts/jetbrains-mono-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="assets/site.css">
 <script>document.documentElement.className+=" js"</script>
+${THEME_BOOT}
 <script type="application/ld+json">
 ${JSON.stringify(
   {
@@ -1159,25 +1439,32 @@ function notFoundPage() {
 <title>Page not found — Prashand Banwarie</title>
 <meta name="description" content="That page doesn't exist on Prashand Arthur Banwarie's site.">
 <meta name="robots" content="noindex">
-<meta name="theme-color" content="#05080F">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="${THEME_COLOR.light}">
+<meta name="theme-color" content="${THEME_COLOR.dark}">
 <link rel="icon" href="${base}assets/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="${base}assets/site.css">
+${THEME_BOOT}
 <style>
   /* Repeated from site.css rather than relied upon: this page is the one that
      renders when something is already wrong, so it should still look right if
-     the stylesheet is the thing that failed to load. */
-  html,body{background:#05080F}
-  body{margin:0;color:#EDF1FA;font-family:'Space Grotesk',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
-  a{color:#63A2FF;text-decoration:none}
+     the stylesheet is the thing that failed to load. That now includes the
+     theme tokens, resolved the same way site.css resolves them. */
+  :root{${darkVars}}
+  html[data-theme="light"]{${lightVars}}
+  @media (prefers-color-scheme: light){html:not([data-theme="dark"]){${lightVars}}}
+
+  html,body{background:var(--bg)}
+  body{margin:0;color:var(--text);font-family:'Space Grotesk',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+  a{color:var(--link);text-decoration:none}
   *{box-sizing:border-box}
 
   body{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:24px;text-align:center}
   main{display:flex;flex-direction:column;align-items:center;gap:20px;max-width:520px}
-  h1{margin:0;font-size:clamp(38px,7vw,68px);line-height:1.04;font-weight:700;letter-spacing:-.035em;color:#F3F6FD}
-  p{margin:0;font-size:17px;line-height:1.65;color:#98A1B6}
-  .code{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.24em;color:#6E7994;text-transform:uppercase}
-  .home{padding:15px 32px;border-radius:999px;background:#2E7DFF;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;letter-spacing:.16em;color:#fff}
-  .home:hover{background:#4B90FF;color:#fff}
+  h1{margin:0;font-size:clamp(38px,7vw,68px);line-height:1.04;font-weight:700;letter-spacing:-.035em;color:var(--ink)}
+  p{margin:0;font-size:17px;line-height:1.65;color:var(--body-2)}
+  .code{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.24em;color:var(--muted-2);text-transform:uppercase}
+  .home{padding:15px 32px;border-radius:999px;background:var(--accent);font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;letter-spacing:.16em;color:#fff}
+  .home:hover{background:var(--accent-hi);color:#fff}
 </style>
 </head>
 <body>
@@ -1219,6 +1506,18 @@ ${urls}
 const cssParts = [];
 const pages = PAGES.map((p) => ({ p, html: buildPage(p, cssParts) }));
 
+// Theme pass: every colour literal in the pages' style attributes becomes a
+// token, and anything the THEME table doesn't recognise fails the build.
+for (const pg of pages) {
+  pg.html = themeifyHtml(pg.html);
+  assertThemedHtml(pg.p.out, pg.html);
+  for (const needle of ['theme-toggle', 'art-panel', 'data-theme']) {
+    if (!pg.html.includes(needle)) {
+      throw new Error(`${pg.p.out}: theme layer incomplete — "${needle}" missing`);
+    }
+  }
+}
+
 // Both bundles carry byte-identical fonts and the same base rules, so the
 // design CSS only needs to ship once.
 const uniqueCss = [...new Set(cssParts)];
@@ -1236,10 +1535,14 @@ for (const m of [...Object.values(MARKS), ...Object.values(EU_AI_ICONS)]) {
   }
 }
 
-fs.writeFileSync(
-  path.join(ASSETS, 'site.css'),
+// The stylesheet gets the same theme pass as the markup: literals to tokens,
+// then the token definitions (which legitimately hold raw colours) go on top,
+// after the assertion has seen the rest.
+const siteCss = themeifyCss(
   `${uniqueCss[0]}\n\n${hoverSheet()}\n\n${BRAND_CSS}\n\n${CERT_CSS}\n\n${EU_AI_CSS}\n\n${NAV_CSS}\n\n${RESPONSIVE_CSS}\n`
 );
+assertThemed('site.css', siteCss);
+fs.writeFileSync(path.join(ASSETS, 'site.css'), `${THEME_CSS}\n\n${siteCss}`);
 fs.writeFileSync(path.join(ASSETS, 'site.js'), `${SITE_JS}\n`);
 fs.writeFileSync(path.join(ASSETS, 'favicon.svg'), FAVICON);
 for (const { p, html } of pages) fs.writeFileSync(path.join(ROOT, p.out), html);

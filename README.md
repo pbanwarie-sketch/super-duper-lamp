@@ -61,6 +61,8 @@ What the build does, beyond unpacking:
   dimensions, and `rel="noopener noreferrer"` on external links
 - adds the responsive and `prefers-reduced-motion` layers the export ships
   without
+- adds the light theme: every colour literal in the export becomes a CSS
+  custom property, dark stays the default — see **Theming** below
 
 The build fails rather than emitting a broken page if any of its markup
 transforms stops matching — see the assertions near the end of `buildPage`.
@@ -101,6 +103,58 @@ On top of that:
 on load and on resize and overwrites it — a wrapped bar or a late-loading font
 can't quietly reintroduce the overlap.
 
+## Theming
+
+The design tool exported one hard-coded dark palette, spread across hundreds of
+inline `style` attributes. The build themes it the same way it makes it
+responsive: as a transform. Every colour literal — in the extracted CSS, the
+generated hover classes, the build's own CSS layers and every inline style —
+is rewritten to a CSS custom property. The `:root` defaults are byte-identical
+to the literals they replaced, so the dark page renders exactly as before
+(verified: a full-page screenshot diff against the pre-theme build differs only
+where the toggle button now sits). A light block swaps the values.
+
+Who decides which theme renders, in order:
+
+1. **The visitor's explicit choice** — the sun/moon button at the end of the
+   nav bar sets `data-theme` on `<html>` and remembers it in `localStorage`.
+   A two-line script in `<head>` re-applies it before first paint, so a
+   returning visitor never sees the other theme flash. The button is hidden
+   without JavaScript, which is also what makes it work.
+2. **`prefers-color-scheme`** otherwise.
+3. **Dark** otherwise — the design as exported.
+
+`<meta name="theme-color">` ships as a media-scoped pair and `site.js` keeps it
+in step with an explicit choice, so the browser chrome follows.
+
+What the light palette does, and deliberately doesn't do:
+
+- **The brand blue #2E7DFF survives untouched** on everything that is *paint* —
+  buttons, hairlines, borders, the scroll progress bar. Wherever the accent is
+  *text*, light mode darkens it to the same-hue `#1A5FD6`, because #2E7DFF on
+  white is 3.7:1 — below WCAG AA. Every text token's light value clears
+  AA (≥ 4.5:1) on every surface it appears against; several of the dark
+  theme's faint labels don't, so the light theme is the more accessible one.
+- **The pixel-art panel stays dark in both themes.** The scene was generated
+  for a dark backdrop and its `AI GENERATED` badge is the Commission's white
+  variant, correct only on dark. `.art-panel` re-declares every token at its
+  dark value — a dark island, like a framed print on a gallery wall.
+- **The footer's EU `AI` icon keeps its dark background too**: in light mode it
+  sits on a small dark chip. Same reasoning as the badge — the white artwork is
+  used unmodified, on the background it is published for, just a local one.
+
+The build fails rather than half-themes: after the rewrite, any colour literal
+the theme table doesn't recognise — say, from a fresh design export that
+introduces a new colour — throws, listing the offenders. The one allowed
+literal is `#fff`, which only ever sits on the brand blue and is identical in
+both themes. The pixel-art scene's `fill` attributes are exempt by
+construction: the transform only touches `style` attributes and stylesheets,
+and the artwork's colours are content, not chrome.
+
+The token table (`THEME` in `tools/build.mjs`) is the one place the palettes
+live. Each row is `[token, matched literal, dark value, light value]`; edit the
+light column and rebuild.
+
 ## Labelling AI-generated content
 
 The site uses the European Commission's
@@ -132,6 +186,10 @@ disclosure states positively that they are real.
 | On the pixel-art illustration | `AI GENERATED` badge, 28 px, top-right, over the artwork with nothing above it |
 | Under the illustration | Plain-language caption plus a link to the disclosure |
 | Above the footer | `AI` icon and a collapsed `<details>` itemising every asset either way |
+
+Both icons are the white variants and stay on dark backgrounds in both themes:
+the badge because its panel is a deliberate dark island (see **Theming**), the
+footer icon on a small dark chip in light mode.
 
 How the guidance's requirements are met:
 

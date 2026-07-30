@@ -130,6 +130,44 @@
   window.addEventListener('hashchange', function () { openIfTargeted(); focusSection(); onScroll(); });
   if (location.hash) setTimeout(focusSection, 0);
 
+  // ── theme toggle ────────────────────────────────────────────────────────
+  // The stylesheet already resolves the theme (explicit data-theme beats the
+  // OS preference, dark is the default); this only flips the attribute,
+  // remembers the choice, and keeps the theme-color metas and the button's
+  // label in step. The head script applied any stored choice before paint.
+  var themeBtn = document.querySelector('.theme-toggle');
+  var mqlLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)');
+  var THEME_BG = { dark: '#05080F', light: '#FFFFFF' };
+
+  function themeNow() {
+    var t = document.documentElement.getAttribute('data-theme');
+    if (t === 'light' || t === 'dark') return t;
+    return mqlLight && mqlLight.matches ? 'light' : 'dark';
+  }
+
+  function paintTheme() {
+    var t = themeNow();
+    var metas = document.querySelectorAll('meta[name="theme-color"]');
+    for (var m = 0; m < metas.length; m++) metas[m].setAttribute('content', THEME_BG[t]);
+    if (themeBtn) {
+      themeBtn.setAttribute(
+        'aria-label',
+        themeBtn.getAttribute(t === 'dark' ? 'data-to-light' : 'data-to-dark')
+      );
+    }
+  }
+
+  if (themeBtn) {
+    themeBtn.addEventListener('click', function () {
+      var next = themeNow() === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      try { localStorage.setItem('theme', next); } catch (err) {}
+      paintTheme();
+    });
+  }
+  if (mqlLight && mqlLight.addEventListener) mqlLight.addEventListener('change', paintTheme);
+  paintTheme();
+
   // ── reveal on scroll ────────────────────────────────────────────────────
   var els = [].slice.call(document.querySelectorAll('[data-reveal]'));
   function showAll() { els.forEach(function (el) { el.classList.add('is-visible'); }); }
