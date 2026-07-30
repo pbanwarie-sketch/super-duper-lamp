@@ -247,6 +247,57 @@ function addClass(tag, cls) {
 }
 
 /**
+ * Whitespace/comment-level CSS minifier, quote-aware so `content: " ▾"` and
+ * font names survive. No property rewriting, no shorthand games — the rules
+ * stay byte-recognisable next to the source in this file, just ~25% smaller
+ * on the wire. Strings copy verbatim; comments drop; runs of whitespace
+ * become one space, or nothing when either neighbour is a structural
+ * character that doesn't need it.
+ */
+function minifyCss(css) {
+  let out = '';
+  let i = 0;
+  const structural = '{};:,>';
+  while (i < css.length) {
+    const ch = css[i];
+    if (ch === '"' || ch === "'") {
+      let j = i + 1;
+      while (j < css.length && css[j] !== ch) j += css[j] === '\\' ? 2 : 1;
+      out += css.slice(i, j + 1);
+      i = j + 1;
+    } else if (ch === '/' && css[i + 1] === '*') {
+      const end = css.indexOf('*/', i + 2);
+      i = end < 0 ? css.length : end + 2;
+    } else if (/\s/.test(ch)) {
+      let j = i;
+      while (j < css.length && /\s/.test(css[j])) j++;
+      const prev = out[out.length - 1];
+      const next = css[j];
+      if (prev && next && !structural.includes(prev) && !structural.includes(next)) out += ' ';
+      i = j;
+    } else {
+      out += ch;
+      i++;
+    }
+  }
+  return out.replace(/;}/g, '}');
+}
+
+/**
+ * Conservative slimming for the generated site.js: drop the leading block
+ * comment, full-line // comments and indentation. Nothing token-level — no
+ * renaming, no ASI bets — so the shipped file stays line-for-line debuggable.
+ */
+function slimJs(js) {
+  return js
+    .replace(/^\s*\/\*[\s\S]*?\*\/\s*/, '')
+    .split('\n')
+    .map((line) => line.replace(/^\s+/, ''))
+    .filter((line) => line !== '' && !line.startsWith('//'))
+    .join('\n');
+}
+
+/**
  * Drops the bundler's own <script> elements — the text/x-dc data islands and
  * the empty uuid-src loaders — by walking elements and rebuilding the string,
  * never by regex replacement. Deleting a multi-character marker with
@@ -1042,8 +1093,27 @@ function buildPage(page, cssParts) {
     const uuid = get('src');
     const a = assets[uuid];
     if (!a) throw new Error(`image-slot ${id}: unknown src ${uuid}`);
-    const dim = jpegSize(a.bytes);
-    const file = writeAsset(`assets/img/${id}.jpg`, a.bytes);
+    // The export carries the photos at editing quality (~680 KB for a photo
+    // shown at 370 px) — the whole mobile LCP budget. tools/img-overrides/
+    // holds the same pictures recompressed (mozjpeg q80, identical pixels
+    // and dimensions — see "Performance" in README.md); when an override
+    // exists it ships instead. Dimensions must match: the og:image size and
+    // the intrinsic width/height attributes are derived from what ships.
+    const overridePath = path.join(ROOT, 'tools/img-overrides', `${id}.jpg`);
+    let bytes = a.bytes;
+    if (fs.existsSync(overridePath)) {
+      const override = fs.readFileSync(overridePath);
+      const od = jpegSize(override);
+      const bd = jpegSize(a.bytes);
+      if (od.w !== bd.w || od.h !== bd.h) {
+        throw new Error(
+          `image override ${id}: ${od.w}x${od.h} does not match the export's ${bd.w}x${bd.h}`
+        );
+      }
+      bytes = override;
+    }
+    const dim = jpegSize(bytes);
+    const file = writeAsset(`assets/img/${id}.jpg`, bytes);
     assetPath.set(uuid, file);
     const alt = page.imgAlt[id];
     if (!alt) throw new Error(`no alt text configured for image slot "${id}"`);
@@ -1307,6 +1377,26 @@ function buildPage(page, cssParts) {
   body = body.replace(oldPill, '');
   body = body.replace(pillRow, `${certCard}\n${pillRow}`);
 
+  // 8c-ter. The four story cards open the page's heading outline with <h3>s
+  //     before any <h2> exists — an h1→h3 jump, the one accessibility audit
+  //     the page fails. Their inline styles carry every visual property, so
+  //     promoting the tag changes nothing on screen; the outline becomes
+  //     h1 → h2 ×4 → h2-led sections.
+  {
+    const firstH2 = body.indexOf('<h2');
+    if (firstH2 < 0) throw new Error(`${page.out}: no <h2> anywhere`);
+    let opened = 0;
+    let closed = 0;
+    const lead = body
+      .slice(0, firstH2)
+      .replace(/<h3(?=[\s>])/g, () => (opened++, '<h2'))
+      .replace(/<\/h3>/g, () => (closed++, '</h2>'));
+    if (opened !== 4 || closed !== 4) {
+      throw new Error(`${page.out}: expected 4 leading story cards, got ${opened}/${closed}`);
+    }
+    body = lead + body.slice(firstH2);
+  }
+
   // 8d. EU labelling of the AI-generated illustration, plus the disclosure it
   //     points at. Inserted after the landmark pass so the disclosure lands
   //     between </main> and the footer, where site-level meta belongs.
@@ -1481,7 +1571,7 @@ function notFoundPage() {
 <link rel="icon" href="${base}assets/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="${base}assets/site.css">
 ${THEME_BOOT}
-<style>
+<style>${minifyCss(`
   /* Repeated from site.css rather than relied upon: this page is the one that
      renders when something is already wrong, so it should still look right if
      the stylesheet is the thing that failed to load. That now includes the
@@ -1502,7 +1592,7 @@ ${THEME_BOOT}
   .code{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.24em;color:var(--muted-2);text-transform:uppercase}
   .home{padding:15px 32px;border-radius:999px;background:var(--accent);font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;letter-spacing:.16em;color:#fff}
   .home:hover{background:var(--accent-hi);color:#fff}
-</style>
+`)}</style>
 </head>
 <body>
 <main>
@@ -1579,8 +1669,8 @@ const siteCss = themeifyCss(
   `${uniqueCss[0]}\n\n${hoverSheet()}\n\n${BRAND_CSS}\n\n${CERT_CSS}\n\n${EU_AI_CSS}\n\n${NAV_CSS}\n\n${RESPONSIVE_CSS}\n`
 );
 assertThemed('site.css', siteCss);
-fs.writeFileSync(path.join(ASSETS, 'site.css'), `${THEME_CSS}\n\n${siteCss}`);
-fs.writeFileSync(path.join(ASSETS, 'site.js'), `${SITE_JS}\n`);
+fs.writeFileSync(path.join(ASSETS, 'site.css'), minifyCss(`${THEME_CSS}\n\n${siteCss}`) + '\n');
+fs.writeFileSync(path.join(ASSETS, 'site.js'), `${slimJs(SITE_JS)}\n`);
 fs.writeFileSync(path.join(ASSETS, 'favicon.svg'), FAVICON);
 for (const { p, html } of pages) fs.writeFileSync(path.join(ROOT, p.out), html);
 fs.writeFileSync(path.join(ROOT, '404.html'), notFoundPage());

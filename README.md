@@ -155,6 +155,33 @@ The token table (`THEME` in `tools/build.mjs`) is the one place the palettes
 live. Each row is `[token, matched literal, dark value, light value]`; edit the
 light column and rebuild.
 
+## Performance
+
+Lighthouse mobile: 99 / 100 / 100 / 100. Three build-time measures carry it,
+none of which change a rendered pixel:
+
+- **Photo overrides.** The design tool exports the photographs at editing
+  quality — 680 KB for a picture displayed at 370 px — which was the entire
+  mobile LCP budget (4.1 s). `tools/img-overrides/` holds the same pictures
+  recompressed with mozjpeg (quality 80, progressive, identical pixels and
+  dimensions; ~90% smaller), and the build ships an override whenever one
+  exists, failing if its dimensions ever drift from the export's. To
+  regenerate after a new export:
+  `npx sharp-cli --input assets/img/<name>.jpg --output tools/img-overrides/ --format jpeg --quality 80 --progressive`
+  (or any mozjpeg-q80 equivalent — then rebuild and compare by eye at 1:1).
+- **Heading outline.** The four story cards opened the outline `h1 → h3`,
+  the one accessibility audit the page failed. The build promotes them to
+  `<h2>`; their inline styles carry every visual property, so nothing moves.
+- **Minified CSS, slimmed JS.** `site.css` passes through a quote-aware
+  whitespace/comment minifier (no property rewriting — rules stay
+  recognisable next to their source in `build.mjs`); `site.js` loses
+  comments and indentation but keeps its exact tokens, so stack traces still
+  make sense.
+
+Known and accepted: GitHub Pages caches with `max-age=600`, which PageSpeed
+flags as a short cache lifetime — that header is not configurable on Pages,
+and a 10-minute TTL is also what lets a push go live quickly.
+
 ## Code scanning
 
 CodeQL runs on every push. Four hardening measures keep it at zero open
