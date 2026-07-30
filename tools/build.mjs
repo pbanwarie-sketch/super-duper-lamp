@@ -167,7 +167,15 @@ function readBundle(file) {
     if (e.compressed) bytes = zlib.gunzipSync(bytes);
     assets[uuid] = { mime: e.mime, bytes };
   }
-  return { template: JSON.parse(island('template')), assets };
+  // The committed bundles carry the template as an executable assignment —
+  // same JSON-escaped payload, but program text rather than a data island the
+  // runtime would re-read out of the DOM (see "Code scanning" in README.md).
+  // A fresh design-tool export still arrives in island form; accept both, so
+  // a new export builds before its runtime hardening has been reapplied.
+  const assigned = html.match(
+    /<script>window\.__BUNDLER_TEMPLATE__ =\n([\s\S]*?);\n\s*<\/script>/
+  );
+  return { template: JSON.parse(assigned ? assigned[1] : island('template')), assets };
 }
 
 // ─────────────────────────────────────────────────────────────── asset writing
@@ -1274,11 +1282,19 @@ function buildPage(page, cssParts) {
   //     between </main> and the footer, where site-level meta belongs.
   body = labelAiContent(body, page);
 
-  // 9. Drop everything the runtime used to consume.
-  body = body
-    .replace(/<script\s+type="text\/x-dc"[\s\S]*?<\/script>/g, '')
-    .replace(/<script\s+src="[0-9a-f-]{36}"><\/script>/g, '')
-    .trim();
+  // 9. Drop everything the runtime used to consume. Looped to a fixpoint: a
+  //    single pass over multi-character patterns is the "incomplete
+  //    sanitization" CodeQL rightly flags — one strip can splice two halves
+  //    of a marker back together. The input is our own committed bundle, but
+  //    the loop costs nothing, and the leftovers assertion below then guards
+  //    a property that actually holds.
+  for (let before = ''; before !== body; ) {
+    before = body;
+    body = body
+      .replace(/<script\s+type="text\/x-dc"[\s\S]*?<\/script>/g, '')
+      .replace(/<script\s+src="[0-9a-f-]{36}"><\/script>/g, '');
+  }
+  body = body.trim();
 
   const leftovers = body.match(
     /\{\{[^}]*\}\}|sc-if|sc-camel-[a-z-]+|<image-slot|style-[a-z]+="|<x-dc|<helmet|[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/g

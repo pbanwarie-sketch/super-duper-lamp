@@ -155,6 +155,35 @@ The token table (`THEME` in `tools/build.mjs`) is the one place the palettes
 live. Each row is `[token, matched literal, dark value, light value]`; edit the
 light column and rebuild.
 
+## Code scanning
+
+CodeQL runs on every push. Three hardening measures keep it at zero open
+alerts, all chosen so the built pages stay byte-identical:
+
+- **`tools/build.mjs` strips the bundler's script tags to a fixpoint** rather
+  than in one pass. One pass over a multi-character pattern can splice two
+  halves of a marker back together (CodeQL's "incomplete multi-character
+  sanitization"); the loop closes that, and the leftovers assertion below it
+  then guards a property that actually holds.
+- **The bundles' template ships as an executable assignment**
+  (`window.__BUNDLER_TEMPLATE__ = "…"`) instead of a
+  `<script type="__bundler/template">` data island. Identical payload, but
+  program text is in the same trust class as the runtime that consumes it,
+  where document text re-parsed into markup is CodeQL's "DOM text
+  reinterpreted as HTML".
+- **The bundles' nested-page relay never posts to `'*'`.** Where the document
+  has a real origin it addresses that origin (as before); in opaque contexts
+  the target is now `'/'` — same-origin-as-sender, which every legitimate hop
+  is — instead of a wildcard. The published pages never run any of this
+  (the build replaces the runtime), and these single-page bundles carry no
+  nested pages, so nothing observable changes.
+
+**After replacing `src-bundles/` with a fresh design-tool export:** the build
+still works — `readBundle` accepts both template forms — but the export
+arrives with the unhardened runtime, so expect the `src-bundles/` alerts to
+reopen until the two runtime patches above are reapplied (search the previous
+bundle for `__BUNDLER_TEMPLATE__` and `OWN_TARGET` and mirror the edits).
+
 ## Labelling AI-generated content
 
 The site uses the European Commission's
