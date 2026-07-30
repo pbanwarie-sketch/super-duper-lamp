@@ -1,319 +1,204 @@
-# Prashand Banwarie — Personal Website
+<div align="center">
 
-Portfolio site of **Prashand Arthur Banwarie** — Power BI Developer & Data Professional, The Hague (NL). English and Dutch, static, no runtime dependencies.
+# prashand.com
 
-## Live site
+**The personal site of Prashand Arthur Banwarie** — Power BI developer and data professional, Den Haag (NL).
+Bilingual, static, dark and light, and shipped with no runtime dependencies at all.
 
-**https://pbanwarie-sketch.github.io/super-duper-lamp/**
+[![Live](https://img.shields.io/website?url=https%3A%2F%2Fprashand.com&up_message=online&down_message=offline&label=prashand.com&style=flat-square)](https://prashand.com)
+[![Pages](https://img.shields.io/github/deployments/pbanwarie-sketch/super-duper-lamp/github-pages?label=deploy&style=flat-square)](https://github.com/pbanwarie-sketch/super-duper-lamp/deployments)
+[![Lighthouse](https://img.shields.io/badge/lighthouse-99%20%C2%B7%20100%20%C2%B7%20100%20%C2%B7%20100-2E7DFF?style=flat-square)](docs/performance.md)
+[![CodeQL](https://img.shields.io/badge/codeql-0%20open%20alerts-2E7DFF?style=flat-square)](docs/security.md)
+[![Runtime deps](https://img.shields.io/badge/runtime%20deps-none-2E7DFF?style=flat-square)](#build)
+[![Node](https://img.shields.io/badge/node-%E2%89%A518-informational?style=flat-square)](#build)
+
+[**Live site**](https://prashand.com) · [Nederlands](https://prashand.com/nl.html) · [Design system](docs/design-system.md) · [Styleguide](docs/styleguide.html) · [Docs](#documentation)
+
+</div>
+
+<table>
+<tr>
+<td width="50%"><img src="docs/media/site-dark.jpg" alt="The site in its dark theme: the hero, with a rotating headline and a portrait" width="100%"></td>
+<td width="50%"><img src="docs/media/site-light.jpg" alt="The same page in its light theme" width="100%"></td>
+</tr>
+<tr>
+<td align="center"><sub><b>Dark</b> — the design as exported, and the default</sub></td>
+<td align="center"><sub><b>Light</b> — a build-time transform of the same tokens</sub></td>
+</tr>
+</table>
+
+---
+
+## What this is
+
+A portfolio page built from a design-tool export, but published as something the
+design tool would never emit: **plain HTML that paints without JavaScript.** The
+export ships each page as a single ~1.6 MB file that carries every font and photo
+as base64 and only renders after React plus a 70 KB runtime unpack it in the
+browser. A ~1,700-line build script does that unpacking once, at build time, and
+writes real files.
+
+Everything below follows from that one decision.
 
 | | |
 |---|---|
-| English | [`/`](https://pbanwarie-sketch.github.io/super-duper-lamp/) |
-| Nederlands | [`/nl.html`](https://pbanwarie-sketch.github.io/super-duper-lamp/nl.html) |
+| **No runtime dependencies** | React, ReactDOM and the design runtime (~276 KB) are replaced by 5 KB of vanilla JavaScript. The build itself has zero npm dependencies. |
+| **Bilingual** | English at `/`, Dutch at `/nl.html`, reciprocally `hreflang`-paired. One build, one set of shared assets. |
+| **Dark and light** | Every colour literal in the export is rewritten to a CSS custom property. Dark stays the default; light is AA-checked throughout. |
+| **Fast** | Lighthouse mobile 99 / 100 / 100 / 100, with photographs recompressed ~90% at build time. |
+| **Accessible** | Landmarks, skip link, heading order, focus management on fragment jumps, `prefers-reduced-motion`, a thumb-zone tab bar under 900 px. |
+| **Clean scans** | CodeQL on every push: 0 open alerts. |
+| **Honest about AI** | The one AI-generated asset is labelled with the European Commission's EU icons. The photographs are real, and the disclosure says so. |
 
-## Enable GitHub Pages
+## Live site
+
+| | |
+|---|---|
+| English | **https://prashand.com** |
+| Nederlands | **https://prashand.com/nl.html** |
+
+Served by GitHub Pages from branch `main`, folder `/ (root)` (`CNAME` +
+`.nojekyll`).
+
+## Quick start
+
+```sh
+git clone https://github.com/pbanwarie-sketch/super-duper-lamp.git
+cd super-duper-lamp
+
+node tools/build.mjs            # Node 18+, no dependencies to install
+
+npx --yes http-server . -p 8080 -s   # or: python3 -m http.server 8080
+# → http://127.0.0.1:8080
+```
+
+The build is deterministic, so `git status` after a build is a reliable diff of
+what you actually changed.
+
+## Build
+
+```sh
+node tools/build.mjs
+```
+
+Reads `src-bundles/*.html` (the design-tool exports) plus the configuration at
+the top of `tools/build.mjs`, and writes `index.html`, `nl.html`, `404.html`,
+`assets/`, `sitemap.xml` and `robots.txt`.
+
+> [!IMPORTANT]
+> **`index.html`, `nl.html`, `404.html` and `assets/` are generated.** Editing
+> them by hand works until the next build overwrites them. Humans edit
+> `src-bundles/` and `tools/build.mjs` — nothing else.
+
+The build fails rather than emitting a broken page: if a markup transform stops
+matching, if a colour literal survives the theme rewrite, or if an image
+override's dimensions drift from the export's, you get a stack trace instead of a
+silent regression.
+
+## Project structure
+
+```
+├── index.html · nl.html · 404.html   generated pages — do not edit
+├── assets/                           generated: css, js, fonts, images
+│   └── brand/                        committed: third-party marks
+├── src-bundles/                      SOURCE — the design-tool exports
+├── tools/
+│   ├── build.mjs                     SOURCE — the entire build
+│   └── img-overrides/                recompressed photographs
+├── docs/                             documentation + live styleguide
+├── CNAME · robots.txt · sitemap.xml · .nojekyll
+```
+
+| Path | Purpose |
+|---|---|
+| `index.html`, `nl.html` | The two pages. **Generated.** |
+| `404.html` | Not-found page, served by Pages for any missing path. **Generated.** |
+| `assets/site.css` | Fonts, design CSS, theme tokens, hover rules, responsive and reduced-motion layers |
+| `assets/site.js` | Rotating headline, section nav, theme toggle, reveal-on-scroll |
+| `assets/fonts/`, `assets/img/` | Self-hosted JetBrains Mono + Space Grotesk subsets, photographs |
+| `assets/brand/`, `assets/badges/` | Third-party marks, committed rather than generated — see [Brand assets](docs/brand-assets.md) |
+| `assets/eu-ai/` | European Commission icons for labelling AI-generated content |
+| `src-bundles/` | The design-tool exports the pages are built from |
+| `tools/build.mjs` | The build |
+| `tools/img-overrides/` | mozjpeg-recompressed photographs the build ships in place of the export's |
+
+## Making a change
+
+| To change | Edit | Then |
+|---|---|---|
+| Copy, layout, artwork | re-export from the design tool into `src-bundles/` | [reapply the runtime patches](docs/security.md#after-a-fresh-export) and [regenerate the image overrides](docs/performance.md#photo-overrides) |
+| Title, description, social cards | the `PAGES` metadata in `tools/build.mjs` | rebuild |
+| The public URL | `SITE` in `tools/build.mjs` | rebuild — canonical, `hreflang`, Open Graph, sitemap, `robots.txt` and the 404 links all follow |
+| Colours, light/dark values | the `THEME` table in `tools/build.mjs` | rebuild, then check [`docs/styleguide.html`](docs/styleguide.html) in both themes |
+| Breakpoints, motion | `RESPONSIVE_CSS` in `tools/build.mjs` | rebuild |
+| Nav, headline, theme behaviour | `SITE_JS` in `tools/build.mjs` | rebuild |
+| AI-disclosure wording | each page's `ai` block in `tools/build.mjs` | rebuild |
+
+## Documentation
+
+| Doc | What's in it |
+|---|---|
+| [**Architecture**](docs/architecture.md) | The build pipeline, what's generated, where to change what |
+| [**Design system**](docs/design-system.md) | Principles, tokens, type scale, spacing, components, a11y rules, governance |
+| [**Styleguide**](docs/styleguide.html) | The system rendered live, in both themes, reading the real tokens |
+| [**Theming**](docs/theming.md) | How light mode is produced as a transform, and what it deliberately doesn't do |
+| [**Navigation & accessibility**](docs/navigation.md) | Sticky-nav fixes, the mobile tab bar, focus management, reduced motion |
+| [**Performance**](docs/performance.md) | The three build-time measures behind the Lighthouse numbers |
+| [**Code scanning**](docs/security.md) | The four CodeQL hardening measures, and one editing hazard |
+| [**AI disclosure**](docs/ai-disclosure.md) | What is AI-made, what isn't, and why the labelling is voluntary |
+| [**Brand assets**](docs/brand-assets.md) | LinkedIn, Proton and Microsoft marks — sources, terms, sizing rules |
+
+## Deploying
+
+Push to `main`. GitHub Pages rebuilds from the repository root.
+
+<details>
+<summary>Enabling Pages from scratch</summary>
 
 1. Repository → **Settings** → **Pages**
 2. **Build and deployment** → Source: *Deploy from a branch*
 3. Branch **main**, folder **/ (root)** → **Save**
+4. Custom domain: `prashand.com` (already in `CNAME`), then tick **Enforce HTTPS**
 
-## Structure
+</details>
 
-| Path | Purpose |
-|---|---|
-| `index.html`, `nl.html` | The two pages. **Generated — do not edit by hand.** |
-| `404.html` | Not-found page, served by Pages for any missing path |
-| `assets/site.css` | Fonts, design CSS, hover rules, responsive + reduced-motion layer |
-| `assets/site.js` | Rotating headline and reveal-on-scroll (progressive enhancement) |
-| `assets/fonts/`, `assets/img/` | Self-hosted JetBrains Mono + Space Grotesk subsets, photos |
-| `assets/brand/` | Official LinkedIn and Proton Mail marks — see below |
-| `assets/eu-ai/` | European Commission icons for labelling AI-generated content |
-| `robots.txt`, `sitemap.xml`, `.nojekyll` | Crawler and Pages plumbing |
-| `src-bundles/` | The design-tool exports the pages are built from |
-| `tools/build.mjs` | Build script |
-| `Profile.pdf` | CV |
+Pages caches HTML for 10 minutes, so a push takes a moment to appear. To check
+whether a deploy has landed, request a generated asset with a cache-buster —
+`/tools/build.mjs?x=1` — rather than reloading the page.
 
-## Building
+## Contributing
 
-The design tool exports each page as a single ~1.6 MB HTML file that carries
-every font and photo as base64 and only paints after React plus a 70 KB runtime
-unpack it in the browser. `tools/build.mjs` does that unpacking once, at build
-time, and writes plain HTML with real asset files:
+This is a personal site, so there is no roadmap to contribute to — but if you
+spot something broken, an issue is very welcome.
 
-```sh
-node tools/build.mjs      # Node 18+, no dependencies
-```
+If you do open a pull request:
 
-To publish a new design revision, replace the files in `src-bundles/` with the
-fresh export and re-run the build.
+- change `src-bundles/` or `tools/build.mjs`, never the generated files
+- run `node tools/build.mjs` and commit the regenerated output alongside the
+  source change
+- check both themes and all three breakpoints (desktop, ≤900 px, ≤520 px)
+- keep the [design system](docs/design-system.md) rules — especially: no colour
+  literals, no new radii or easing curves without a reason
 
-What the build does, beyond unpacking:
+## Licence and credits
 
-- resolves the design tool's own markup — `<x-dc>`, `<helmet>`, `<sc-if>`,
-  `<image-slot>`, `style-hover` attributes and `{{ }}` bindings — into ordinary
-  HTML and CSS, so no JavaScript is needed to see the page
-- replaces React, ReactDOM and the design runtime (~276 KB) with a 2.8 KB
-  vanilla script
-- shares one copy of every font and photo between the two pages
-- adds the metadata a published page needs: `lang`, description, canonical,
-  `hreflang` pairing, Open Graph and Twitter cards, JSON-LD, favicon
-- adds `<header>`/`<main>` landmarks, a skip link, `alt` text, intrinsic image
-  dimensions, and `rel="noopener noreferrer"` on external links
-- adds the responsive and `prefers-reduced-motion` layers the export ships
-  without
-- adds the light theme: every colour literal in the export becomes a CSS
-  custom property, dark stays the default — see **Theming** below
+**Code** (`tools/build.mjs`, the site CSS and JavaScript it emits): MIT — see
+[`LICENSE`](LICENSE).
 
-The build fails rather than emitting a broken page if any of its markup
-transforms stops matching — see the assertions near the end of `buildPage`.
+**Content** — the written copy, the photographs, the pixel-art illustration and
+the design itself — is © Prashand Banwarie and not covered by that licence.
+Please don't reuse it as your own portfolio.
 
-## Navigation
+**Third-party assets** keep their own terms: the LinkedIn and Proton Mail marks
+and the Microsoft credential badge are used as supplied under each company's
+brand guidelines ([details](docs/brand-assets.md)), and the EU AI-labelling icons
+are published by the European Commission for free use without attribution
+([details](docs/ai-disclosure.md)).
 
-Section links used to drop you in the wrong place, badly on desktop and worse on
-a phone. Three separate causes, all fixed:
+**Typefaces:** [Space Grotesk](https://github.com/floriankarsten/space-grotesk)
+and [JetBrains Mono](https://github.com/JetBrains/JetBrainsMono), both under the
+SIL Open Font License.
 
-1. **No `scroll-padding-top`.** A fragment link puts the target's top edge at
-   y=0 — exactly where the sticky bar is. 57 px of every section was buried on
-   desktop; on mobile the bar wrapped to two rows at 83 px and the `#work` and
-   `#experience` headings landed at y=64, completely hidden. `html` now carries
-   `scroll-padding-top: calc(var(--nav-h) + 18px)`.
-2. **`position: sticky` never worked.** The page wrapper ships
-   `overflow-x: hidden` inline, which makes it the scroll container for its
-   sticky descendants — and it never scrolls, so the bar scrolled away with the
-   page instead of pinning. `.page-wrap` overrides it with `overflow-x: clip`,
-   which clips identically without creating a scroll container. Browsers that
-   don't know the keyword drop the declaration and keep the old behaviour.
-3. **The mobile bar wrapped.** Four section links plus brand plus language would
-   not fit one row.
+## Contact
 
-On top of that:
-
-- **Bottom tab bar under 900 px.** The four sections move out of the top bar into
-  a fixed bar in the thumb zone; the top bar keeps brand and language in one
-  49 px row, down from 83 px. Tab labels are read out of the page's own nav, so
-  the Dutch build gets Dutch tabs with no second copy of the translations.
-- **Active section** is tracked on scroll and marked with `.is-active` plus
-  `aria-current="true"` on both the desktop links and the tabs.
-- **Scroll progress** hairline across the top of the viewport.
-- **Focus follows the jump:** after a fragment navigation the target section
-  takes focus (`tabindex="-1"`, `preventScroll`), so keyboard and screen-reader
-  users continue from the section rather than from the top of the document.
-
-`--nav-h` has a CSS fallback per breakpoint, but `site.js` measures the real bar
-on load and on resize and overwrites it — a wrapped bar or a late-loading font
-can't quietly reintroduce the overlap.
-
-## Theming
-
-The design tool exported one hard-coded dark palette, spread across hundreds of
-inline `style` attributes. The build themes it the same way it makes it
-responsive: as a transform. Every colour literal — in the extracted CSS, the
-generated hover classes, the build's own CSS layers and every inline style —
-is rewritten to a CSS custom property. The `:root` defaults are byte-identical
-to the literals they replaced, so the dark page renders exactly as before
-(verified: a full-page screenshot diff against the pre-theme build differs only
-where the toggle button now sits). A light block swaps the values.
-
-Who decides which theme renders, in order:
-
-1. **The visitor's explicit choice** — the sun/moon button at the end of the
-   nav bar sets `data-theme` on `<html>` and remembers it in `localStorage`.
-   A two-line script in `<head>` re-applies it before first paint, so a
-   returning visitor never sees the other theme flash. The button is hidden
-   without JavaScript, which is also what makes it work.
-2. **`prefers-color-scheme`** otherwise.
-3. **Dark** otherwise — the design as exported.
-
-`<meta name="theme-color">` ships as a media-scoped pair and `site.js` keeps it
-in step with an explicit choice, so the browser chrome follows.
-
-What the light palette does, and deliberately doesn't do:
-
-- **The brand blue #2E7DFF survives untouched** on everything that is *paint* —
-  buttons, hairlines, borders, the scroll progress bar. Wherever the accent is
-  *text*, light mode darkens it to the same-hue `#1A5FD6`, because #2E7DFF on
-  white is 3.7:1 — below WCAG AA. Every text token's light value clears
-  AA (≥ 4.5:1) on every surface it appears against; several of the dark
-  theme's faint labels don't, so the light theme is the more accessible one.
-- **The pixel-art panel stays dark in both themes.** The scene was generated
-  for a dark backdrop and its `AI GENERATED` badge is the Commission's white
-  variant, correct only on dark. `.art-panel` re-declares every token at its
-  dark value — a dark island, like a framed print on a gallery wall.
-- **The footer's EU `AI` icon keeps its dark background too**: in light mode it
-  sits on a small dark chip. Same reasoning as the badge — the white artwork is
-  used unmodified, on the background it is published for, just a local one.
-
-The build fails rather than half-themes: after the rewrite, any colour literal
-the theme table doesn't recognise — say, from a fresh design export that
-introduces a new colour — throws, listing the offenders. The one allowed
-literal is `#fff`, which only ever sits on the brand blue and is identical in
-both themes. The pixel-art scene's `fill` attributes are exempt by
-construction: the transform only touches `style` attributes and stylesheets,
-and the artwork's colours are content, not chrome.
-
-The token table (`THEME` in `tools/build.mjs`) is the one place the palettes
-live. Each row is `[token, matched literal, dark value, light value]`; edit the
-light column and rebuild.
-
-## Performance
-
-Lighthouse mobile: 99 / 100 / 100 / 100. Three build-time measures carry it,
-none of which change a rendered pixel:
-
-- **Photo overrides.** The design tool exports the photographs at editing
-  quality — 680 KB for a picture displayed at 370 px — which was the entire
-  mobile LCP budget (4.1 s). `tools/img-overrides/` holds the same pictures
-  recompressed with mozjpeg (quality 80, progressive, identical pixels and
-  dimensions; ~90% smaller), and the build ships an override whenever one
-  exists, failing if its dimensions ever drift from the export's. To
-  regenerate after a new export:
-  `npx sharp-cli --input assets/img/<name>.jpg --output tools/img-overrides/ --format jpeg --quality 80 --progressive`
-  (or any mozjpeg-q80 equivalent — then rebuild and compare by eye at 1:1).
-- **Heading outline.** The four story cards opened the outline `h1 → h3`,
-  the one accessibility audit the page failed. The build promotes them to
-  `<h2>`; their inline styles carry every visual property, so nothing moves.
-- **Minified CSS, slimmed JS.** `site.css` passes through a quote-aware
-  whitespace/comment minifier (no property rewriting — rules stay
-  recognisable next to their source in `build.mjs`); `site.js` loses
-  comments and indentation but keeps its exact tokens, so stack traces still
-  make sense.
-
-Known and accepted: GitHub Pages caches with `max-age=600`, which PageSpeed
-flags as a short cache lifetime — that header is not configurable on Pages,
-and a 10-minute TTL is also what lets a push go live quickly.
-
-## Code scanning
-
-CodeQL runs on every push. Four hardening measures keep it at zero open
-alerts, all chosen so the built pages stay byte-identical:
-
-- **`tools/build.mjs` strips the bundler's script tags structurally**
-  (`dropRuntimeScripts`: walk elements, copy or skip) rather than with a
-  regex replace. Deleting a multi-character marker with `replace()` can
-  splice the surrounding text into a brand-new marker — CodeQL's "incomplete
-  multi-character sanitization", which it flags per call, so even a
-  replace-until-fixpoint loop stays flagged. A scan that copies or skips
-  whole elements has nothing to reassemble.
-- **The bundles' resource map becomes a DOM node after parsing**, not markup
-  spliced into the HTML string before it. The manifest-derived
-  `window.__resources` script is created with `createElement` +
-  `textContent` and inserted first in `<head>` — the same slot, so the
-  script re-creation pass executes it at the same point — but text set via
-  `textContent` is never re-read as HTML, which is the flow CodeQL flags as
-  "DOM text reinterpreted as HTML".
-- **The bundles' template ships as an executable assignment**
-  (`window.__BUNDLER_TEMPLATE__ = "…"`) instead of a
-  `<script type="__bundler/template">` data island. Identical payload, but
-  program text sits in the same trust class as the runtime that consumes it,
-  rather than being document text re-parsed into markup.
-- **The bundles' nested-page relay never posts to `'*'`.** Where the document
-  has a real origin it addresses that origin (as before); in opaque contexts
-  the target is now `'/'` — same-origin-as-sender, which every legitimate hop
-  is — instead of a wildcard. The published pages never run any of this
-  (the build replaces the runtime), and these single-page bundles carry no
-  nested pages, so nothing observable changes.
-
-One editing hazard the first pass here tripped over, preserved as a warning:
-the bundle runtime lives inside an inline `<script>` element, so nothing in
-it — not even a comment — may contain a literal script-closing tag. The HTML
-parser ends the element at the first one it sees, whatever the JavaScript
-context, and the truncated runtime then fails with "Unexpected end of input".
-
-**After replacing `src-bundles/` with a fresh design-tool export:** the build
-still works — `readBundle` accepts both template forms — but the export
-arrives with the unhardened runtime, so expect the `src-bundles/` alerts to
-reopen until the three runtime patches above are reapplied (search the
-previous bundle for `__BUNDLER_TEMPLATE__`, `resourcesInit` and `OWN_TARGET`
-and mirror the edits).
-
-## Labelling AI-generated content
-
-The site uses the European Commission's
-[EU icons for labelling AI-generated content](https://digital-strategy.ec.europa.eu/en/policies/eu-icons-labelling-ai-generated-content),
-downloaded from that page and used unmodified (the white variants, for a dark
-background). The Commission publishes them for anyone to use freely, with no
-attribution required.
-
-**This is voluntary, not compliance.** Nothing here falls inside the *mandatory*
-scope of AI Act Article 50, which covers deepfakes and AI-generated text
-published to inform the public on matters of public interest without human
-editorial review:
-
-- the two photographs are real photographs, neither AI-generated nor AI-retouched;
-- the pixel-art illustration is evidently an illustration, not content that would
-  falsely appear authentic, and creative works are excepted in any case;
-- the written text carries human editorial responsibility, which is exactly the
-  exception Article 50 provides, and a personal portfolio is not a matter of
-  public interest.
-
-The Commission is explicit that "the use of these EU icons is optional, but the
-labelling requirements under Article 50 AI Act are not." So the labelling here is
-a transparency choice, applied only to what is genuinely AI-made. Labelling the
-real photographs would be its own kind of misinformation, which is why the
-disclosure states positively that they are real.
-
-| Where | What |
-|---|---|
-| On the pixel-art illustration | `AI GENERATED` badge, 28 px, top-right, over the artwork with nothing above it |
-| Under the illustration | Plain-language caption plus a link to the disclosure |
-| Above the footer | `AI` icon and a collapsed `<details>` itemising every asset either way |
-
-Both icons are the white variants and stay on dark backgrounds in both themes:
-the badge because its panel is a deliberate dark island (see **Theming**), the
-footer icon on a small dark chip in light mode.
-
-How the guidance's requirements are met:
-
-- *Perceivable at first exposure, embedded in the content, no intervening
-  overlay* — the badge sits on the illustration itself, above the dot-grid.
-- *Accompanied by a plain-language text label* — the caption beneath it.
-- *Alt text, readable by assistive technology* — the badge carries real `alt`
-  text; the footer icon is decorative next to its own heading, so it has `alt=""`.
-- *A navigable secondary information layer* — the `<details>` disclosure, which
-  is real markup in the page rather than something fetched or JS-rendered. The
-  caption link opens it rather than dropping you beside a collapsed summary.
-
-### Changing the wording
-
-Each page's `ai` block in `tools/build.mjs` holds the badge alt text, the
-caption, the summary, the itemised list and the source note, per language. Edit
-there and rebuild — nothing about the labelling is written in the HTML by hand.
-If what is AI-made ever changes, that list is the thing to keep honest.
-
-## Brand assets
-
-The LinkedIn and Proton Mail links carry each company's own mark. Both are used
-as supplied — never recoloured, redrawn or restretched. Unlike everything else
-under `assets/`, these are committed rather than generated; the build only
-checks they are still present.
-
-| File | Source | Terms |
-|---|---|---|
-| `assets/brand/linkedin-bug.png` | [brand.linkedin.com/downloads](https://brand.linkedin.com/downloads) → `in-logo.zip` → `LI-In-Bug.png` | [LinkedIn Brand Guidelines](https://brand.linkedin.com/in-logo) |
-| `assets/brand/linkedin-bug-white.png` | same pack, `InBug-White.png` — the reverse variant, kept for use on lighter or busier backgrounds | as above |
-| `assets/brand/proton-mail-badge.svg` | [proton.me/media/kit](https://proton.me/media/kit) → Proton Mail; identical to the `mail-badge.svg` Proton serves on proton.me | "may be freely used, provided the accompanying media refers back to [proton.me](https://proton.me)" |
-
-The rules that shaped the markup:
-
-- **Minimum size.** LinkedIn requires the [in] bug to be at least **21 px tall**
-  on screen. `MARK_PX` in `tools/build.mjs` is set to exactly that; the contact
-  details block uses 26 px. Do not go below 21.
-- **No distortion.** The `width`/`height` attributes carry the artwork's true
-  pixel ratio so the browser can reserve the right box; the display size comes
-  from `height` + `width:auto` in CSS. Writing a rounded pixel width into the
-  attributes would squash the mark by about 1%.
-- **Clear space.** LinkedIn asks for 2× the stroke width of the "I". The pills'
-  existing padding plus a 10 px gap covers it.
-- **Adjacent wording.** LinkedIn asks that the bug not be combined with other
-  words into a lockup. Here each mark sits inside a button beside a label that
-  names the destination, with clear space between — the conventional social-link
-  treatment rather than a composite mark. If you would rather be stricter, the
-  marks can stand alone with the label dropped and an `aria-label` on the link.
-- **Decorative.** Every mark has `alt=""`, because the adjacent text already
-  names the destination and a screen reader should not say "LinkedIn" twice.
-
-### Changing the URL
-
-`SITE` at the top of `tools/build.mjs` is the one place the public URL is
-written. Change it there and rebuild; canonical tags, `hreflang`, Open Graph,
-the sitemap, `robots.txt` and the 404 page's links all follow.
+**mailprashand@pm.me** · [linkedin.com/in/prashandarthur](https://www.linkedin.com/in/prashandarthur)

@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Design system — prashand.com</title>
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+
+<!-- The real tokens. Nothing here re-declares a colour: every swatch below
+     reads its value out of this stylesheet at runtime, so the styleguide
+     cannot drift from the site. Font URLs inside it resolve relative to the
+     CSS file, so they still work from /docs/. -->
+<link rel="stylesheet" href="../assets/site.css">
+
+<script>(function(){try{var t=localStorage.getItem('sg-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);else if(window.matchMedia&&matchMedia('(prefers-color-scheme: light)').matches)document.documentElement.setAttribute('data-theme','light')}catch(e){}})()</script>
+
+<style>
+/* ── styleguide chrome ─────────────────────────────────────────────────── */
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--body);
+  font-family:'Space Grotesk',system-ui,sans-serif;font-size:15px;line-height:1.7;
+  -webkit-font-smoothing:antialiased}
+a{color:var(--link)}
+a:hover{color:var(--link-hover)}
+code,.mono{font-family:'JetBrains Mono',monospace}
+
+.sg-bar{position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:20px;
+  flex-wrap:wrap;padding:14px 32px;background:var(--frost);backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--edge-08)}
+.sg-brand{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;
+  letter-spacing:.24em;text-transform:uppercase;color:var(--accent-text)}
+.sg-jump{display:flex;gap:16px;flex-wrap:wrap;margin-left:auto;
+  font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;
+  text-transform:uppercase}
+.sg-jump a{color:var(--muted-2);text-decoration:none}
+.sg-jump a:hover{color:var(--accent-text)}
+.sg-toggle{display:inline-flex;align-items:center;gap:8px;padding:7px 14px;
+  border:1px solid var(--edge-12);border-radius:999px;background:none;cursor:pointer;
+  color:var(--muted-2);font-family:'JetBrains Mono',monospace;font-size:10px;
+  letter-spacing:.14em;text-transform:uppercase}
+.sg-toggle:hover{color:var(--accent-text);border-color:var(--tint-45)}
+
+.sg-wrap{max-width:1180px;margin:0 auto;padding:0 32px}
+.sg-hero{padding:72px 0 56px;border-bottom:1px solid var(--edge-06)}
+.sg-hero h1{margin:0 0 18px;font-size:clamp(38px,4.4vw,64px);line-height:1.04;
+  letter-spacing:-.04em;font-weight:700;color:var(--ink)}
+.sg-hero p{margin:0;max-width:660px;font-size:17px;line-height:1.7;color:var(--muted);
+  text-wrap:pretty}
+
+section{padding:72px 0;border-bottom:1px solid var(--edge-06)}
+.eyebrow{display:flex;align-items:center;gap:14px;margin-bottom:18px;
+  font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.24em;
+  text-transform:uppercase;color:var(--muted-2)}
+.eyebrow::before{content:"";width:34px;height:1px;background:var(--accent);flex:none}
+section>h2{margin:0 0 8px;font-size:clamp(28px,3vw,40px);line-height:1.1;
+  letter-spacing:-.03em;font-weight:700;color:var(--ink)}
+section>p.lede{margin:0 0 40px;max-width:70ch;color:var(--muted)}
+h3.sub{margin:44px 0 16px;font-size:19px;font-weight:600;letter-spacing:-.02em;
+  color:var(--text)}
+h3.sub:first-of-type{margin-top:0}
+
+.grid{display:grid;gap:14px}
+.g2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.g4{grid-template-columns:repeat(4,minmax(0,1fr))}
+@media (max-width:820px){.g2,.g3,.g4{grid-template-columns:minmax(0,1fr)}}
+
+.panel{padding:26px;background:var(--card);border:1px solid var(--edge-08)}
+
+/* swatches */
+.sw{border:1px solid var(--edge-08);background:var(--card)}
+.sw .chip{height:76px;border-bottom:1px solid var(--edge-08)}
+.sw .meta{padding:12px 14px;font-family:'JetBrains Mono',monospace;font-size:10px;
+  line-height:1.8;letter-spacing:.06em}
+.sw .name{color:var(--text)}
+.sw .val{color:var(--muted-2);text-transform:uppercase}
+.sw .role{margin-top:4px;font-family:'Space Grotesk',system-ui,sans-serif;
+  font-size:12px;letter-spacing:0;color:var(--muted-3);text-transform:none}
+
+/* text token rows */
+table.tk{width:100%;border-collapse:collapse;font-size:14px}
+table.tk th,table.tk td{text-align:left;padding:11px 12px;
+  border-bottom:1px solid var(--edge-06);vertical-align:middle}
+table.tk th{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--muted-2);font-weight:400}
+table.tk td.t{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text)}
+.samp{font-size:15px}
+.ratio{font-family:'JetBrains Mono',monospace;font-size:12px}
+.pass{color:var(--link)}
+.warn{color:#E8A33D}
+.badge-aa{display:inline-block;margin-left:8px;padding:2px 7px;border-radius:999px;
+  font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em}
+.aa-ok{background:var(--tint-14);color:var(--accent-text)}
+.aa-no{background:rgba(232,163,61,.14);color:#E8A33D}
+
+/* type specimens */
+.spec{padding:22px 0;border-bottom:1px solid var(--edge-06)}
+.spec:last-child{border-bottom:0}
+.spec .lbl{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--muted-3);margin-bottom:10px}
+.s-h1{font-size:clamp(38px,4.4vw,68px);line-height:1.04;letter-spacing:-.04em;font-weight:700;color:var(--ink)}
+.s-h2{font-size:clamp(34px,3.4vw,50px);line-height:1.08;letter-spacing:-.03em;font-weight:700;color:var(--ink)}
+.s-lead{font-size:clamp(16px,1.7vw,26px);line-height:1.6;color:var(--body)}
+.s-card{font-size:22px;line-height:1.3;letter-spacing:-.02em;font-weight:600;color:var(--ink)}
+.s-sub{font-size:19px;line-height:1.3;letter-spacing:-.02em;font-weight:600;color:var(--text)}
+.s-body{font-size:17px;line-height:1.7;color:var(--body);max-width:660px}
+.s-small{font-size:15px;line-height:1.7;color:var(--muted);max-width:560px}
+.s-fine{font-size:14px;line-height:1.6;color:var(--body-2);max-width:70ch}
+.s-btn{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--text)}
+.s-eyebrow{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--muted-2)}
+.s-micro{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted-3)}
+.s-mark{font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700;letter-spacing:.28em;color:var(--accent-text)}
+
+/* spacing ruler */
+.ruler{display:flex;align-items:flex-end;gap:10px;flex-wrap:wrap;margin-top:8px}
+.ruler i{display:block;background:var(--tint-40);border-top:2px solid var(--accent)}
+.ruler figure{margin:0;text-align:center}
+.ruler figcaption{margin-top:8px;font-family:'JetBrains Mono',monospace;font-size:9px;
+  letter-spacing:.1em;color:var(--muted-3)}
+
+/* component demos */
+.demo{display:flex;flex-wrap:wrap;gap:16px;align-items:center;padding:26px;
+  background:var(--bg-2);border:1px solid var(--edge-08)}
+.btn-primary{display:inline-flex;align-items:center;gap:10px;padding:15px 32px;
+  border:0;border-radius:999px;background:var(--accent);color:#fff;cursor:pointer;
+  box-shadow:0 12px 34px -12px var(--tint-85);
+  font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;
+  letter-spacing:.16em;text-transform:uppercase;text-decoration:none}
+.btn-secondary{display:inline-flex;align-items:center;gap:10px;padding:15px 32px;
+  border:1px solid var(--accent);border-radius:999px;background:none;
+  color:var(--accent-text);cursor:pointer;
+  font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;
+  letter-spacing:.16em;text-transform:uppercase;text-decoration:none}
+.btn-secondary:hover{border-color:var(--accent-hi);color:var(--accent-hi)}
+.pill{display:inline-flex;align-items:center;gap:10px;padding:8px 14px;
+  border:1px solid var(--tint-30);border-radius:999px;background:var(--tint-10);
+  color:var(--accent-text);text-decoration:none;
+  font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;
+  text-transform:uppercase}
+.pill:hover{border-color:var(--tint-55);background:var(--tint-14);color:var(--accent-text)}
+.icon-btn{display:inline-flex;align-items:center;justify-content:center;width:30px;
+  height:30px;padding:0;border:1px solid var(--edge-12);border-radius:999px;
+  background:none;color:var(--muted-2);cursor:pointer}
+.icon-btn:hover{color:var(--accent-text);border-color:var(--tint-45)}
+.tag{display:inline-block;padding:5px 10px;border-radius:999px;background:var(--chip);
+  color:var(--accent-text);font-family:'JetBrains Mono',monospace;font-size:10px;
+  letter-spacing:.14em;text-transform:uppercase}
+
+.card{padding:26px;background:var(--card);border:1px solid var(--edge-08);
+  transition:transform .4s cubic-bezier(.2,.7,.2,1),border-color .3s}
+.card:hover{transform:translateY(-4px);border-color:var(--edge-14)}
+.card h4{margin:0 0 10px;font-size:22px;line-height:1.3;letter-spacing:-.02em;
+  font-weight:600;color:var(--ink);text-wrap:balance}
+.card p{margin:0;font-size:15px;line-height:1.7;color:var(--muted)}
+.card .kick{display:block;margin-bottom:14px;font-family:'JetBrains Mono',monospace;
+  font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted-2)}
+
+.cert{display:inline-flex;align-items:center;gap:16px;padding:14px 20px 14px 16px;
+  border:1px solid var(--tint-28);border-radius:14px;background:var(--tint-06);
+  text-decoration:none;max-width:100%}
+.cert:hover{border-color:var(--tint-55);background:var(--tint-10)}
+.cert .art{width:46px;height:46px;flex:none;border-radius:6px;
+  background:linear-gradient(135deg,var(--tint-40),var(--tint-10))}
+.cert .k{display:block;font-family:'JetBrains Mono',monospace;font-size:9px;
+  letter-spacing:.2em;text-transform:uppercase;color:var(--muted-2)}
+.cert .n{display:block;margin:5px 0;font-size:15px;font-weight:600;line-height:1.3;color:var(--ink)}
+.cert .v{display:block;font-family:'JetBrains Mono',monospace;font-size:10px;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--link)}
+
+.artpanel{position:relative;padding:36px 40px;background:var(--bg);
+  border:1px solid var(--edge-08);overflow:hidden;min-height:160px}
+.artpanel .dots{position:absolute;inset:0;pointer-events:none;opacity:.2;
+  background-image:radial-gradient(var(--tint-40) 1px,transparent 1px);
+  background-size:24px 24px}
+.artpanel .body{position:relative}
+
+.navdemo{display:flex;align-items:center;gap:22px;flex-wrap:wrap;padding:14px 22px;
+  background:var(--frost);border:1px solid var(--edge-08);backdrop-filter:blur(14px)}
+.navdemo .lnk{font-size:14px;color:var(--body);text-decoration:none}
+.navdemo .lnk:hover{color:var(--text)}
+.navdemo .lnk.on{color:var(--accent-text);border-bottom:1px solid var(--accent);padding-bottom:2px}
+
+.progress{position:relative;height:2px;background:var(--edge-08);overflow:hidden}
+.progress i{display:block;height:100%;width:42%;
+  background:linear-gradient(90deg,var(--accent),var(--link))}
+
+.focusme{display:inline-flex;padding:11px 22px;border:1px solid var(--edge-12);
+  border-radius:999px;background:none;color:var(--text);cursor:pointer;
+  font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;
+  text-transform:uppercase}
+.focusme:focus-visible{outline:2px solid #63A2FF;outline-offset:3px}
+
+.shadow-demo{height:120px;background:var(--card);border:1px solid var(--edge-08)}
+.shadow-glow{box-shadow:0 12px 34px -12px var(--tint-85)}
+.shadow-lift{box-shadow:0 30px 70px -30px var(--shadow)}
+
+.radii{display:flex;gap:14px;flex-wrap:wrap}
+.radii figure{margin:0;text-align:center}
+.radii i{display:block;width:84px;height:60px;background:var(--tint-14);
+  border:1px solid var(--tint-30)}
+.radii figcaption{margin-top:8px;font-family:'JetBrains Mono',monospace;font-size:9px;
+  letter-spacing:.1em;color:var(--muted-3)}
+
+.motion{display:flex;gap:14px;flex-wrap:wrap}
+.motion i{display:block;width:110px;height:56px;background:var(--tint-14);
+  border:1px solid var(--tint-30);transition:transform .4s cubic-bezier(.2,.7,.2,1),background .3s}
+.motion i:hover{transform:translateY(-10px);background:var(--tint-30)}
+
+.note{margin-top:20px;padding:18px 22px;border-left:2px solid var(--accent);
+  background:var(--tint-06);font-size:14px;line-height:1.7;color:var(--body-2);max-width:70ch}
+.note b{color:var(--text);font-weight:600}
+
+.sg-foot{padding:44px 0 64px;font-family:'JetBrains Mono',monospace;font-size:10px;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--muted-3)}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{transition-duration:.001ms !important;animation-duration:.001ms !important}
+}
+@media (max-width:640px){
+  .sg-wrap{padding:0 20px}
+  .sg-bar{padding:12px 20px}
+  section{padding:56px 0}
+  /* Tables carry more columns than a phone has room for. Scroll them rather
+     than wrapping the numbers into unreadable stacks. */
+  table.tk{display:block;overflow-x:auto;white-space:nowrap}
+  table.tk td.samp,table.tk td:nth-child(2){white-space:normal}
+}
+</style>
+</head>
+
+<body>
+
+<header class="sg-bar">
+  <span class="sg-brand">Prashand — Design system</span>
+  <nav class="sg-jump" aria-label="Sections">
+    <a href="#colour">Colour</a>
+    <a href="#type">Type</a>
+    <a href="#space">Space</a>
+    <a href="#shape">Shape</a>
+    <a href="#motion">Motion</a>
+    <a href="#components">Components</a>
+    <a href="#states">States</a>
+  </nav>
+  <button class="sg-toggle" id="tgl" type="button" aria-label="Switch theme">
+    <span id="tgl-txt">Light</span>
+  </button>
+</header>
+
+<div class="sg-wrap">
+
+  <div class="sg-hero">
+    <h1>The system<br>the site is built from</h1>
+    <p>Every value on this page is read live out of <code>assets/site.css</code> — the same
+      stylesheet the site ships. Switch the theme in the corner and nothing here is
+      re-declared: the swatches, the contrast ratios and the components all follow the
+      real tokens. Written up in <a href="design-system.md">docs/design-system.md</a>.</p>
+  </div>
+
+  <!-- ── colour ──────────────────────────────────────────────────────────── -->
+  <section id="colour">
+    <div class="eyebrow">01 — Colour</div>
+    <h2>One accent, two surfaces, seven text tiers</h2>
+    <p class="lede">The palette lives in the <code>THEME</code> table in
+      <code>tools/build.mjs</code>. Hex values below are computed from the live stylesheet,
+      so they are whatever the build last emitted.</p>
+
+    <h3 class="sub">Brand</h3>
+    <div class="grid g4" id="sw-brand"></div>
+
+    <h3 class="sub">Surfaces</h3>
+    <div class="grid g4" id="sw-surface"></div>
+
+    <h3 class="sub">Text — measured contrast</h3>
+    <table class="tk">
+      <thead>
+        <tr><th>Token</th><th>Sample</th><th>Value</th><th>On page bg</th><th>Worst surface</th></tr>
+      </thead>
+      <tbody id="tk-text"></tbody>
+    </table>
+    <div class="note" id="contrast-note"></div>
+
+    <h3 class="sub">Edges</h3>
+    <div class="grid g4" id="sw-edge"></div>
+
+    <h3 class="sub">Tints</h3>
+    <div class="grid g4" id="sw-tint"></div>
+
+    <div class="note">
+      <b>Rule.</b> Never write a colour literal — the build throws on any it doesn't
+      recognise. Adding a colour means adding a row to <code>THEME</code> with
+      <em>both</em> theme values decided together. Use <code>--accent</code> for paint and
+      <code>--accent-text</code> for text.
+    </div>
+  </section>
+
+  <!-- ── typography ──────────────────────────────────────────────────────── -->
+  <section id="type">
+    <div class="eyebrow">02 — Typography</div>
+    <h2>Two voices: one speaks, one labels</h2>
+    <p class="lede">Space Grotesk carries anything that is content. JetBrains Mono carries
+      anything that is <em>about</em> the content — eyebrows, meta, buttons, counters.
+      Three weights exist: 400, 600, 700.</p>
+
+    <div class="panel">
+      <div class="spec"><div class="lbl">Hero h1 · clamp(38–68px) · 700 · 1.04 · −.04em</div>
+        <div class="s-h1">I build Power BI</div></div>
+      <div class="spec"><div class="lbl">Section h2 · clamp(34–50px) · 700 · 1.08 · −.03em</div>
+        <div class="s-h2">Six things that changed how a department decides</div></div>
+      <div class="spec"><div class="lbl">Lead · clamp(16–26px) · 400 · 1.6</div>
+        <div class="s-lead">Ten years of turning HR and operational data into dashboards people actually open.</div></div>
+      <div class="spec"><div class="lbl">Card title · 22px · 600 · 1.3 · −.02em</div>
+        <div class="s-card">BYOR — Build Your Own Report</div></div>
+      <div class="spec"><div class="lbl">Sub-heading · 19px · 600 · 1.3 · −.02em</div>
+        <div class="s-sub">Numbers for non-numbers people</div></div>
+      <div class="spec"><div class="lbl">Body · 17px · 400 · 1.7 · max 660px</div>
+        <div class="s-body">Self-taught, from a forgotten BI tool nobody could use into ten years of turning HR and operational data into dashboards people actually open.</div></div>
+      <div class="spec"><div class="lbl">Small body · 15px · 400 · 1.7 · max 560px</div>
+        <div class="s-small">All internal products, so no screenshots — the outcome is the interesting part anyway.</div></div>
+      <div class="spec"><div class="lbl">Fine print · 14px · 400 · 1.6 · max 70ch</div>
+        <div class="s-fine">The illustration was generated with AI. The photographs are real photographs, neither AI-generated nor AI-retouched.</div></div>
+      <div class="spec"><div class="lbl">Button label · mono 12px · 700 · .16em</div>
+        <div class="s-btn">How I got here</div></div>
+      <div class="spec"><div class="lbl">Eyebrow · mono 11px · .24em</div>
+        <div class="s-eyebrow">Selected work</div></div>
+      <div class="spec"><div class="lbl">Micro-label · mono 9px · .20em</div>
+        <div class="s-micro">Microsoft Certified</div></div>
+      <div class="spec"><div class="lbl">Wordmark · mono 15px · 700 · .28em</div>
+        <div class="s-mark">PRASHAND</div></div>
+    </div>
+
+    <div class="note">
+      <b>Headings tighten, labels open.</b> Space Grotesk headings take negative tracking,
+      tighter as they grow. JetBrains Mono labels take positive tracking and are always
+      uppercase. Only the three largest roles are fluid; a 10px mono label has nowhere
+      useful to go.
+    </div>
+  </section>
+
+  <!-- ── space ───────────────────────────────────────────────────────────── -->
+  <section id="space">
+    <div class="eyebrow">03 — Space &amp; layout</div>
+    <h2>A 2px ramp that coarsens as it grows</h2>
+    <p class="lede">Content caps at 1280px; prose never does. Sections alternate
+      <code>--bg</code> / <code>--bg-2</code> with a single hairline between them.</p>
+
+    <h3 class="sub">The steps in use</h3>
+    <div class="ruler" id="ruler"></div>
+
+    <h3 class="sub">Section rhythm</h3>
+    <table class="tk">
+      <thead><tr><th>Breakpoint</th><th>Section padding</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td class="t">Desktop</td><td class="t">120px 72px</td><td>Contact: 130px 72px</td></tr>
+        <tr><td class="t">≤ 900px</td><td class="t">72px 20px</td><td>Grids collapse to one column; tab bar appears</td></tr>
+        <tr><td class="t">≤ 520px</td><td class="t">56px 20px</td><td>Hero copy 48px 20px</td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="sub">Measures</h3>
+    <table class="tk">
+      <thead><tr><th>Container</th><th>Max width</th></tr></thead>
+      <tbody>
+        <tr><td class="t">Section content</td><td class="t">1280px, centred</td></tr>
+        <tr><td class="t">Wide prose</td><td class="t">1080px / 820px</td></tr>
+        <tr><td class="t">Paragraph</td><td class="t">660px / 560px / 520px</td></tr>
+        <tr><td class="t">Side note</td><td class="t">330px</td></tr>
+        <tr><td class="t">Disclosure prose</td><td class="t">70ch</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ── shape ───────────────────────────────────────────────────────────── -->
+  <section id="shape">
+    <div class="eyebrow">04 — Shape &amp; elevation</div>
+    <h2>Square by default, round only for actions</h2>
+    <p class="lede">If it is round, it is pressable. Depth comes from a hairline and a
+      surface change — there are exactly two shadows in the entire site.</p>
+
+    <h3 class="sub">Radii</h3>
+    <div class="radii">
+      <figure><i style="border-radius:0"></i><figcaption>0 — default</figcaption></figure>
+      <figure><i style="border-radius:2px"></i><figcaption>2px — progress</figcaption></figure>
+      <figure><i style="border-radius:7px"></i><figcaption>7px — AI chip</figcaption></figure>
+      <figure><i style="border-radius:14px"></i><figcaption>14px — cert card</figcaption></figure>
+      <figure><i style="border-radius:24px"></i><figcaption>24px — photo, mobile</figcaption></figure>
+      <figure><i style="border-radius:999px"></i><figcaption>999px — actions</figcaption></figure>
+    </div>
+
+    <h3 class="sub">The two shadows</h3>
+    <div class="grid g2">
+      <div><div class="shadow-demo shadow-glow"></div>
+        <p class="s-fine" style="margin-top:14px">Accent glow · <code>0 12px 34px -12px var(--tint-85)</code> — under the primary button, nowhere else.</p></div>
+      <div><div class="shadow-demo shadow-lift"></div>
+        <p class="s-fine" style="margin-top:14px">Soft lift · <code>0 30px 70px -30px var(--shadow)</code> — under the hero portrait.</p></div>
+    </div>
+
+    <h3 class="sub">Borders</h3>
+    <p class="s-fine">Always <code>1px solid var(--edge-*)</code>, or <code>var(--tint-*)</code>
+      when the border should read as accent. The only 2px edges in the system are the
+      active tab's top border and the focus ring.</p>
+  </section>
+
+  <!-- ── motion ──────────────────────────────────────────────────────────── -->
+  <section id="motion">
+    <div class="eyebrow">05 — Motion</div>
+    <h2>One curve, short distances</h2>
+    <p class="lede"><code>cubic-bezier(.2, .7, .2, 1)</code> is the only easing in the
+      system. Hover over a tile.</p>
+
+    <div class="motion">
+      <i></i><i></i><i></i><i></i>
+    </div>
+
+    <table class="tk" style="margin-top:32px">
+      <thead><tr><th>Use</th><th>Duration</th><th>Property</th></tr></thead>
+      <tbody>
+        <tr><td class="t">Hover</td><td class="t">.3s</td><td>colour, border-color</td></tr>
+        <tr><td class="t">Transform</td><td class="t">.4s</td><td>translateY on cards</td></tr>
+        <tr><td class="t">Reveal on scroll</td><td class="t">.7s</td><td>opacity + translateY(22px)</td></tr>
+        <tr><td class="t">Headline rotation</td><td class="t">165ms / char</td><td>hold 5.2s, erase 85ms / char</td></tr>
+        <tr><td class="t">Pixel-art bob</td><td class="t">5.6s</td><td>ease-in-out, infinite</td></tr>
+      </tbody>
+    </table>
+
+    <div class="note">
+      <b>Nothing is load-bearing.</b> Reveal-on-scroll is gated on a <code>.js</code> class,
+      so no section is ever permanently invisible. Under
+      <code>prefers-reduced-motion: reduce</code> everything collapses to .001ms and the
+      headline only advances on an explicit button press.
+    </div>
+  </section>
+
+  <!-- ── components ──────────────────────────────────────────────────────── -->
+  <section id="components">
+    <div class="eyebrow">06 — Components</div>
+    <h2>Live, in whichever theme you picked</h2>
+
+    <h3 class="sub">Buttons</h3>
+    <div class="demo">
+      <a class="btn-primary" href="#components">My work</a>
+      <a class="btn-secondary" href="#components">How I got here</a>
+      <a class="pill" href="#components">LinkedIn</a>
+      <button class="icon-btn" type="button" aria-label="Theme">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.5 4.5l2 2M17.5 17.5l2 2M19.5 4.5l-2 2M6.5 17.5l-2 2"/></svg>
+      </button>
+      <span class="tag">Power BI</span>
+      <span class="tag">DAX</span>
+    </div>
+
+    <h3 class="sub">Eyebrow &amp; section header</h3>
+    <div class="demo" style="flex-direction:column;align-items:stretch;gap:18px">
+      <div class="eyebrow" style="margin:0">Selected work</div>
+      <div class="s-h2" style="font-size:clamp(28px,3vw,40px)">Six things that changed<br>how a department decides</div>
+    </div>
+
+    <h3 class="sub">Cards</h3>
+    <div class="grid g3">
+      <div class="card"><span class="kick">01 — Reporting</span>
+        <h4>BYOR — Build Your Own Report</h4>
+        <p>Self-service reporting that a manager can actually assemble without opening a ticket.</p></div>
+      <div class="card"><span class="kick">02 — People</span>
+        <h4>HR People Metrics</h4>
+        <p>One model behind every people number, so the answer stops depending on who ran it.</p></div>
+      <div class="card"><span class="kick">03 — Pipelines</span>
+        <h4>Automated dataflows</h4>
+        <p>The refresh nobody thinks about, because it hasn't failed in a year.</p></div>
+    </div>
+
+    <h3 class="sub">Certification card — the one soft rectangle</h3>
+    <div class="demo">
+      <a class="cert" href="#components">
+        <span class="art" aria-hidden="true"></span>
+        <span>
+          <span class="k">Microsoft Certified</span>
+          <span class="n">Power BI Data Analyst Associate</span>
+          <span class="v">Verify at Microsoft ↗</span>
+        </span>
+      </a>
+    </div>
+
+    <h3 class="sub">Nav bar</h3>
+    <div class="navdemo">
+      <span class="s-mark" style="font-size:13px">PRASHAND</span>
+      <a class="lnk" href="#components">Story</a>
+      <a class="lnk on" href="#components" aria-current="true">Work</a>
+      <a class="lnk" href="#components">Experience</a>
+      <a class="lnk" href="#components">Contact</a>
+    </div>
+
+    <h3 class="sub">Scroll progress</h3>
+    <div class="progress"><i></i></div>
+
+    <h3 class="sub">Art panel — a dark island in both themes</h3>
+    <!-- .art-panel is the site's own class: site.css re-declares every token at
+         its dark value inside it. Nothing here forces the colours. -->
+    <div class="artpanel art-panel">
+      <div class="dots" aria-hidden="true"></div>
+      <div class="body">
+        <div class="eyebrow" style="margin:0 0 12px">Self-taught, still shipping — 2016 → now</div>
+        <p class="s-fine" style="margin:0">
+          The pixel-art panel re-declares every token at its dark value, because the
+          artwork and its <code>AI GENERATED</code> badge were made for a dark backdrop.
+          Switch the theme — this block does not follow.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── states ──────────────────────────────────────────────────────────── -->
+  <section id="states">
+    <div class="eyebrow">07 — States &amp; accessibility</div>
+    <h2>Focus is never traded away</h2>
+
+    <div class="demo">
+      <button class="focusme" type="button">Tab to me</button>
+      <span class="s-fine" style="margin:0">
+        <code>outline: 2px solid #63A2FF; outline-offset: 3px</code> via
+        <code>:focus-visible</code>.
+      </span>
+    </div>
+
+    <table class="tk" style="margin-top:32px">
+      <thead><tr><th>State</th><th>Treatment</th></tr></thead>
+      <tbody>
+        <tr><td class="t">Hover (link)</td><td><code>--link</code> → <code>--link-hover</code></td></tr>
+        <tr><td class="t">Hover (card)</td><td>border <code>--edge-08</code> → <code>--edge-14</code>, translateY on the .4s curve</td></tr>
+        <tr><td class="t">Hover (tinted)</td><td>tint and border each step up one level</td></tr>
+        <tr><td class="t">Focus</td><td>2px <code>#63A2FF</code> ring, 3px offset — never removed</td></tr>
+        <tr><td class="t">Active section</td><td><code>.is-active</code> <em>and</em> <code>aria-current="true"</code></td></tr>
+        <tr><td class="t">Skip link</td><td>off-canvas until focused, then <code>#2E7DFF</code> / <code>#fff</code></td></tr>
+        <tr><td class="t">Selection</td><td><code>#2E7DFF</code> background, <code>#fff</code> text</td></tr>
+        <tr><td class="t">No JavaScript</td><td>theme toggle and tab bar hidden; reveals never applied</td></tr>
+      </tbody>
+    </table>
+
+    <div class="note">
+      <b>Known deviation.</b> The primary button is white mono 12px/700 on
+      <code>#2E7DFF</code> — 3.82:1, below AA for text under 18.66px bold. Two fixes when
+      the button is next touched: raise the label to 19px+, or add an
+      <code>--accent-solid</code> token at <code>#1A5FD6</code> (5.75:1) used only as a fill
+      behind white text, leaving <code>--accent</code> free to stay <code>#2E7DFF</code> as
+      a hairline and glow.
+    </div>
+  </section>
+
+  <div class="sg-foot">
+    Generated from assets/site.css · see docs/design-system.md · prashand.com
+  </div>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  // ── theme toggle ──────────────────────────────────────────────────────────
+  var btn = document.getElementById('tgl'), txt = document.getElementById('tgl-txt');
+  function now() { return document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark'; }
+  function label() { txt.textContent = now() === 'dark' ? 'Light' : 'Dark'; }
+  btn.addEventListener('click', function () {
+    var next = now() === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    try { localStorage.setItem('sg-theme', next); } catch (e) {}
+    label(); paint();
+  });
+  label();
+
+  // ── colour maths ──────────────────────────────────────────────────────────
+  function parse(c) {
+    c = c.trim();
+    var m = c.match(/^#([0-9a-f]{3,8})$/i);
+    if (m) {
+      var h = m[1];
+      if (h.length === 3) h = h.split('').map(function (x) { return x + x; }).join('');
+      return [parseInt(h.slice(0,2),16), parseInt(h.slice(2,4),16), parseInt(h.slice(4,6),16),
+              h.length >= 8 ? parseInt(h.slice(6,8),16)/255 : 1];
+    }
+    m = c.match(/rgba?\(([^)]+)\)/i);
+    if (!m) return null;
+    var p = m[1].split(/[,\s/]+/).filter(Boolean).map(parseFloat);
+    return [p[0], p[1], p[2], p.length > 3 ? p[3] : 1];
+  }
+  function over(fg, bg) {                       // composite fg (with alpha) onto bg
+    var a = fg[3];
+    return [fg[0]*a + bg[0]*(1-a), fg[1]*a + bg[1]*(1-a), fg[2]*a + bg[2]*(1-a), 1];
+  }
+  function lum(c) {
+    var f = function (v) { v /= 255; return v <= 0.03928 ? v/12.92 : Math.pow((v+0.055)/1.055, 2.4); };
+    return 0.2126*f(c[0]) + 0.7152*f(c[1]) + 0.0722*f(c[2]);
+  }
+  function ratio(a, b) {
+    var l1 = lum(a), l2 = lum(b), hi = Math.max(l1,l2), lo = Math.min(l1,l2);
+    return (hi + 0.05) / (lo + 0.05);
+  }
+  function tok(name) {
+    return getComputedStyle(document.documentElement).getPropertyValue('--' + name).trim();
+  }
+  function hexOf(name) {
+    var c = parse(tok(name));
+    if (!c) return tok(name);
+    if (c[3] < 1) return tok(name);
+    return '#' + [c[0],c[1],c[2]].map(function (v) {
+      return ('0' + Math.round(v).toString(16)).slice(-2);
+    }).join('').toUpperCase();
+  }
+
+  // ── data ──────────────────────────────────────────────────────────────────
+  var BRAND = [
+    ['accent',      'Paint: fills, hairlines, the eyebrow rule'],
+    ['accent-text', 'The accent as text'],
+    ['accent-hi',   'Accent hover / emphasis'],
+    ['link',        'Link text']
+  ];
+  var SURFACE = [
+    ['bg',   'Page base'],
+    ['bg-2', 'Alternating section'],
+    ['card', 'Card fill'],
+    ['chip', 'Chip / tag fill']
+  ];
+  var TEXT = [
+    ['ink',        'Headings'],
+    ['text',       'Strong body'],
+    ['body',       'Body copy'],
+    ['body-2',     'Secondary body'],
+    ['muted',      'Captions, meta'],
+    ['muted-2',    'Faint labels'],
+    ['muted-3',    'Faintest labels'],
+    ['accent-text','Accent as text'],
+    ['link',       'Links'],
+    ['link-hover', 'Link hover']
+  ];
+  var EDGE = [
+    ['edge-06', 'Section divider'],
+    ['edge-08', 'Default card border'],
+    ['edge-12', 'Interactive border'],
+    ['edge-30', 'Strongest hairline']
+  ];
+  var TINT = [
+    ['tint-06', 'Cert card fill'],
+    ['tint-10', 'Pill fill'],
+    ['tint-30', 'Accent border'],
+    ['tint-85', 'Button glow']
+  ];
+  var SURFACES = ['bg', 'bg-2', 'card', 'chip'];
+
+  function swatch(name, role, chipBg) {
+    // Translucent tokens (edges, tints, frosts) are shown composited over a
+    // surface, which is the only way they are ever seen on the site.
+    var style = (chipBg ? 'background-color:' + chipBg + ';' : '') +
+      'background-image:linear-gradient(var(--' + name + '),var(--' + name + '))';
+    return '<div class="sw">' +
+      '<div class="chip" style="' + style + '"></div>' +
+      '<div class="meta"><div class="name">--' + name + '</div>' +
+      '<div class="val">' + hexOf(name) + '</div>' +
+      '<div class="role">' + role + '</div></div></div>';
+  }
+
+  function paint() {
+    document.getElementById('sw-brand').innerHTML =
+      BRAND.map(function (r) { return swatch(r[0], r[1]); }).join('');
+    document.getElementById('sw-surface').innerHTML =
+      SURFACE.map(function (r) { return swatch(r[0], r[1]); }).join('');
+    // edges and tints are translucent: show them over the card surface
+    document.getElementById('sw-edge').innerHTML =
+      EDGE.map(function (r) { return swatch(r[0], r[1], 'var(--card)'); }).join('');
+    document.getElementById('sw-tint').innerHTML =
+      TINT.map(function (r) { return swatch(r[0], r[1], 'var(--card)'); }).join('');
+
+    var pageBg = parse(tok('bg'));
+    var rows = '', fails = [];
+    TEXT.forEach(function (r) {
+      var fg = parse(tok(r[0]));
+      if (!fg || !pageBg) return;
+      var onBg = ratio(over(fg, pageBg), pageBg);
+      var worst = Infinity, worstOn = '';
+      SURFACES.forEach(function (s) {
+        var sb = parse(tok(s));
+        if (!sb) return;
+        var x = ratio(over(fg, sb), sb);
+        if (x < worst) { worst = x; worstOn = s; }
+      });
+      var ok = worst >= 4.5;
+      if (!ok) fails.push('--' + r[0] + ' on --' + worstOn + ' (' + worst.toFixed(2) + ':1)');
+      rows += '<tr>' +
+        '<td class="t">--' + r[0] + '</td>' +
+        '<td class="samp" style="color:var(--' + r[0] + ')">' + r[1] + '</td>' +
+        '<td class="t" style="color:var(--muted-2)">' + hexOf(r[0]) + '</td>' +
+        '<td class="ratio ' + (onBg >= 4.5 ? 'pass' : 'warn') + '">' + onBg.toFixed(2) + ':1</td>' +
+        '<td class="ratio ' + (ok ? 'pass' : 'warn') + '">' + worst.toFixed(2) + ':1 on --' + worstOn +
+          '<span class="badge-aa ' + (ok ? 'aa-ok' : 'aa-no') + '">' + (ok ? 'AA' : 'below AA') + '</span></td>' +
+        '</tr>';
+    });
+    document.getElementById('tk-text').innerHTML = rows;
+
+    document.getElementById('contrast-note').innerHTML = fails.length
+      ? '<b>' + fails.length + ' token' + (fails.length > 1 ? 's' : '') + ' below WCAG AA in this theme:</b> ' +
+        fails.join(', ') + '. Inherited from the design export, on small mono labels only — ' +
+        'the light theme is the more accessible of the two. <code>--muted-3</code> is the first ' +
+        'to lift if the dark palette is ever revised.'
+      : '<b>Every text token clears WCAG AA (≥ 4.5:1)</b> on all four surfaces in this theme.';
+  }
+
+  // ── spacing ruler ─────────────────────────────────────────────────────────
+  var STEPS = [8, 12, 14, 16, 20, 24, 26, 40, 56, 72, 120];
+  document.getElementById('ruler').innerHTML = STEPS.map(function (s) {
+    return '<figure><i style="width:' + s + 'px;height:' + s + 'px"></i>' +
+           '<figcaption>' + s + '</figcaption></figure>';
+  }).join('');
+
+  paint();
+})();
+</script>
+</body>
+</html>

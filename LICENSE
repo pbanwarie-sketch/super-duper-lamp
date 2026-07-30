@@ -1,0 +1,56 @@
+MIT License
+
+Copyright (c) 2026 Prashand Arthur Banwarie
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+---------------------------------------------------------------------------
+SCOPE
+
+The MIT licence above covers the SOFTWARE in this repository only:
+
+  - tools/build.mjs
+  - the CSS and JavaScript that build script emits
+    (the contents of assets/site.css and assets/site.js)
+
+It does NOT cover:
+
+  - The written content, the photographs, the pixel-art illustration and the
+    visual design of the site, including the page layouts in src-bundles/ and
+    the generated HTML derived from them. These are
+    (c) 2026 Prashand Arthur Banwarie, all rights reserved.
+
+  - Third-party assets, which keep their own terms:
+      assets/brand/linkedin-bug.png, assets/brand/linkedin-bug-white.png
+        - LinkedIn Brand Guidelines <https://brand.linkedin.com/in-logo>
+      assets/brand/proton-mail-badge.svg
+        - Proton media kit <https://proton.me/media/kit>
+      assets/badges/microsoft-certified-associate.svg
+        - Microsoft credential badge, issued to the copyright holder
+      assets/eu-ai/*.svg
+        - European Commission, EU icons for labelling AI-generated content,
+          free to use, no attribution required
+          <https://digital-strategy.ec.europa.eu/en/policies/eu-icons-labelling-ai-generated-content>
+
+  - The typefaces in assets/fonts/, which are licensed under the SIL Open
+    Font License 1.1:
+      Space Grotesk  <https://github.com/floriankarsten/space-grotesk>
+      JetBrains Mono <https://github.com/JetBrains/JetBrainsMono>
+
+See docs/brand-assets.md and docs/ai-disclosure.md for the details.
